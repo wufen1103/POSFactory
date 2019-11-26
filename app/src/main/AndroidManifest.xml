@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.citaq.citaqfactory"
+    android:versionCode="1"
+    android:versionName="2.3.1 Build 0965" >
+
+    
+    <uses-feature android:name="android.hardware.usb.host" />
+
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+ 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+ 	 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+ 	 <uses-permission android:name="android.permission.CHANGE_NEWWORK_STATE"/>
+	 <uses-permission android:name="android.hardware.usb.host" />
+	 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	 <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+	 
+	 <uses-permission android:name="android.permission.REBOOT" />
+	 
+	 <!-- 显示系统窗口权限 -->
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+<!-- 在 屏幕最顶部显示addview-->
+<uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+	 
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" ></uses-permission> 
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" ></uses-permission> 
+    <application
+        android:name="com.citaq.citaqfactory.CitaqApplication"
+        android:allowBackup="true"
+        android:theme="@style/AppTheme" 
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+         <!--    <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+            
+        </activity>
+        <activity
+            android:name=".MainActivity2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+        </activity>
+        
+        <activity android:name=".TouchActivity" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>  
+        <activity android:name=".DisplayActivity" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity android:name=".MusicPlayerActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".LedActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".PrintActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".PrintMoreActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".PDActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".MSRActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".MicrophoneActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".NetWorkActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"
+             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
+        </activity>
+        <activity android:name=".SysInfoActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".AgeingActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".VideoAcivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+         <activity android:name=".FSKCALLERIDActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        
+        <!--  The value must be an integer, such as "100".
+         Higher numbers have a higher priority. The default value is 0. The value must be greater than -1000 and less than 1000. 
+         /设置为1000是指线程优先级最高，同时适用于广播-->
+       <receiver android:name=".BootBroadcastReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            	
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

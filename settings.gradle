@@ -1,0 +1,2 @@
+rootProject.name='POSFactory'
+include ':app'

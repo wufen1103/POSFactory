@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:gravity="center"
+    android:background="@android:color/black"> 
+  
+    <com.citaq.citaqfactory.FullScreenVideo
+        android:id="@+id/supervideo"  
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent" 
+          
+          />  
+  
+    
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:textColor="@android:color/darker_gray" />
+    
+    
+    <Button
+            android:id="@+id/setting"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_gravity="bottom|right"
+            android:gravity="bottom|right"
+            android:background="@drawable/btn_selector" />
+
+</FrameLayout>
