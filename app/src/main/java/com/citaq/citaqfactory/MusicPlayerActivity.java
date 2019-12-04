@@ -9,10 +9,12 @@ import com.citaq.util.SoundPoolManager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,6 +31,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class MusicPlayerActivity extends Activity {
 	
@@ -105,6 +110,7 @@ public class MusicPlayerActivity extends Activity {
 		bt_play.setEnabled(false);
 		outputFile = Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/myrecording.3gp";
+
 	}
 	
 	
@@ -306,6 +312,19 @@ public class MusicPlayerActivity extends Activity {
 	
 	
 	public void start(View view) {
+
+		/*//判断是否为android6.0系统版本，如果是，需要动态添加权限
+		if (Build.VERSION.SDK_INT>=23) {
+			//⑧申请录制音频的动态权限
+			if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+					!= PackageManager.PERMISSION_GRANTED) {
+				ActivityCompat.requestPermissions(this, new String[]{
+						android.Manifest.permission.RECORD_AUDIO}, 1);
+
+			}
+		}*/
+
+
 		if (mMediaPlayer2 != null) {
 			mMediaPlayer2.release();
 			mMediaPlayer2 = null;

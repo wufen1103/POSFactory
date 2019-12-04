@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -252,10 +253,12 @@ public class SysInfoActivity extends Activity {
 	
 	private String getICCID(){
 		 TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-	     String iccid =tm.getSimSerialNumber();  //取出ICCID
+	     @SuppressLint("MissingPermission")
+		 String iccid =tm.getSimSerialNumber();  //取出ICCID
 	     return iccid;
 	}
 	
+	@SuppressLint("MissingPermission")
 	public String getIMEI() {
 
 	    return ((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.citaq.citaqfactory"
-    android:versionCode="1"
-    android:versionName="2.3.1 Build 0965" >
+    package="com.citaq.citaqfactory" >
 
     
     <uses-feature android:name="android.hardware.usb.host" />
@@ -21,7 +19,7 @@
 	 <uses-permission android:name="android.hardware.usb.host" />
 	 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	 <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-	 
+
 	 <uses-permission android:name="android.permission.REBOOT" />
 	 
 	 <!-- 显示系统窗口权限 -->
@@ -49,12 +47,21 @@
         </activity>
         <activity
             android:name=".MainActivity2">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+            
+        </activity>
+        <activity
+            android:name=".MainActivity3">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
+
         </activity>
         
         <activity android:name=".TouchActivity" 
@@ -79,7 +86,7 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name=".MSRActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity android:name=".MicrophoneActivity" 
             android:theme="@android:style/Theme.NoTitleBar" >

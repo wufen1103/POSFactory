@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metroItems>
+    <item>
+        <nameEN>LED Test</nameEN>
+        <nameCH>LED测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.LedActivity</className>
+        <position>1</position>
+        <color>1</color>
+        <show>true</show>
+        <permission>  </permission> <!--  |   分割符-->
+    </item>
+    <item>
+        <nameEN>Print Test</nameEN>
+        <nameCH>打印机测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.PrintActivity</className>
+        <position>2</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>Touch Test</nameEN>
+        <nameCH>触控测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.TouchActivity</className>
+        <position>3</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>Display Test</nameEN>
+        <nameCH>屏幕测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.DisplayActivity</className>
+        <position>4</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>Audio Test</nameEN>
+        <nameCH>音频测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.MusicPlayerActivity</className>
+        <position>5</position>
+        <color>1</color>
+        <show>true</show>
+        <permission>android.permission.RECORD_AUDIO|android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
+    </item>
+    <item>
+        <nameEN>PD Test</nameEN>
+        <nameCH>顾显测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.PDActivity</className>
+        <position>6</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>MSR Test</nameEN>
+        <nameCH>磁卡槽测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.MSRActivity</className>
+        <position>7</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>Network Test</nameEN>
+        <nameCH>网络测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.NetWorkActivity</className>
+        <position>9</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>FSK Caller ID Test</nameEN>
+        <nameCH>来电显示(FSK)测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.FSKCALLERIDActivity</className>
+        <position>10</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
+        <nameEN>System information</nameEN>
+        <nameCH>系统信息</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.SysInfoActivity</className>
+        <position>11</position>
+        <color>1</color>
+        <show>true</show>
+        <permission>android.permission.READ_PHONE_STATE</permission>
+    </item>
+    <item>
+        <nameEN>Aging Test</nameEN>
+        <nameCH>老化测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.AgeingActivity</className>
+        <position>11</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+
+
+</metroItems>

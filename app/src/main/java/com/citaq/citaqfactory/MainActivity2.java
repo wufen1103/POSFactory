@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,8 +20,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.citaq.util.CitaqBuildConfig;
 import com.citaq.util.MainBoardUtil;
+import com.citaq.util.PermissionUtil;
 import com.citaq.util.SharePreferencesHelper;
 import com.citaq.view.*;
 
@@ -42,6 +46,8 @@ public class MainActivity2 extends Activity {
 	private static final int TITLE_FSKCALLERID = 9-1;
 	private static final int TITLE_AGEING = 10-1;
 	private static final int TITLE_INFO = 11-1;
+
+	Intent mIntent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,52 +71,54 @@ public class MainActivity2 extends Activity {
 //
 				switch (position) {
 				case TITLE_LED:
-					mContext.startActivity(new Intent(mContext, LedActivity.class));
+					mIntent = new Intent(mContext, LedActivity.class);
 					break;
 				case TITLE_PRINT:
-					mContext.startActivity(new Intent(mContext, PrintActivity.class));
+					mIntent = new Intent(mContext, PrintActivity.class);
 					break;
 				case TITLE_TOUCH:
-					mContext.startActivity(new Intent(mContext, TouchActivity.class));
+					mIntent = new Intent(mContext, TouchActivity.class);
 					break;
 				case TITLE_DISPLAY:
 					mContext.startActivity(new Intent(mContext, DisplayActivity.class));
 					break;
 				case TITLE_MUSIC:
-					mContext.startActivity(new Intent(mContext,
-							MusicPlayerActivity.class));
+					mIntent = new Intent(mContext, MusicPlayerActivity.class);
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !PermissionUtil.checkPermission(mContext, PermissionUtil.PERMISSIONS_AUDIO)) {
+						PermissionUtil.checkAndRequestPermissions(MainActivity2.this, PermissionUtil.PERMISSIONS_AUDIO);
+						return;
+					}
+
 					break;
 				case TITLE_PD:
-					mContext.startActivity(new Intent(mContext,
-							PDActivity.class));
+					mIntent = new Intent(mContext, PDActivity.class);
 					break;
 				case TITLE_MSR:
-					mContext.startActivity(new Intent(mContext,
-							MSRActivity.class));
+					mIntent = new Intent(mContext, MSRActivity.class);
 					break;
 				/*case TITLE_MICROPHONE:
 					mContext.startActivity(new Intent(mContext,
 							MicrophoneActivity.class));
 					break;*/
 				case TITLE_NETWORK:
-					mContext.startActivity(new Intent(mContext,
-							NetWorkActivity.class));
+					mIntent = new Intent(mContext, NetWorkActivity.class);
 					break;
 				case TITLE_AGEING:
-					mContext.startActivity(new Intent(mContext,
-							AgeingActivity.class));
+					mIntent = new Intent(mContext, AgeingActivity.class);
 					break;
 				case TITLE_FSKCALLERID:
-					mContext.startActivity(new Intent(mContext,
-							FSKCALLERIDActivity.class));
-					break;					
-				case TITLE_INFO:
-					mContext.startActivity(new Intent(mContext,
-							SysInfoActivity.class));
+					mIntent = new Intent(mContext, FSKCALLERIDActivity.class);
 					break;
-					
-
+				case TITLE_INFO:
+					mIntent = new Intent(mContext, SysInfoActivity.class);
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !PermissionUtil.checkPermission(mContext, PermissionUtil.PERMISSIONS_PHONE)) {
+						PermissionUtil.checkAndRequestPermissions(MainActivity2.this, PermissionUtil.PERMISSIONS_PHONE);
+						return;
+					}
+					break;
 				}
+
+				mContext.startActivity(mIntent);
 
 			}
 
@@ -156,33 +164,50 @@ public class MainActivity2 extends Activity {
 		super.onDestroy();
 		
 	}
+
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		boolean hasPermissionDenin = false;
+		if (requestCode == PermissionUtil.REQUEST_CODE) {
+			for (int i = 0; i < grantResults.length; i++) {
+				if (grantResults[i] == -1) {
+					hasPermissionDenin = true;
+					break;
+				}
+			}
+			if (hasPermissionDenin) {
+				Toast.makeText(mContext, "Permissions ERROR!", Toast.LENGTH_LONG).show();
+			}else {
+				mContext.startActivity(mIntent);
+			}
+		}
+
+	}
 	 
-	 private class DifferentDislay extends Presentation{
+	 private class DifferentDislay extends Presentation {
 		 Context mOuterContext;
 
-	        public DifferentDislay(Context outerContext, Display display) {
+		 public DifferentDislay(Context outerContext, Display display) {
 
-	            super(outerContext,display);
+			 super(outerContext, display);
 
-	            //TODOAuto-generated constructor stub  
-	            mOuterContext= outerContext;
-	        }
+			 //TODOAuto-generated constructor stub
+			 mOuterContext = outerContext;
+		 }
 
-	        @Override
+		 @Override
 
-	        protected void onCreate(Bundle savedInstanceState) {
+		 protected void onCreate(Bundle savedInstanceState) {
 
-	            super.onCreate(savedInstanceState);
+			 super.onCreate(savedInstanceState);
 
-	            setContentView(R.layout.activity_print);
-	        }
-	        
-	       
-	  
-	        
-	        
+			 setContentView(R.layout.activity_print);
+		 }
+	 }
 
-	    }
+
 
 
 

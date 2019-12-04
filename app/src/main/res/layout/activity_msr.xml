@@ -16,7 +16,7 @@
 		android:background="@drawable/btn_delete_selector"
 		/>
     
-    <TextView
+    <EditText
 	    android:id="@+id/TVTTYS2Reception"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
@@ -29,8 +29,8 @@
 	    android:isScrollContainer="true"
 	    android:scrollbarStyle="insideOverlay"
 	    android:textColor="@android:color/black"
-	    android:textSize="@dimen/tx_size_20" >
-	</TextView>
+	    android:textSize="@dimen/tx_size_20">
+	</EditText>
 	
 	
 
