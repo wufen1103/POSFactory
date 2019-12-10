@@ -54,6 +54,44 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+/*源代码路径/media/resource/android/sourcecode/jellybean/frameworks/base/wifi/java/android/net/wifi/wifimanager.java
+		源码中这样描述的*/
+/** Anything worse than or equal to this will show 0 bars.
+private static final int MIN_RSSI = -100;
+
+*//** Anything better than or equal to this will show the max bars. *//*
+private static final int MAX_RSSI = -55;
+
+*//**
+ * Number of RSSI levels used in the framework to initiate
+ * {@link #RSSI_CHANGED_ACTION} broadcast
+ * @hide
+ *//*
+public static final int RSSI_LEVELS = 5;*/
+/**
+ * Calculates the level of the signal. This should be used any time a signal
+ * is being shown.
+ *
+ * @param rssi The power of the signal measured in RSSI.
+ * @param numLevels The number of levels to consider in the calculated
+ *            level.
+ * @return A level of the signal, given in the range of 0 to numLevels-1
+ *         (both inclusive).
+ */
+
+/*public static int calculateSignalLevel(int rssi, int numLevels) {
+		if (rssi <= MIN_RSSI) {
+		return 0;
+		} else if (rssi >= MAX_RSSI) {
+		return numLevels - 1;
+		} else {
+		float inputRange = (MAX_RSSI - MIN_RSSI);
+		float outputRange = (numLevels - 1);
+		return (int)((float)(rssi - MIN_RSSI) * outputRange / inputRange);
+		}
+		}*/
+
+
 public class NetWorkActivity extends Activity {
 	protected static final String TAG = "NetWorkActivity";
 
@@ -116,9 +154,9 @@ public class NetWorkActivity extends Activity {
 		mContext = this;
 		setContentView(R.layout.activity_network);
 
-		wifiManager = (WifiManager) this.getSystemService(WIFI_SERVICE);
+		wifiManager = (WifiManager) this.getApplicationContext().getSystemService(WIFI_SERVICE);
 		telephoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		
+
 		wifiAdmin = new WifiAdmin(mContext);
 	
 
@@ -133,8 +171,7 @@ public class NetWorkActivity extends Activity {
 		mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 		registerReceiver(myNetReceiver, mFilter);
 
-		telephoneManager.listen(phoneStateListener,
-				PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+		telephoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 		type = telephoneManager.getNetworkType();
 	}
 
@@ -207,14 +244,18 @@ public class NetWorkActivity extends Activity {
 				switch (msg.what) {
 				case wifi_state:
 					if (networkType == ConnectivityManager.TYPE_WIFI) {
-						tv_signal_strength
-								.setText(
-								 mResources.getString(R.string.network_wifi)+","+
-								mResources
-										.getString(R.string.network_signal_strength)
+						int level = WifiManager.calculateSignalLevel(msg.arg1,5);
+						tv_signal_strength.setText(
+								          mResources.getString(R.string.network_wifi)+", "
+										+ mResources.getString(R.string.network_signal_strength)
 										+ ":"
 										+ msg.arg1
-										+ "dBm");
+										+ "dBm"
+										+ ", "
+										+mResources.getString(R.string.network_signal_strength)
+										+ ":"
+										+ level
+								);
 //						if(Integer.valueOf(msg.what)!= -200)
 						{
 							tb_wifi.setEnabled(true);
@@ -458,10 +499,7 @@ public class NetWorkActivity extends Activity {
 			if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 
 				connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo netInfo = connectivityManager
-						.getActiveNetworkInfo();
-				
-
+				NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
 				if (netInfo != null && netInfo.isAvailable()) {
 
 					// ///////////网络连接
@@ -515,8 +553,6 @@ public class NetWorkActivity extends Activity {
 						tv_info.setText(mResources.getString(R.string.network_type)+":"+mResources.getString(R.string.network_wifi)
 								+"   MAC:"+ mac
 								);*/
-						
-						
 						
 					} else if (netInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
 						// ///有线网络
@@ -610,16 +646,26 @@ public class NetWorkActivity extends Activity {
 			StringBuffer sb = new StringBuffer();
 			int asu = signalStrength
 					.getGsmSignalStrength();
+
 			String strength = String.valueOf(asu);
 			String strengthdmb = String.valueOf(signalStrength.getCdmaDbm());
 			if (type == TelephonyManager.NETWORK_TYPE_UMTS
-					|| type == TelephonyManager.NETWORK_TYPE_HSDPA) {
+					|| type == TelephonyManager.NETWORK_TYPE_HSDPA
+					|| type == TelephonyManager.NETWORK_TYPE_HSPAP)  //3288 TD-SCDMA ？？
+			{
 				strengthdmb =String.valueOf(-113+(2*asu));
 				// 联通3G
+
 				sb.append(mResources.getString(R.string.network_Unicom_3G))
 						.append(",").append(mResources.getString(R.string.network_signal_strength))
 						.append(":").append(strengthdmb).append("dBm")
 						.append("  ").append(strength).append("asu");
+
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+					int levle = signalStrength.getLevel();
+					sb.append(" ,").append(mResources.getString(R.string.network_signal_level)).append(":")
+					.append(levle);
+				}
 
 				tv_signal_strength_3G.setText(sb);
 
@@ -662,14 +708,18 @@ public class NetWorkActivity extends Activity {
 							if(mthd.getName().equals("getLteRsrp")){
 								int strengthdmb_int = (Integer) mthd.invoke(signalStrength);
 								strengthdmb = String.valueOf(mthd.invoke(signalStrength));
-								
-								
 								sb.append(mResources.getString(R.string.network_LTE))
 								.append(",")
 								.append(mResources
 										.getString(R.string.network_signal_strength))
 								.append(":").append(strengthdmb).append("dBm")
 								.append("  ").append(strengthdmb_int+140).append("asu");
+
+								if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+									int levle = signalStrength.getLevel();
+									sb.append(" ,").append(mResources.getString(R.string.network_signal_level)).append(":")
+											.append(levle);
+								}
 								tv_signal_strength_3G.setText(sb);
 								
 							}
