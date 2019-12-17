@@ -91,7 +91,9 @@
      <string name="clear">Reset Caller ID board.</string>
      <string name="manual">manual</string>
      <string name="auto">auto</string>
-    
+
+    <string name="start_autopdtest">Start PD auto Test</string>
+    <string name="stop_autopdtest">Stop PD auto Test</string>
 
     <string-array name="Codepage">
         <item>page  0 (CP437:Standard-Europe)</item>
@@ -187,19 +189,49 @@
         <item>ESC s 3\n Show Account</item>
         <item>ESC s 4\n Show Change</item>
         <item>ESC s 0\n Clear Digital display</item>
-        
-         <item>ESC s 0\n Clear Digital display</item>
-         
-         <!-- International character set -->
-         <item>1FH 1BH 1FH FDH 00H\n set International character set(ICS)</item>
-         
-         <item>1FH 1BH 1FH FEH 00H\n enable Chinese Mode</item>
-           <item>1FH 1BH 1FH FEH 01H\n disable Chinese Mode</item>
-         
-         
-         <item>1FH 1BH 1FH FFH 00H\n set Codepage(CP)</item>
-         
-          
+
+        <!-- International character set -->
+        <item>1FH 1BH 1FH FDH 00H\n set International character set(ICS)</item>
+        <item>1FH 1BH 1FH FEH 00H\n enable Chinese Mode</item>
+        <item>1FH 1BH 1FH FEH 01H\n disable Chinese Mode</item>
+        <item>1FH 1BH 1FH FFH 00H\n set Codepage(CP)</item>
+    </string-array>
+
+    <string-array name="PD_cmd2">
+        <item>CLR\n Clear</item>
+        <item>ESC  @\n initialize</item>
+        <item>ESC Q A 1.1.1.1.1.1.1.1 CR</item>
+        <item>ESC Q A 22222222 CR</item>
+        <item>ESC Q A 3.3.3.3.3.3.3.3 CR</item>
+        <item>ESC Q A 44444444 CR</item>
+        <item>ESC Q A 5.5.5.5.5.5.5.5 CR</item>
+        <item>ESC Q A 66666666 CR</item>
+        <item>ESC Q A 7.7.7.7.7.7.7.7 CR</item>
+        <item>ESC Q A 88888888 CR</item>
+        <item>ESC Q A 9.9.9.9.9.9.9.9 CR</item>
+        <item>ESC Q A 00000000 CR</item>
+        <item>STX  L 1 1 1 1</item>
+        <item>STX  L 0 0 0 0</item>
+        <item>ESC s 1</item>
+        <item>ESC s 2</item>
+        <item>ESC s 3</item>
+        <item>ESC s 4</item>
+        <item>ESC s 0</item>
+    </string-array>
+
+    <string-array name="PD_cmd3">
+        <item>ESC Q A 1.1.1.1.1.1.1.1 CR</item>
+        <item>ESC Q A 22222222 CR</item>
+        <item>ESC Q A 3.3.3.3.3.3.3.3 CR</item>
+        <item>ESC Q A 44444444 CR</item>
+        <item>ESC Q A 5.5.5.5.5.5.5.5 CR</item>
+        <item>ESC Q A 66666666 CR</item>
+        <item>ESC Q A 7.7.7.7.7.7.7.7 CR</item>
+        <item>ESC Q A 88888888 CR</item>
+        <item>ESC Q A 9.9.9.9.9.9.9.9 CR</item>
+        <item>ESC Q A 00000000 CR</item>
+        <item>STX  L 1 1 1 1</item>
+        <item>STX  L 0 0 0 0</item>
     </string-array>
 
     <string name="sys_serialNo">"Serial No: "</string>
@@ -233,6 +265,7 @@
     <string name="sure">&#160;&#160;&#160;OK&#160;&#160;&#160;</string>
     <string name="network_info">Network Info</string>
     <string name="network_signal_strength">Signal Strength</string>
+    <string name="network_signal_level">Signal Level</string>
     <string name="time_interval">Time Interval：</string>
     <string name="network_addr">Network Addr：</string>
     <string name="connect_appoint_network">connect given SSID</string>

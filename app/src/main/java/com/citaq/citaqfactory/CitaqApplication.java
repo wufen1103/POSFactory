@@ -1,17 +1,19 @@
 package com.citaq.citaqfactory;
 
 
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import com.citaq.util.SoundManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
-import com.citaq.util.SoundManager;
-
-import android.app.Application;
-import android.content.SharedPreferences;
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
 
+//D:\workspace\androidStudioProjects\SerialPortNDK\app\build\intermediates\cmake\debug\obj
 public class CitaqApplication extends Application {
 	private static final CitaqApplication instance = new CitaqApplication();
 
@@ -20,8 +22,9 @@ public class CitaqApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		SoundManager.prepareInstance();
-	    SoundManager.initSounds(this);
-	    SoundManager.loadSounds();
+		SoundManager.initSounds(this);
+		SoundManager.loadSounds();
+
 	}
 	
 	public static CitaqApplication getApplicationInstance() {
@@ -45,7 +48,8 @@ public class CitaqApplication extends Application {
 			}
 
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File(path), baudrate, 0, true);
+//			mSerialPort = new SerialPort(new File(path), baudrate, 0, true);
+			mSerialPort = new SerialPort(new File(path), baudrate, 1,8,0, true);
 		}
 		return mSerialPort;
 	}
@@ -53,7 +57,7 @@ public class CitaqApplication extends Application {
 	public SerialPort getPrintSerialPort() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File("/dev/ttyS1"), 115200, 0, true);
+			mSerialPort = new SerialPort(new File("/dev/ttyS1"), 115200, 1,8,0, true);
 		}
 		return mSerialPort;
 	}
@@ -61,7 +65,8 @@ public class CitaqApplication extends Application {
 	public SerialPort getPrintSerialPortMT() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File("/dev/ttyMT0"), 115200, 0, true);
+//			mSerialPort = new SerialPort(new File("/dev/ttyMT0"), 115200, 0, true);
+			mSerialPort = new SerialPort(new File("/dev/ttyMT0"), 115200, 1,8,0, true);
 		}
 		return mSerialPort;
 	}
@@ -69,7 +74,8 @@ public class CitaqApplication extends Application {
 	public SerialPort getMSRSerialPort() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File("/dev/ttyS2"), 19200, 0, false);
+//			mSerialPort = new SerialPort(new File("/dev/ttyS2"), 19200, 0, false);
+			mSerialPort = new SerialPort(new File("/dev/ttyS2"), 19200, 1,8,0, false);
 		}
 		return mSerialPort;
 	}
@@ -77,7 +83,17 @@ public class CitaqApplication extends Application {
 	public SerialPort getCtmDisplaySerialPort() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 0, false);
+//			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 0, false);
+			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 1,8,0, false);
+		}
+		return mSerialPort;
+	}
+
+	public SerialPort getCtmDisplaySerialPort2() throws SecurityException, IOException, InvalidParameterException {
+		if (mSerialPort == null) {
+			/* Open the serial port */
+//			mSerialPort = new SerialPort(new File("/dev/ttyACM0"), 2400, 0, false);
+			mSerialPort = new SerialPort(new File("/dev/ttyACM0"), 2400, 1,8,0, false);
 		}
 		return mSerialPort;
 	}
@@ -85,7 +101,8 @@ public class CitaqApplication extends Application {
 	public SerialPort getMSRSerialPort_S4() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {
 			/* Open the serial port */
-			mSerialPort = new SerialPort(new File("/dev/ttyS4"), 19200, 0, false);
+//			mSerialPort = new SerialPort(new File("/dev/ttyS4"), 19200, 0, false);
+			mSerialPort = new SerialPort(new File("/dev/ttyS4"), 19200, 1,8,0, false);
 		}
 		return mSerialPort;
 	}

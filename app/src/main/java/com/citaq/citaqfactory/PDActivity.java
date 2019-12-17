@@ -1,10 +1,14 @@
 package com.citaq.citaqfactory;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.citaq.util.Command;
+import com.citaq.util.MainBoardUtil;
 import com.printer.util.CallbackUSB;
 import com.printer.util.USBConnectUtil;
 
@@ -53,7 +58,17 @@ public class PDActivity extends SerialPortActivity {
 	RadioButton pd_serial = null;
 	RadioButton pd_usb = null;
 	int pdType = 0;
-	
+	public static byte[] pd = new byte[] { 0x1B, 0x51, 0x41, (byte) 0x31, (byte) 0x32,
+			(byte) 0x33, (byte) 0x34,(byte) 0x35, (byte) 0x38,(byte) 0x38, (byte) 0x38, (byte) 0x0D
+	,(byte) 0x2E,(byte) 0x2E,(byte) 0x2D,(byte) 0x2D,(byte) 0x2E,(byte) 0x2E,(byte) 0x2E}; //\x1b\x51\x4112345678\x0d
+	FileOutputStream mFileOutputStream = null;
+	private static final int PD_AUTO_START = 1000;
+	private static final int PD_AUTO_STOP = 1001;
+	boolean isPDtest = false;
+    String[] cmdPD2 = new String[]{};
+	String[] cmdPD3 = new String[]{};
+    int pd_cmd_id = -1;
+
 	LinearLayout layout_send1,layout_send2,layout_send3;
 	
 	USBConnectUtil mUSBConnectUtil = null;
@@ -67,13 +82,49 @@ public class PDActivity extends SerialPortActivity {
 		setContentView(R.layout.activity_pd);
 		mContext =this;
 		initView();
-	//	initSerial();
-		
+		if(MainBoardUtil.isRK3288()) {
+			mOutputStream =null;
+
+			cmdPD2 = getResources().getStringArray(R.array.PD_cmd2);
+			cmdPD3 = getResources().getStringArray(R.array.PD_cmd3);
+			pd_usb.setVisibility(View.INVISIBLE);
+			btn_setTitle.setText(R.string.start_autopdtest);
+			et_Title.setVisibility(View.INVISIBLE);
+			btn_setTime.setEnabled(false);
+			btn_setQR.setEnabled(false);
+			et_QR.setEnabled(false);
+			btn_White.setEnabled(false);
+			btn_Red.setEnabled(false);
+			btn_Blue.setEnabled(false);
+			btn_Green.setEnabled(false);
+			btn_Black.setEnabled(false);
+		}
+		initSerial();
+	}
+
+	private boolean serialWrite2(byte[] cmd){
+		try {
+			if(mFileOutputStream == null) {
+				mFileOutputStream = new FileOutputStream("/dev/ttyACM0");
+			}
+			mFileOutputStream.write(cmd);
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	private void initSerial(){
 		try {
-			mSerialPort = mApplication.getCtmDisplaySerialPort();
+			if(MainBoardUtil.isRK3288()) {
+				mSerialPort = mApplication.getCtmDisplaySerialPort2();
+			}else{
+				mSerialPort = mApplication.getCtmDisplaySerialPort();
+			}
+
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
 
@@ -114,14 +165,38 @@ public class PDActivity extends SerialPortActivity {
 		}
 			
 	}
-	
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+	}
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
+		if(isPDtest){
+			serialWrite(Command.transToPrintText(cmdPD2[1]));
+			pd_cmd_id = -1;
+			isPDtest = false;
+		}
+
 		super.onDestroy();
+
 		if(mUSBConnectUtil != null)
 			mUSBConnectUtil.destroyPrinter();
+
+		if(mFileOutputStream != null) {
+			try {
+				mFileOutputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+
 		Log.v(TAG, "onDestroy");
+
 	}
 	
 	
@@ -189,7 +264,8 @@ public class PDActivity extends SerialPortActivity {
 		
 		//
 		spinner_cmd = (Spinner) findViewById(R.id.spinner_cmd);
-		adapter_cmd=ArrayAdapter.createFromResource(this, R.array.PD_cmd, android.R.layout.simple_spinner_item);
+		int pd_command = cmdPD2.length == 0 ? R.array.PD_cmd:  R.array.PD_cmd2; //MainBoardUtil.isRK3288() cmdPD2.length == 0 is false
+		adapter_cmd=ArrayAdapter.createFromResource(this, pd_command, android.R.layout.simple_spinner_item);
 		adapter_cmd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_cmd.setAdapter(adapter_cmd);
 		spinner_cmd.setSelection(0);
@@ -275,22 +351,37 @@ public class PDActivity extends SerialPortActivity {
 					serialWrite(Command.transToPrintText(cmdStr));
 					break;
 				case R.id.btn_setTitle:
-					String title = et_Title.getText().toString();
-					if(title.getBytes().length>30){
-						Toast.makeText(mContext, "Too Long(must < 30 bytes", Toast.LENGTH_SHORT).show();
-						break;
-					
+					if(btn_setTitle.getText().equals(getString(R.string.stop_autopdtest))){
+						btn_setTitle.setText(R.string.start_autopdtest);
+					}else if (btn_setTitle.getText().equals(getString(R.string.start_autopdtest))){
+						btn_setTitle.setText(R.string.stop_autopdtest);
 					}
-//					title ="STX N " + title + "CR";
-					byte[] data1 = {2,78};
-					byte[] data2 = Command.transCommandBytes(title);
-					byte[] data3 = {13};
-					byte[] data4 = new byte[title.getBytes().length + 3];
-					System.arraycopy(data1,0,data4,0,2);
-					System.arraycopy(data2,0,data4,data1.length,data2.length);
-					System.arraycopy(data3,0,data4,data1.length + data2.length,data3.length);
-					
-					serialWrite( data4);
+
+					if(btn_setTitle.getText().equals(getString(R.string.stop_autopdtest))){
+						isPDtest = true;
+						handler.sendEmptyMessage(PD_AUTO_START);
+						//handler.sendEmptyMessageDelayed(PD_AUTO_START, 1000);
+					}else if(btn_setTitle.getText().equals(getString(R.string.start_autopdtest))){
+
+						handler.sendEmptyMessage(PD_AUTO_STOP);
+					}else {
+						String title = et_Title.getText().toString();
+						if (title.getBytes().length > 30) {
+							Toast.makeText(mContext, "Too Long(must < 30 bytes", Toast.LENGTH_SHORT).show();
+							break;
+
+						}
+						//					title ="STX N " + title + "CR";
+						byte[] data1 = {2, 78};
+						byte[] data2 = Command.transCommandBytes(title);
+						byte[] data3 = {13};
+						byte[] data4 = new byte[title.getBytes().length + 3];
+						System.arraycopy(data1, 0, data4, 0, 2);
+						System.arraycopy(data2, 0, data4, data1.length, data2.length);
+						System.arraycopy(data3, 0, data4, data1.length + data2.length, data3.length);
+
+						serialWrite(data4);
+					}
 					
 					break;
 				case R.id.btn_setTime:
@@ -433,8 +524,16 @@ public class PDActivity extends SerialPortActivity {
 		}
 			
 	};
-	
+
 	private  boolean serialWrite(byte[] cmd){
+		if(MainBoardUtil.isRK3288()) {
+			return  serialWrite1(cmd);
+		}else{
+			return serialWrite1(cmd);
+		}
+	}
+	
+	private  boolean serialWrite1(byte[] cmd){
     	boolean returnValue=true;
     	try{
 		
@@ -458,5 +557,30 @@ public class PDActivity extends SerialPortActivity {
 		});
 
 	}
+
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			if(isPDtest == false) return;
+			switch (msg.what) {
+				case PD_AUTO_START:
+
+					if(pd_cmd_id >= cmdPD3.length -1){
+						pd_cmd_id = 0;
+					}else {
+						pd_cmd_id = pd_cmd_id + 1;
+					}
+					serialWrite(Command.transToPrintText(cmdPD3[pd_cmd_id]));
+					handler.sendEmptyMessageDelayed(PD_AUTO_START, 1000);
+					break;
+				case PD_AUTO_STOP:
+					serialWrite(Command.transToPrintText(cmdPD2[1]));
+					pd_cmd_id = -1;
+					isPDtest = false;
+					break;
+				default:
+					break;
+			}
+		}
+	};
 
 }

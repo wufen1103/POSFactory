@@ -16,6 +16,8 @@
 
 package android_serialport_api;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -23,8 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import android.util.Log;
 
 public class SerialPort {
 
@@ -37,15 +37,28 @@ public class SerialPort {
 	private FileInputStream mFileInputStream;
 	private FileOutputStream mFileOutputStream;
 
-	public SerialPort(File device, int baudrate, int flags, boolean flowCon) 
-			throws SecurityException, IOException {
+//	public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
 
+	/**
+	 * 打开串口
+	 *
+	 * @param device   串口设备文件
+	 * @param baudrate 波特率
+	 * @param stopBits  停止位，1 或 2  （默认 1）
+	 * @param dataBits 数据位，5 ~ 8  （默认8）
+	 * @param parity   奇偶校验，0 None（默认）； 1 Odd(奇）； 2 Even（偶）
+	 * @param flowCon  标记 0（默认）
+	 * @throws SecurityException
+	 * @throws IOException
+	 */
+	public SerialPort(File device, int baudrate, int stopBits,
+                      int dataBits, int parity, boolean flowCon) throws SecurityException, IOException {
 		/* Check access permission */
 		if (!device.canRead() || !device.canWrite()) {
 			try {
 				/* Missing read/write permission, trying to chmod the file */
 				Process su;
-				su = Runtime.getRuntime().exec("/system/bin/su");
+				su = Runtime.getRuntime().exec("/system/xbin/su");
 				String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
 						+ "exit\n";
 				su.getOutputStream().write(cmd.getBytes());
@@ -59,7 +72,8 @@ public class SerialPort {
 			}
 		}
 
-		mFd = open(device.getAbsolutePath(), baudrate, flags, flowCon);
+//		mFd = open(device.getAbsolutePath(), baudrate, flags);
+		mFd = open(device.getAbsolutePath(), baudrate, stopBits, dataBits, parity, flowCon);
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
 			throw new IOException();
@@ -78,11 +92,11 @@ public class SerialPort {
 	}
 
 	// JNI
-	private native static FileDescriptor open(String path, int baudrate,
-				int flags, boolean flowCon);
+//	private native static FileDescriptor open(String path, int baudrate, int flags);
+	public native static FileDescriptor open(String path, int baudrate, int stopBits,
+											 int dataBits, int parity, boolean flowCon);
 	public native void close();
-	
 	static {
-		System.loadLibrary("serial_port");
+		System.loadLibrary("SerialPort");
 	}
 }
