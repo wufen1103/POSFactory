@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".BluetoothActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth"
+            android:textColor="@color/darkgreen"
+            android:textSize="@dimen/tx_size_30"
+            android:layout_centerVertical="true"/>
+
+        <ToggleButton
+            android:id="@+id/tb_bluetooth"
+            android:layout_width="@dimen/togglebutton_width"
+            android:layout_height="@dimen/togglebutton_height"
+            android:background="@drawable/togglebutton_selector"
+            android:textOff=""
+            android:textOn=""
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout style="@style/common_horizontal_division_line_style" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/margin_20"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            tools:ignore="MissingConstraints">
+            <TextView
+                android:id="@+id/tv_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/tx_size_20"
+                android:textColor="@color/black"/>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/bt_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_circle2"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:text="@string/str_Clear"
+            android:textSize="@dimen/tx_size_20"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            />
+        <Button
+            android:id="@+id/bt_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_circle"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:text="@string/bluetooth_search"
+            android:textSize="@dimen/tx_size_20"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/bt_clear"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

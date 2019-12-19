@@ -173,6 +173,9 @@
     <string name="no_video">外置SDcard或U盘根目录必须有命名为Video_Test的视频文件。</string>
     
     <string name="play_tag">播放内置SDcard,外置SDcard或U盘根目录命名为Video_Test的视频文件；否则播放内置视频。</string>
+
+    <string name="bluetooth">蓝牙</string>
+    <string name="bluetooth_search">搜索</string>
 </resources>
 
 

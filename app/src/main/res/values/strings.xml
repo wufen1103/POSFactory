@@ -321,6 +321,9 @@
     <string name="volume_medium">medium</string>
     <string name="volume_hight">hight</string>
 
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth_search">Discover</string>
+
     <string-array name="ping_time">
         <item>10</item>
         <item>12 </item>
