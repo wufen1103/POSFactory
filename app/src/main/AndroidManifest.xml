@@ -75,46 +75,34 @@
         <activity android:name=".DisplayActivity" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        <activity android:name=".MusicPlayerActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".MusicPlayerActivity" >
         </activity>
-        <activity android:name=".LedActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".LedActivity" >
         </activity>
-        <activity android:name=".PrintActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".PrintActivity"  >
         </activity>
-        <activity android:name=".PrintMoreActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".PrintMoreActivity" >
         </activity>
-        <activity android:name=".PDActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".PDActivity"  >
         </activity>
-        <activity android:name=".MSRActivity" 
-            android:theme="@android:style/Theme.NoTitleBar">
+        <activity android:name=".MSRActivity" >
         </activity>
-        <activity android:name=".MicrophoneActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".MicrophoneActivity"  >
         </activity>
-        <activity android:name=".NetWorkActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"
+        <activity android:name=".NetWorkActivity"
              android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
         <activity android:name=".BluetoothActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
-        <activity android:name=".SysInfoActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".SysInfoActivity">
         </activity>
-        <activity android:name=".AgeingActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".AgeingActivity"  >
         </activity>
-        <activity android:name=".VideoAcivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".VideoAcivity"  >
         </activity>
-         <activity android:name=".FSKCALLERIDActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" >
+         <activity android:name=".FSKCALLERIDActivity"  >
         </activity>
         
         <!--  The value must be an integer, such as "100".
