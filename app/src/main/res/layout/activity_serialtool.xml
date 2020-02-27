@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    tools:context=".BluetoothActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/white_border"
+        android:layout_margin="5dp"
+        android:padding="2dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            tools:ignore="MissingConstraints">
+            <TextView
+                android:id="@+id/tv_receive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/tx_size_12" />
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_20">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_serial_port"
+                android:textSize="@dimen/tx_size_20"/>
+            <Spinner
+                android:id="@+id/spinner_devices"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/baudrates"
+                android:textSize="@dimen/tx_size_20"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_baud_rate"
+                android:textSize="@dimen/tx_size_20"/>
+            <Spinner
+                android:id="@+id/spinner_baudrates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/baudrates"
+                android:textSize="@dimen/tx_size_20"
+                />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_20">
+
+            <EditText
+                android:id="@+id/et_data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="@string/textstr_Cmd"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/tx_size_16" />
+            <Button
+                android:id="@+id/bt_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/send_data"
+                android:textSize="@dimen/tx_size_20" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/bt_clear_receive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_receive"
+            android:textSize="@dimen/tx_size_20"
+            android:layout_marginTop="@dimen/margin_50"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
