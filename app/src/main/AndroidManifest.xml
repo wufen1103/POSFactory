@@ -97,6 +97,9 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
+        <activity android:name=".SerialToolActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
         <activity android:name=".SysInfoActivity">
         </activity>
         <activity android:name=".AgeingActivity"  >

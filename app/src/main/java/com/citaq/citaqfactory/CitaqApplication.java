@@ -79,6 +79,22 @@ public class CitaqApplication extends Application {
 		}
 		return mSerialPort;
 	}
+
+	public SerialPort getttyS1() throws SecurityException, IOException, InvalidParameterException {
+		if (mSerialPort == null) {
+			/* Open the serial port */
+			mSerialPort = new SerialPort(new File("/dev/ttyS1"), 9600, 1,8,0, false);
+		}
+		return mSerialPort;
+	}
+
+	public SerialPort getttyS3() throws SecurityException, IOException, InvalidParameterException {
+		if (mSerialPort == null) {
+			/* Open the serial port */
+			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 1,8,0, false);
+		}
+		return mSerialPort;
+	}
 	
 	public SerialPort getCtmDisplaySerialPort() throws SecurityException, IOException, InvalidParameterException {
 		if (mSerialPort == null) {

@@ -91,6 +91,16 @@
         <permission>android.permission.ACCESS_FINE_LOCATION</permission>
     </item>
     <item>
+        <nameEN>Serial Test</nameEN>
+        <nameCH>串口测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.SerialToolActivity</className>
+        <position>91</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
         <nameEN>FSK Caller ID Test</nameEN>
         <nameCH>来电显示(FSK)测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>

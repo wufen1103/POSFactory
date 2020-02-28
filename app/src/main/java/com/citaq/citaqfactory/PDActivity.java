@@ -30,9 +30,14 @@ import com.citaq.util.MainBoardUtil;
 import com.printer.util.CallbackUSB;
 import com.printer.util.USBConnectUtil;
 
+import android_serialport_api.SerialPortFinder;
+
 public class PDActivity extends SerialPortActivity {
 	protected static final String TAG = "PDActivity";
 
+	protected static final String PDCOMF15 = "/dev/ttyACM0";
+	protected static final String PDCOMH10 = "/dev/ttyS3";
+	private String[] mDevices;
 	Context mContext;
 	
 	private TextView tv_title;
@@ -78,7 +83,7 @@ public class PDActivity extends SerialPortActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_pd);
 		mContext =this;
 		initView();
@@ -99,6 +104,8 @@ public class PDActivity extends SerialPortActivity {
 			btn_Green.setEnabled(false);
 			btn_Black.setEnabled(false);
 		}
+
+
 		initSerial();
 	}
 
@@ -119,10 +126,13 @@ public class PDActivity extends SerialPortActivity {
 	
 	private void initSerial(){
 		try {
-			if(MainBoardUtil.isRK3288()) {
+			if(getDevice().toString().contains(PDCOMF15)){
 				mSerialPort = mApplication.getCtmDisplaySerialPort2();
-			}else{
+			}else if(getDevice().toString().contains(PDCOMH10)){
 				mSerialPort = mApplication.getCtmDisplaySerialPort();
+			}else {
+				DisplayError(R.string.error_unknown2);
+				return;
 			}
 
 			mOutputStream = mSerialPort.getOutputStream();
@@ -164,6 +174,20 @@ public class PDActivity extends SerialPortActivity {
 			 mUSBConnectUtil.initConnect(this,USBConnectUtil.TYPE_PD);
 		}
 			
+	}
+
+	private String[] getDevice() {
+
+		SerialPortFinder serialPortFinder = new SerialPortFinder();
+
+		// 设备
+		mDevices = serialPortFinder.getAllDevicesPath();
+		if (mDevices.length == 0) {
+			mDevices = new String[] {
+					getString(R.string.no_serial_device)
+			};
+		}
+		return mDevices;
 	}
 
 	@Override

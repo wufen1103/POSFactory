@@ -21,6 +21,8 @@ import android.widget.ToggleButton;
 
 import com.citaq.util.BlueToothDeviceStruct;
 import com.citaq.util.Command;
+import com.citaq.util.ShellUtils;
+import com.printer.util.BytesUtil;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -42,6 +44,7 @@ public class SerialToolActivity extends SerialPortActivity {
 
     private String[] mDevices;
     private String[] mBaudrates;
+    ShellUtils mShellUtils;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,15 +53,19 @@ public class SerialToolActivity extends SerialPortActivity {
         initView();
         initSerial();
         initInputStream();
+
+        try {
+           Runtime.getRuntime().exec("cat /dev/ttyS1");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-
-
     private void initView(){
-        spinner_devices = (Spinner) findViewById(R.id.spinner_devices);
-        spinner_baudrates = (Spinner) findViewById(R.id.spinner_baudrates);
         tv_receive= (TextView) findViewById(R.id.tv_receive);
         et_data = (EditText) findViewById(R.id.et_data);
+        et_data.setText("ttyS3->ttyS1->ttyS3");
 
         bt_send = (Button) findViewById(R.id.bt_send);
         bt_clear_receive = (Button) findViewById(R.id.bt_clear_receive);
@@ -67,14 +74,25 @@ public class SerialToolActivity extends SerialPortActivity {
             @Override
             public void onClick(View v) {
                 String txt = et_data.getText().toString();
-
-                //serialWrite("aaaaa44444444443333".getBytes());
-                serialWrite( Command.printTest);
-
+                serialWrite(txt.getBytes());
             }
         });
 
-//        adapter_devices= ArrayAdapter.createFromResource(this, R.array.baudrates, android.R.layout.simple_spinner_item);
+        bt_clear_receive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_receive.setText("");
+            }
+        });
+
+
+    }
+
+    private void initSpinner(){
+        spinner_devices = (Spinner) findViewById(R.id.spinner_devices);
+        spinner_baudrates = (Spinner) findViewById(R.id.spinner_baudrates);
+
+        //        adapter_devices= ArrayAdapter.createFromResource(this, R.array.baudrates, android.R.layout.simple_spinner_item);
         adapter_devices = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,getDevice());
         adapter_devices.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_devices.setAdapter(adapter_devices);
@@ -84,7 +102,6 @@ public class SerialToolActivity extends SerialPortActivity {
         adapter_baudrates.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_baudrates.setAdapter(adapter_baudrates);
         spinner_baudrates.setSelection(0);
-
 
         spinner_devices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -115,9 +132,9 @@ public class SerialToolActivity extends SerialPortActivity {
 
     private void initSerial(){
         try {
-           mSerialPort = mApplication.getCtmDisplaySerialPort();
-//            mSerialPort = mApplication.getPrintSerialPort();
-            mOutputStream = mSerialPort.getOutputStream();
+           mSerialPort = mApplication.getttyS3();
+           mOutputStream = mSerialPort.getOutputStream();
+
         } catch (SecurityException e) {
             DisplayError(R.string.error_security);
         } catch (IOException e) {
@@ -147,7 +164,6 @@ public class SerialToolActivity extends SerialPortActivity {
 
     private void initInputStream(){
         mInputStream = mSerialPort.getInputStream();
-
         /* Create a receiving thread */
         mReadThread = new ReadThread();
         mReadThread.start();
@@ -188,10 +204,11 @@ public class SerialToolActivity extends SerialPortActivity {
         runOnUiThread(new Runnable() {
             public void run() {
 					for(int i = 0; i < size; i++){
-							String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
-                        tv_receive.append(s + ' ');
-					}
+						String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
+//                        tv_receive.append(s + ' ');
 
+					}
+                    tv_receive.append(new String(buffer) + '\n');
             }
 
         });

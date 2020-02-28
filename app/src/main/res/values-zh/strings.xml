@@ -22,7 +22,7 @@
     <string name="right_channel">右声道</string>
     <string name="current_vol_info"> 当前音量(0~15): &#160;&#160;&#160;</string>
     
-    <string name="title_activity_serial_rp">打印机测试</string>
+    <!--<string name="title_activity_serial_rp">打印机测试</string>-->
     <string name="btnstr_getstatus">获得打印机状态</string>
     <string name="btnstr_printtest">打印自检页</string>
     <string name="btnstr_printdemo">打印小票</string>
@@ -176,6 +176,14 @@
 
     <string name="bluetooth">蓝牙</string>
     <string name="bluetooth_search">搜索</string>
+
+    <string name="select_serial_port">串口设备:</string>
+    <string name="select_baud_rate">波特率</string>
+    <string name="open_serial_port">打开串口</string>
+    <string name="close_serial_port">关闭串口</string>
+    <string name="no_serial_device">找不到串口设备</string>
+    <string name="send_data">发送</string>
+    <string name="clear_receive">清空接收</string>
 </resources>
 
 

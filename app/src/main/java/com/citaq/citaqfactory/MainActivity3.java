@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.app.Presentation;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -27,8 +30,11 @@ import com.citaq.view.ImageAdapter;
 import com.citaq.view.MetroItemAdapter;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressLint("NewApi")
 public class MainActivity3 extends Activity {
@@ -88,7 +94,57 @@ public class MainActivity3 extends Activity {
 			}
 
 		});
+
+
+//		getMacDefault(this);
+//		getWifiMacAddress();
 	    
+	}
+	WifiManager WifiManager;
+	private static String getMacDefault(Context context) {
+		String mac = "02:00:00:00:00:00";
+		if (context == null) {
+			return mac;
+		}
+
+		WifiManager wifi = (WifiManager) context.getApplicationContext()
+				.getSystemService(Context.WIFI_SERVICE);
+		if (wifi == null) {
+			return mac;
+		}
+		WifiInfo info = null;
+		try {
+			info = wifi.getConnectionInfo();
+		} catch (Exception e) {
+		}
+		if (info == null) {
+			return null;
+		}
+		mac = info.getMacAddress();
+		if (!TextUtils.isEmpty(mac)) {
+			mac = mac.toUpperCase(Locale.ENGLISH);
+		}
+		return mac;
+	}
+
+	private String getWifiMacAddress() {
+		String str = "";
+		String mac = "";
+		try {
+			Process pp = Runtime.getRuntime().exec("cat /sys/class/net/wlan0/address");
+			InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+			LineNumberReader input = new LineNumberReader(ir);
+			for (; null != str; ) {
+				str = input.readLine();
+				if (str != null) {
+					mac = str.trim();
+					break;
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return mac;
 	}
 
 	 

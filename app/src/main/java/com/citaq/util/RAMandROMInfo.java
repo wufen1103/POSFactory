@@ -104,7 +104,7 @@ public class RAMandROMInfo {
         return total + "GB";//返回1GB/2GB/3GB/4GB
     }
     
-/*    3188@ctepos:/ # cat /proc/partitions
+/*  1+4  3188@ctepos:/ # cat /proc/partitions
     major minor  #blocks  name
 
      179        0    3866624 mmcblk0
@@ -118,10 +118,29 @@ public class RAMandROMInfo {
      179        8       4096 mmcblk0p8
      179        9       4096 mmcblk0p9
      179       10     786432 mmcblk0p10
-     179       11    1761280 mmcblk0p11*/
+     179       11    1761280 mmcblk0p11
+
+ 2+16    root@ctepos:/proc # cat partitions
+    major minor  #blocks  name
+
+     179        0   15388672 mmcblk0
+     179        1       4096 mmcblk0p1
+     179        2       8192 mmcblk0p2
+     179        3      16384 mmcblk0p3
+     179        4      32768 mmcblk0p4
+     179        5      65536 mmcblk0p5
+     179        6     131072 mmcblk0p6
+     179        7    1044480 mmcblk0p7
+     179        8       4096 mmcblk0p8
+     179        9       4096 mmcblk0p9
+     179       10     786432 mmcblk0p10
+     179       11   13283328 mmcblk0p11
+
+
+     */
     
     
-/*    3368@justeat_32:/ $ cat /proc/partitions
+/*  1+8  3368@justeat_32:/ $ cat /proc/partitions
     major minor  #blocks  name
 
      254        0     520912 zram0
@@ -142,7 +161,32 @@ public class RAMandROMInfo {
      179       14    4194304 mmcblk0p14
      179       15      65536 mmcblk0p15
      179       16    1413120 mmcblk0p16
-     179       32       4096 mmcblk0rpmb*/
+     179       32       4096 mmcblk0rpmb
+
+   2+16  1|shell@Citaq_32:/ $ cat proc/partitions
+    major minor  #blocks  name
+
+     254        0     520912 zram0
+     179        0   15388672 mmcblk0
+     179        1       4096 mmcblk0p1
+     179        2       4096 mmcblk0p2
+     179        3       4096 mmcblk0p3
+     179        4      16384 mmcblk0p4
+     179        5      16384 mmcblk0p5
+     179        6      32768 mmcblk0p6
+     179        7      32768 mmcblk0p7
+     179        8     114688 mmcblk0p8
+     179        9     131072 mmcblk0p9
+     179       10       4096 mmcblk0p10
+     179       11    1572864 mmcblk0p11
+     179       12      16384 mmcblk0p12
+     179       13       4096 mmcblk0p13
+     179       14    4194304 mmcblk0p14
+     179       15      65536 mmcblk0p15
+     179       16    9166848 mmcblk0p16
+     179       32       4096 mmcblk0rpmb
+
+     */
     
     
 /*    2|rk3288:/ $ cat /proc/partitions
