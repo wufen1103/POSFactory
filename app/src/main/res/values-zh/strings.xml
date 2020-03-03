@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">安卓POS测试工具</string>
     <string name="save_info">图片文件已保存至SD卡中</string>
     <string name="title_led">LED测试</string>
@@ -14,14 +13,12 @@
     <string name="title_fskCaller">来电显示(FSK)测试</string>
     <string name="title_info">系统信息</string>
     <string name="title_ageing">老化测试</string>
-    
     <string name="red">红灯测试</string>
     <string name="blue">蓝灯测试</string>
     <string name="fresh">闪烁测试</string>
     <string name="left_channel">左声道</string>
     <string name="right_channel">右声道</string>
     <string name="current_vol_info"> 当前音量(0~15): &#160;&#160;&#160;</string>
-    
     <!--<string name="title_activity_serial_rp">打印机测试</string>-->
     <string name="btnstr_getstatus">获得打印机状态</string>
     <string name="btnstr_printtest">打印自检页</string>
@@ -30,6 +27,7 @@
     <string name="btnstr_cutpaper">打印机切纸</string>
     <string name="btnstr_openPicture">选择图片...</string>
     <string name="btnstr_printPicture">打印图片</string>
+    <string name="btnstr_imageForPrint">图片</string>
     <string name="btnstr_setResidentCS">设置中文字符集</string>
     <string name="btnstr_setPrintDensity">设置打印浓度</string>
     <string name="btnstr_setCP">设置扩展字符集</string>
@@ -38,6 +36,9 @@
     <string name="btnstr_disableChinese">关闭中文模式</string>
     <string name="btnstr_enablebuzzer">打开蜂鸣器</string>
     <string name="btnstr_disablebuzzer">关闭蜂鸣器</string>
+    <string name="btnstr_execute">执行</string>
+    <string name="str_cmd">命令</string>
+    <string name="baidu">www.baidu.com</string>
     <string name="titel_select_usborserial">顾显类型：</string>
     <string name="titel_print_usborserial">打印机类型：</string>
     <string name="title_cmd">命令选择: </string>
@@ -45,37 +46,47 @@
     <string name="btnstr_pdSetTime">为顾显设置时间</string>
     <string name="btnstr_setTitle">设置顾显标题</string>
     <string name="textstr_QRtext">输入要生成的QR码内容</string>
+    <string name="textstr_EditTitle">标题</string>
     <string name="btnstr_sendQRtext">生成QR码显示</string>
     <string name="str_datareception">数据接收</string>
-    
+    <string name="str_DigitalClock">DigitalClock</string>
     <string name="USBEnumFinishText">客显枚举成功！\n</string>
     <string name="USBEnumFailText">客显枚举失败！\n</string>
-    
-     <string name="listening">listening</string>
-     <string name="calltime">来电时间</string>
-     <string name="displaycalltime">Display Call time</string>
-     <string name="callerID">来电号码</string>
-     <string name="displaycallnumber">Display call number</string>
-     <string name="exit">Exit</string>
-     <string name="failed">初始化失败，无法监听!</string>
-     
+    <string name="error_configuration">Please configure your serial port first.</string>
+    <string name="error_security">You do not have read/write permission to the serial
+		port.</string>
+    <string name="error_unknown">The serial port can not be opened for an unknown
+		reason.</string>
+    <string name="error_unknown2">The serial port can not be found.</string>
+    <string name="USBPDFinishText">Now,you can send data to the Customer display！\n</string>
+    <string name="USBPDFailText">Please return to the main page and come in again！\n</string>
+    <string name="InterfaceFinishText">Find the interface！\n</string>
+    <string name="InterfaceFailText">Can not find the interface！\n</string>
+    <string name="OpenFinishText">Open interface succeed！\n</string>
+    <string name="OpenFailText">Open interface failure！\n</string>
+    <string name="strFileDialogItem">Picture for path</string>
+    <string name="MoreSettings"><u>&#160;&#160;More...&#160;&#160;</u></string>
+    <string name="listening">listening</string>
+    <string name="calltime">来电时间</string>
+    <string name="displaycalltime">Display Call time</string>
+    <string name="callerID">来电号码</string>
+    <string name="displaycallnumber">Display call number</string>
+    <string name="exit">Exit</string>
+    <string name="failed">初始化失败，无法监听!</string>
     <string name="send">检测来电显示控制版</string>
     <string name="clear">初始化来电显示控制版</string>
     <string name="manual">手动</string>
     <string name="auto">自动</string>
-
     <string name="start_autopdtest">开始顾显自动测试</string>
     <string name="stop_autopdtest">停止顾显自动测试</string>
-
-     <string-array name="ResidentCharacterSet">
+    <string-array name="ResidentCharacterSet">
         <item> 0：GBK简体中文字符集</item>
         <item> 1：BIG5繁体中文字符集</item>
         <item> 2：KSC5601</item>
     </string-array>
-    
     <string-array name="PD_type">
         <item>串口</item>
-         <item>USB</item>
+        <item>USB</item>
     </string-array>
     <string-array name="PD_cmd">
         <item>ESC  @\n 初始化</item>
@@ -102,81 +113,75 @@
         <item>1FH 1BH 1FH FEH 01H\n disable Chinese Mode</item>
         <item>1FH 1BH 1FH FFH 00H\n set Codepage(CP)</item>
     </string-array>
-    
-       <!-- <string name="sys_serialNo">系统序列号:</string> -->
-    <string name="sys_ICCID">ICCID:</string>
-     <string name="sys_cannotget">无法获取</string>
-     
-      <string name="minimum_volume">当前为最小音量了!!!</string>
+    <!-- <string name="sys_serialNo">系统序列号:</string> -->
+    <string name="sys_cannotget">无法获取</string>
+    <string name="minimum_volume">当前为最小音量了!!!</string>
     <string name="max_volume">当前为最大音量了!!!</string>
-    
     <string name="end">结束</string>
-
-   <string name="start">开始</string>
-   <string name="stop">停止</string>
-   <string name="play">播放</string>
-   
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="play">播放</string>
     <string name="edit">编辑</string>
-     <string name="sure">确定</string>
-   
-   <!-- network -->
-   <string name="network_info">网络信息</string>
-   <string name="network_signal_strength">信号强度</string>
+    <string name="sure">确定</string>
+    <!-- network -->
+    <string name="network_info">网络信息</string>
+    <string name="network_signal_strength">信号强度</string>
     <string name="network_signal_level">信号等级</string>
-   <string name="time_interval">时间间隔(秒/次)：</string>
-   <string name="network_addr">测试网址：</string>
-   <string name="connect_appoint_network">连接到特定的SSID</string>
-   <string name="network_ping_result">Ping结果</string>
-   <string name="network_not_connect">当前网络不可用</string>
-   <string name="network_wifi">Wifi 网络</string>
-   <string name="network_ethernet">有线网络</string>
-   <string name="network_mobile">MOBILE</string>
-     <string name="network_type">网络类型</string>
-   
-   <string name="network_Unicom_3G">联通3G</string>
-   <string name="network_CMCC_3G">电信3G</string>
-   <string name="network_ChinaMobile_Unicom_2G">移动或者联通2G</string>
+    <string name="time_interval">时间间隔(秒/次)：</string>
+    <string name="network_addr">测试网址：</string>
+    <string name="connect_appoint_network">连接到特定的SSID</string>
+    <string name="network_ping_result">Ping结果</string>
+    <string name="network_not_connect">当前网络不可用</string>
+    <string name="network_wifi">Wifi 网络</string>
+    <string name="network_ethernet">有线网络</string>
+    <string name="network_mobile">MOBILE</string>
+    <string name="network_type">网络类型</string>
+    <string name="network_Unicom_3G">联通3G</string>
+    <string name="network_CMCC_3G">电信3G</string>
+    <string name="network_lte">LTE</string>
+    <string name="network_ChinaMobile_Unicom_2G">移动或者联通2G</string>
     <string name="network_Other">其他信号</string>
-
-   
-   
-   
-   <string name="total_times">总次数</string>
-   <string name="success_times">成功次数</string>
-   <string name="fail_times">失败次数</string>
-   <string name="success_rate">成功率</string>
-   
-   <string name="title_ageing_1">切刀、打印头测试：</string>
-   <string name="title_ageing_2">网络测试情况：</string>
-   <string name="title_ageing_3">屏幕老化测试：</string>
-   <string name="check_blackBlock">打印黑块</string>
-   <string name="check_greyBlock">打印灰块</string> 
-   <string name="check_openCut">开启切刀</string>
-   
-   <string name="start_testing">开始测试</string>
-   <string name="stop_testing">停止测试</string>
-   
-   <string name="ageing_network_ok">成功次数：</string>
-   <string name="ageing_network_fail">失败次数：</string> 
-   <string name="ageing_success_rate">成功率: </string>
-   <string name="ageing_3G_restart">3G重启次数：</string>
-   <string name="check_sound">失败时报警。</string>
+    <string name="total_times">总次数</string>
+    <string name="success_times">成功次数</string>
+    <string name="fail_times">失败次数</string>
+    <string name="success_rate">成功率</string>
+    <string name="title_ageing_1">切刀、打印头测试：</string>
+    <string name="title_ageing_2">网络测试情况：</string>
+    <string name="title_ageing_3">屏幕老化测试：</string>
+    <string name="check_blackBlock">打印黑块</string>
+    <string name="check_greyBlock">打印灰块</string>
+    <string name="check_openCut">开启切刀</string>
+    <string name="check_playvideo">"Print &#038;  Cut &#038;  Video (hour):" </string>
+    <string name="str_reboot_interval"> Reboot interval (min): </string>
+    <string name="start_testing">开始测试</string>
+    <string name="stop_testing">停止测试</string>
+    <string name="ageing_network_ok">成功次数：</string>
+    <string name="ageing_network_fail">失败次数：</string>
+    <string name="ageing_success_rate">成功率: </string>
+    <string name="ageing_3G_restart">3G重启次数：</string>
+    <string name="check_sound">失败时报警。</string>
     <string name="ageing_3G_help">（Ps: 连续失败10次，重启一次3G）</string>
-   
     <string name="str_Clear">清空</string>
-    
     <string name="speed">速度：</string>
     <string name="print_type">"打印机类型:  "</string>
-    
+    <string name="speed_1000">1000ms</string>
+    <string name="speed_3000">3000ms</string>
+    <string name="speed_5000">5000ms</string>
+    <string name="print_serial">Serial</string>
+    <string name="print_usb">USB</string>
+    <string name="reboot_no">no reboot</string>
+    <string name="reboot_3min">reboot  (on 5 minute intervals)</string>
+    <string name="nousbdevice">Can not find USB device.</string>
+    <string name="volume_mute">Mute</string>
+    <string name="volume_medium">medium</string>
+    <string name="volume_hight">hight</string>
     <string name="multi_touch_test">请随便触摸屏幕进行测试</string>
-    
     <string name="no_video">外置SDcard或U盘根目录必须有命名为Video_Test的视频文件。</string>
-    
     <string name="play_tag">播放内置SDcard,外置SDcard或U盘根目录命名为Video_Test的视频文件；否则播放内置视频。</string>
-
+    <string name="video_error">"Can't play this video."</string>
+    <string name="str_OK">OK</string>
     <string name="bluetooth">蓝牙</string>
     <string name="bluetooth_search">搜索</string>
-
     <string name="select_serial_port">串口设备:</string>
     <string name="select_baud_rate">波特率</string>
     <string name="open_serial_port">打开串口</string>
@@ -184,6 +189,24 @@
     <string name="no_serial_device">找不到串口设备</string>
     <string name="send_data">发送</string>
     <string name="clear_receive">清空接收</string>
+    <string name="sys_serialNo">"Serial No: "</string>
+    <string name="sys_buildID">"Build Number: "</string>
+    <string name="sys_IMEI">"IMEI: "</string>
+    <string name="sys_productName">"Product Name: "</string>
+    <string name="sys_platform">"Platform: "</string>
+    <string name="sys_android_ver">"Android Version: "</string>
+    <string name="sys_sd">"SD card total space: "</string>
+    <string name="sys_iccid">"ICCID: "</string>
+    <string name="sys_battery_voltage">"Battery Voltage: "</string>
+    <string name="sys_battery_status">"Battery Status: "</string>
+    <string name="sys_uptime">"Uptime: "</string>
+    <string name="sys_version">"Version Name: "</string>
+    <string name="sys_sd_content">"SD card content"</string>
+    <string name="sys_settings_wifi">"Wi-Fi"</string>
+    <string name="sys_settings_app">"APP"</string>
+    <string name="sys_settings_datetime">"date &#038; time"</string>
+    <string name="sys_settings_reset">"Backup &#038; reset"</string>
+    <string name="sys_settings">"Enter Settings"</string>
 </resources>
 
 

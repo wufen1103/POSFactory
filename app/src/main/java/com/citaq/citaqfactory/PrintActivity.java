@@ -123,7 +123,7 @@ public class PrintActivity extends SerialPortActivity{
 			
 		}else{
 			print_usb.setChecked(true);
-			print_serial.setVisibility(View.GONE);
+			print_serial.setEnabled(false);
 		}
 		
 	}
@@ -266,7 +266,9 @@ public class PrintActivity extends SerialPortActivity{
 				
 	
 	//	getStoragePath(mContext,"USB");
-		
+		if(MainBoardUtil.isRK3288()){
+			et_cmd.setText("1D 47 08 01");
+		}
 	}
 	
 	/**

@@ -92,7 +92,8 @@ public class PDActivity extends SerialPortActivity {
 
 			cmdPD2 = getResources().getStringArray(R.array.PD_cmd2);
 			cmdPD3 = getResources().getStringArray(R.array.PD_cmd3);
-			pd_usb.setVisibility(View.INVISIBLE);
+//			pd_usb.setVisibility(View.INVISIBLE);
+			pd_usb.setEnabled(false);
 			btn_setTitle.setText(R.string.start_autopdtest);
 			et_Title.setVisibility(View.INVISIBLE);
 			btn_setTime.setEnabled(false);

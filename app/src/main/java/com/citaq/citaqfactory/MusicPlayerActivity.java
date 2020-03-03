@@ -75,7 +75,7 @@ public class MusicPlayerActivity extends Activity {
 	private Button bt_start, bt_stop, bt_play;
 	ImageView img_volume;
 	public static final int MAX_LENGTH = 1000 * 60 * 5;// 最大录音时长1000*60*10;
-	private static final String TAG = "MicrophoneActivity";
+	private static final String TAG = "MusicPlayerActivity";
 	
 	MediaPlayer mMediaPlayer2;
 	

@@ -1,33 +1,19 @@
 package com.citaq.citaqfactory;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import com.citaq.util.BlueToothDeviceStruct;
-import com.citaq.util.Command;
 import com.citaq.util.ShellUtils;
-import com.printer.util.BytesUtil;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
 
 import android_serialport_api.SerialPortFinder;
 

@@ -37,7 +37,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/sys_ICCID"
+			android:text="@string/sys_iccid"
 			android:textColor="@color/darkorange"
 			android:textSize="@dimen/tx_size_20" />
 

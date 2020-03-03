@@ -93,7 +93,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="4"
-                android:hint="@string/textstr_Cmd"
+                android:hint="@string/str_cmd"
                 android:textColor="@android:color/black" 
                 android:textSize="@dimen/tx_size_16" />
 

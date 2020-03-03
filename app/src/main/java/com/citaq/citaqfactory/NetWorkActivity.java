@@ -708,7 +708,7 @@ public class NetWorkActivity extends Activity {
 							if(mthd.getName().equals("getLteRsrp")){
 								int strengthdmb_int = (Integer) mthd.invoke(signalStrength);
 								strengthdmb = String.valueOf(mthd.invoke(signalStrength));
-								sb.append(mResources.getString(R.string.network_LTE))
+								sb.append(mResources.getString(R.string.network_lte))
 								.append(",")
 								.append(mResources
 										.getString(R.string.network_signal_strength))

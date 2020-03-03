@@ -69,6 +69,11 @@ public class MainActivity3 extends Activity {
 			if(MainBoardUtil.isRK3288() && (mMetroItem.getNameEN().contains("LED") || mMetroItem.getNameEN().contains("FSK"))) {
 				iterator.remove();
 			}
+			if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
+				if(mMetroItem.getNameEN().contains("Serial Test")){
+					iterator.remove();
+				}
+			}
 		}
 
 
@@ -179,9 +184,5 @@ public class MainActivity3 extends Activity {
 		}
 
 	}
-
-
-
-
 
 }
