@@ -111,6 +111,16 @@
         <permission></permission>
     </item>
     <item>
+        <nameEN>Other Test</nameEN>
+        <nameCH>其他测试</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.OtherTestActivity</className>
+        <position>101</position>
+        <color>1</color>
+        <show>true</show>
+        <permission></permission>
+    </item>
+    <item>
         <nameEN>System information</nameEN>
         <nameCH>系统信息</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>

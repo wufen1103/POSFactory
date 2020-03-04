@@ -24,6 +24,7 @@
     <string name="btnstr_printtest">Print self test</string>
     <string name="btnstr_printdemo">Print demo</string>
     <string name="btnstr_opencash">Open cash</string>
+    <string name="btnstr_opencash_gpio">Open cash(GPIO)</string>
     <string name="btnstr_cutpaper">Cut Paper</string>
     <string name="btnstr_openPicture">Open picture </string>
     <string name="btnstr_printPicture">Print picture</string>
