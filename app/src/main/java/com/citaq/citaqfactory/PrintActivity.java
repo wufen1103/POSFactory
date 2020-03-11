@@ -266,7 +266,7 @@ public class PrintActivity extends SerialPortActivity{
 				
 	
 	//	getStoragePath(mContext,"USB");
-		if(MainBoardUtil.isRK3288()){
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
 			et_cmd.setText("1D 47 08 01");
 		}
 	}
@@ -350,7 +350,7 @@ public class PrintActivity extends SerialPortActivity{
 				printerWrite(Command.printStatus);
 				break;
 			case R.id.btn_printtest:
-				if(MainBoardUtil.isRK3288()){
+				if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
 					printerWrite(Command.printTest2);
 				}else{
 					printerWrite(Command.printTest);
@@ -618,7 +618,7 @@ public class PrintActivity extends SerialPortActivity{
 			images.put("jpeg", R.drawable.filedialog_jpegfile);	//jpeg文件图标
 			images.put("jpg", R.drawable.filedialog_jpgfile);	//jpg文件图标
 			images.put(OpenFileDialog.sEmpty, R.drawable.filedialog_root);
-			dialog = OpenFileDialog.createDialog(this, "打开文件", new CallbackBundle() {
+			dialog = OpenFileDialog.createDialog(this, getResources().getString(R.string.str_open_File), new CallbackBundle() {
 				@Override
 				public void callback(Bundle bundle) {
 					String Picturefilepath = bundle.getString("path");

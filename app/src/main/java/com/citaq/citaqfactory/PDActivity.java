@@ -87,7 +87,7 @@ public class PDActivity extends SerialPortActivity {
 		setContentView(R.layout.activity_pd);
 		mContext =this;
 		initView();
-		if(MainBoardUtil.isRK3288()) {
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()) {
 			mOutputStream =null;
 
 			cmdPD2 = getResources().getStringArray(R.array.PD_cmd2);
@@ -551,7 +551,7 @@ public class PDActivity extends SerialPortActivity {
 	};
 
 	private  boolean serialWrite(byte[] cmd){
-		if(MainBoardUtil.isRK3288()) {
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()) {
 			return  serialWrite1(cmd);
 		}else{
 			return serialWrite1(cmd);

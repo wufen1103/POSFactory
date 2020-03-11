@@ -22,7 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class OpenFileDialog {
 	public static String tag = "OpenFileDialog";
-	static public String sRoot = "/mnt"; 
+	static public String sRoot = "/";
+	static final public String[] filterFolder  = {"/mnt","/storage","/sdcard"}; //只显示根目录这几个文件夹
 	static final public String sParent = "..";
 	static final public String sFolder = ".";
 	static final public String sEmpty = "";
@@ -43,7 +44,6 @@ public class OpenFileDialog {
 		//	默认图标的索引为sEmpty;
 		//	其他的直接根据后缀进行索引，比如.wav文件图标的索引为"wav"
 	public static Dialog createDialog( Context context, String title, CallbackBundle callback, String suffix, Map<String, Integer> images){
-		sRoot = "/mnt";
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setView(new FileSelectView(context,callback, suffix, images));
 		Dialog dialog = builder.create();
@@ -165,17 +165,30 @@ public class OpenFileDialog {
 			for(File file: files)
 			{
 				if(file.isDirectory() && file.listFiles()!=null){
-					// 添加文件夹
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("name", file.getName());
-					map.put("path", file.getPath());
-					map.put("img", getImageId(sFolder));
-					lfolders.add(map);
+					boolean isallow = true;
+				    if(this.path.equals(sRoot)){
+						isallow = false;
+						for (String str : filterFolder) {
+							if(file.getPath().contains(str)){
+								isallow = true;
+								break;
+							}
+						}
+					}
+				    if(isallow) {
+						// 添加文件夹
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("name", file.getName());
+						map.put("path", file.getPath());
+						map.put("img", getImageId(sFolder));
+						lfolders.add(map);
+					}
 				}
 				else if(file.isFile()){
 					// 添加文件
 					String sf = getSuffix(file.getName()).toLowerCase();
-					if(suffix == null || suffix.length()==0 || (sf.length()>0 && suffix.indexOf("."+sf+";")>=0)){
+//					if(suffix == null || suffix.length()==0 || (sf.length()>0 && suffix.indexOf("."+sf+";")>=0)){
+					if(suffix == null || suffix.length()==0 || (sf.length()>0 && suffix.contains(sf))){
 						Map<String, Object> map = new HashMap<String, Object>();
 						map.put("name", file.getName());
 						map.put("path", file.getPath());

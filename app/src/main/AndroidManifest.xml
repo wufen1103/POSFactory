@@ -105,6 +105,8 @@
         </activity>
         <activity android:name=".SysInfoActivity">
         </activity>
+        <activity android:name=".PrinterUpgradeActivity">
+        </activity>
         <activity android:name=".AgeingActivity"  >
         </activity>
         <activity android:name=".VideoAcivity"  >

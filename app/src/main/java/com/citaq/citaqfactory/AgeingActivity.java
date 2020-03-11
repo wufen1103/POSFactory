@@ -126,7 +126,7 @@ public class AgeingActivity extends SerialPortActivity {
 	    
 	    initView();
 	    
-        if(MainBoardUtil.isRK3288()){
+        if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
         	print_usb.setChecked(true);
 			print_serial.setVisibility(View.GONE);
 		}else{

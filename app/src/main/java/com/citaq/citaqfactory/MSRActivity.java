@@ -38,7 +38,7 @@ public class MSRActivity extends SerialPortActivity {
 		mContext =this;
 		initView();
 
-		if(MainBoardUtil.isRK3288()){
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
 			tv_received.requestFocus();
 
 		}else {

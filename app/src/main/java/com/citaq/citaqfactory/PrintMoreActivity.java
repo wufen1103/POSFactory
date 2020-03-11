@@ -258,7 +258,7 @@ public class PrintMoreActivity extends SerialPortActivity{
 				printerWrite(Command.printStatus);
 				break;
 			case R.id.btn_printtest:
-				if(MainBoardUtil.isRK3288()){
+				if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
 					printerWrite(Command.printTest2);
 				}else{
 					printerWrite(Command.printTest);

@@ -361,17 +361,17 @@ public class NetWorkActivity extends Activity {
 							R.drawable.btn_ping_selector));
 					et_network_addr.setEnabled(true);
 					mPingLooperThread.stop();
-					
-					  new Thread(){
-						  public void run(){
-							  
-							  
-							  wifiAdmin.openWifi(); 
-							  wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(defaultWifiInfo[0], defaultWifiInfo[1], Integer.valueOf(defaultWifiInfo[2]))); 
-							 
-						  }
-						
-					  }.start();
+					new Thread(){
+						public void run(){
+
+
+							wifiAdmin.openWifi();
+							wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(defaultWifiInfo[0], defaultWifiInfo[1], Integer.valueOf(defaultWifiInfo[2])));
+
+						}
+
+					}.start();
+
 					  tb_wifi.setEnabled(false);
 					  mProgressBar.setVisibility(View.VISIBLE);
 					  

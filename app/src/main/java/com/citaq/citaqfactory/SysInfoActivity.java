@@ -655,7 +655,7 @@ public class SysInfoActivity extends Activity {
 			case R.id.sys_settings_reset:
 				intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
 				startActivity(intent);
-				
+
 				/*intent = new Intent(Intent.ACTION_MAIN);
 				        intent.setComponent( new ComponentName("com.android.settings", "com.android.settings.backup.BackupSettingsActivity"));
 				       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -18,7 +18,7 @@
         <position>20</position>
         <color>1</color>
         <show>true</show>
-        <permission></permission>
+        <permission>android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
     </item>
     <item>
         <nameEN>Touch Test</nameEN>
@@ -119,6 +119,16 @@
         <color>1</color>
         <show>true</show>
         <permission></permission>
+    </item>
+    <item>
+        <nameEN>Printer Firmware Upgrade</nameEN>
+        <nameCH>打印机固件升级</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.PrinterUpgradeActivity</className>
+        <position>102</position>
+        <color>1</color>
+        <show>true</show>
+        <permission>android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
     </item>
     <item>
         <nameEN>System information</nameEN>

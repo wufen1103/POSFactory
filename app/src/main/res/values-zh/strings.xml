@@ -208,6 +208,20 @@
     <string name="sys_settings_datetime">"date &#038; time"</string>
     <string name="sys_settings_reset">"Backup &#038; reset"</string>
     <string name="sys_settings">"Enter Settings"</string>
+
+    <string name="str_open_File">打开文件..</string>
+    <string name="str_open_firmwareFile">打开固件文件</string>
+    <string name="str_open_firmware">请选择要升级的固件...</string>
+    <string name="str_no_firmware">请先选择要升级的固件.</string>
+    <string name="str_auto_operation">自动升级</string>
+    <string name="str_mass_erase">大容量擦除</string>
+    <string name="str_fast_operation">快速升级</string>
+    <string name="str_enter_dfu">进入 DFU 模式</string>
+    <string name="str_normal_mode">正常模式</string>
+    <string name="str_program">写入程序</string>
+    <string name="str_verify">核实</string>
+    <string name="str_leave_dfu">离开 DFU 模式</string>
+    <string name="str_selfprint">打印自检页</string>
 </resources>
 
 

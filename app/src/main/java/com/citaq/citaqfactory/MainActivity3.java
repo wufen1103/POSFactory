@@ -66,7 +66,8 @@ public class MainActivity3 extends Activity {
 				iterator.remove();
 			}
 			//3288 不显示led测试 FSK来电显示
-			if(MainBoardUtil.isRK3288() && (mMetroItem.getNameEN().contains("LED") || mMetroItem.getNameEN().contains("FSK"))) {
+			if((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())
+					&& (mMetroItem.getNameEN().contains("LED") || mMetroItem.getNameEN().contains("FSK"))) {
 				iterator.remove();
 			}
 			if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){

@@ -324,6 +324,21 @@
     <string name="volume_hight">hight</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="bluetooth_search">Discover</string>
+
+    <string name="str_open_File">Open File..</string>
+    <string name="str_open_firmwareFile">OpenFirmwareFile</string>
+    <string name="str_open_firmware">Please open the firmware file...</string>
+    <string name="str_no_firmware">Please select firmware first.</string>
+    <string name="str_auto_operation">Auto Operation</string>
+    <string name="str_mass_erase">Mass Erase</string>
+    <string name="str_fast_operation">Fast Operations</string>
+    <string name="str_enter_dfu">Enter DFU mode</string>
+    <string name="str_normal_mode">Normal Mode</string>
+    <string name="str_program">Program</string>
+    <string name="str_verify">Verify</string>
+    <string name="str_leave_dfu">Leave DFU mode</string>
+    <string name="str_selfprint">Self Print</string>
+
     <string-array name="ping_time">
         <item>10</item>
         <item>12 </item>
