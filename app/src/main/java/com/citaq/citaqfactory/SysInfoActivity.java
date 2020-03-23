@@ -15,7 +15,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,7 +22,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -35,6 +35,7 @@ import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,6 +43,8 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.citaq.util.InterAddressUtil;
 import com.citaq.util.RAMandROMInfo;
@@ -51,7 +54,7 @@ public class SysInfoActivity extends Activity {
 	Context ctx;
 	protected static final int MSG_REFRESH_UI = 1000;
 	TextView tv_serialNo, tv_ICCID, tv_buildNum, tv_IMEI, tv_productName, tv_platform, tv_android_ver, tv_sd,
-		tv_battery_info_voltage, tv_battery_info_status, tv_sys_net_meg, tv_sys_uptime, tv_version_name;
+		tv_battery_info_voltage, tv_battery_info_status, tv_sys_net_meg, tv_sys_uptime, tv_display, tv_version_name;
 	String info="";
 	ImageView iv_mac;
 	
@@ -64,6 +67,7 @@ public class SysInfoActivity extends Activity {
 	boolean hasSD = false;
 	
 
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,12 +83,12 @@ public class SysInfoActivity extends Activity {
 		sys_settings_reset = (Button) findViewById(R.id.sys_settings_reset);
 		sys_settings = (Button) findViewById(R.id.sys_settings);
 		
-		sys_sd_content.setOnClickListener(SendPrintListener);
-//		sys_settings_wifi.setOnClickListener(SendPrintListener);
-		sys_settings_app.setOnClickListener(SendPrintListener);
-		sys_settings_datetime.setOnClickListener(SendPrintListener);
-		sys_settings_reset.setOnClickListener(SendPrintListener);
-		sys_settings.setOnClickListener(SendPrintListener);
+		sys_sd_content.setOnClickListener(clickListener);
+//		sys_settings_wifi.setOnClickListener(clickListener);
+		sys_settings_app.setOnClickListener(clickListener);
+		sys_settings_datetime.setOnClickListener(clickListener);
+		sys_settings_reset.setOnClickListener(clickListener);
+		sys_settings.setOnClickListener(clickListener);
 		
 		
 		tv_serialNo = (TextView) findViewById(R.id.tv_serialNo);
@@ -102,13 +106,10 @@ public class SysInfoActivity extends Activity {
 		
 		tv_battery_info_voltage = (TextView) findViewById(R.id.battery_info_voltage);
 		tv_battery_info_status = (TextView) findViewById(R.id.battery_info_status);
-		
 		tv_sys_net_meg = (TextView) findViewById(R.id.net_meg);
-		
 		tv_sys_uptime = (TextView) findViewById(R.id.uptime);
-		
+		tv_display = (TextView) findViewById(R.id.display);
 		tv_version_name = (TextView) findViewById(R.id.version_name);
-		
 		iv_mac = (ImageView) findViewById(R.id.iv_mac);
 		
 		String mac = InterAddressUtil.getMacAddress();
@@ -181,6 +182,8 @@ public class SysInfoActivity extends Activity {
 	    if(sys_version_name!=null){
 	    	tv_version_name.setText(sys_version_name);
 	    }
+
+	    tv_display.setText(getDisplayInformation());
 		
 
 	    mHandler = new Handler();
@@ -430,7 +433,34 @@ public class SysInfoActivity extends Activity {
         return android.os.Build.VERSION.RELEASE;
     }
 
-	
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+	private  String getDisplayInformation() {
+		StringBuilder displayInformation = new StringBuilder();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			DisplayManager mDisplayManager = (DisplayManager) ctx.getSystemService(Context.DISPLAY_SERVICE);
+			Display[] displays = mDisplayManager.getDisplays();
+			int screenNum = displays.length; //屏幕数
+			int i = 0;
+			for (Display display : displays) {
+				displayInformation.append("display").append('[').append(i).append(']').append(':')
+						.append(display.getMode().getPhysicalWidth()).append('x').append(display.getMode().getPhysicalHeight()).append("\t\t");
+				i++;
+			}
+		}else{
+			Display display = getWindowManager().getDefaultDisplay();
+//			int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+//			int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+
+			Point point = new Point();
+			display.getSize(point);
+			int width = point.x;
+			int height = point.y;
+			displayInformation.append("display").append(':')
+					.append(width).append('x').append(height);
+
+		}
+		return displayInformation.toString();
+	}
 	
 	private String getCPUNumCores(){
 		int core = getCPUNumCoresInt();
@@ -611,7 +641,7 @@ public class SysInfoActivity extends Activity {
 	}
 	
 	
-	OnClickListener SendPrintListener = new OnClickListener()
+	OnClickListener clickListener = new OnClickListener()
 	{
 		public void onClick(View v)
 		{
@@ -640,7 +670,7 @@ public class SysInfoActivity extends Activity {
 //				Intent intent = new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
 //				startActivity(intent);
 			
-				if (Build.VERSION.SDK_INT >= 23) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 					intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
 					startActivity(intent);
 				}else{
@@ -653,9 +683,26 @@ public class SysInfoActivity extends Activity {
 				startActivity(intent);
 				break;
 			case R.id.sys_settings_reset:
-				intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
-				startActivity(intent);
+//				intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
+//				startActivity(intent);
 
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {//26 8.0.0
+//					sendBroadcast(new Intent("android.intent.action.MASTER_CLEAR"));
+					intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
+					startActivity(intent);
+				} else {
+//					Bundle args = getArguments();
+//					boolean mEraseSdCard = args !=null && args.getBoolean("erase_sd");
+//					boolean mEraseEsims = args != null && args.getBoolean("erase_esim");
+//					intent = new Intent("android.intent.action.FACTORY_RESET");
+//					intent.setPackage("android");
+//					intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+//					intent.putExtra("android.intent.extra.REASON", "MasterClearConfirm");
+//					intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", mEraseSdCard);
+//					intent.putExtra("com.android.internal.intent.extra.WIPE_ESIMS", mEraseEsims);
+//					sendBroadcast(intent);
+					doMasterClear();
+				}
 				/*intent = new Intent(Intent.ACTION_MAIN);
 				        intent.setComponent( new ComponentName("com.android.settings", "com.android.settings.backup.BackupSettingsActivity"));
 				       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -677,7 +724,18 @@ public class SysInfoActivity extends Activity {
 		}
 			
 	};
-	
+
+	private void doMasterClear() {
+		Intent intent = new Intent("android.intent.action.FACTORY_RESET");
+		intent.setPackage("android");
+		intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+		intent.putExtra("android.intent.extra.REASON", "MasterClearConfirm");
+		intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", true);
+		intent.putExtra("com.android.internal.intent.extra.WIPE_ESIMS", true);
+		sendBroadcast(intent);
+		// Intent handling is asynchronous -- assume it will happen soon.
+	}
+
 	Dialog dialog = null;
 	protected void showDialog() {
 		 if(OpenFileDialog.isDialogCreate &&
@@ -699,12 +757,11 @@ public class SysInfoActivity extends Activity {
 			images.put("jpg", R.drawable.filedialog_jpgfile);	//jpg文件图标
 			images.put("apk", R.drawable.filedialog_apk);	//apk文件图标
 			images.put(OpenFileDialog.sEmpty, R.drawable.filedialog_root);
-			dialog = OpenFileDialog.createDialog(this, "SD card content", new CallbackBundle() {
+			dialog = OpenFileDialog.createDialog(this, getResources().getString(R.string.str_open_File), new CallbackBundle() {
 				@Override
 				public void callback(Bundle bundle) {
 					String filepath = bundle.getString("path");
-					
-					
+
 //					mBitmap = BitmapFactory.decodeFile(Picturefilepath);//打开图片文件
 //					//显示要处理的图片
 //					imageForPrint.setImageBitmap(mBitmap);
@@ -733,8 +790,6 @@ public class SysInfoActivity extends Activity {
 	protected void dismissDialog() {
 		if(dialog !=null && dialog.isShowing()){
 			dialog.dismiss();
-			
-			
 		}
 		dialog = null;
 	

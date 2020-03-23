@@ -201,6 +201,7 @@
     <string name="sys_battery_voltage">"Battery Voltage: "</string>
     <string name="sys_battery_status">"Battery Status: "</string>
     <string name="sys_uptime">"Uptime: "</string>
+    <string name="sys_display">"Display: "</string>
     <string name="sys_version">"Version Name: "</string>
     <string name="sys_sd_content">"SD card content"</string>
     <string name="sys_settings_wifi">"Wi-Fi"</string>

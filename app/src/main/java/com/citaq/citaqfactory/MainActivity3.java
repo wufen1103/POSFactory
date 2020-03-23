@@ -71,7 +71,8 @@ public class MainActivity3 extends Activity {
 				iterator.remove();
 			}
 			if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
-				if(mMetroItem.getNameEN().contains("Serial Test")){
+				if(mMetroItem.getNameEN().contains("Serial Test") || mMetroItem.getNameEN().contains("Printer Firmware Upgrade")
+						|| mMetroItem.getNameEN().contains("Other Test")){
 					iterator.remove();
 				}
 			}

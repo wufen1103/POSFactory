@@ -242,6 +242,27 @@
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/sys_display"
+			android:textColor="@color/darkorange"
+			android:textSize="@dimen/tx_size_20" />
+
+		<TextView
+			android:id="@+id/display"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/sys_cannotget"
+			android:textColor="@android:color/black"
+			android:textSize="@dimen/tx_size_20" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_gravity="bottom|right"
 		android:layout_marginTop="@dimen/margin_20"
 		android:orientation="horizontal">
