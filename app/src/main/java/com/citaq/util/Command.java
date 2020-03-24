@@ -24,7 +24,7 @@ public class Command {
 	public static byte[] printStatus = new byte[] { 0x10, 0x04, 0x01 };
 	
 	public static byte[] printTest = new byte[] { 0x1F, 0x1B, 0x1F, 0x53 };
-	public static byte[] printTest2 = new byte[] { 0x1D, 0x28, 0x41, 0x02, 0x00, 0x00, 0x002};  //F15
+	public static byte[] printTest2 = new byte[] { 0x1D, 0x28, 0x41, 0x02, 0x00, 0x00, 0x02};  //F15
 	
 	final static byte[] CodepageData = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13,
 			14, 15, 16, 17, 18, 19, 21, 33, 34, 36, 37, 41, 46, 47, 48, 49, 50, 51,

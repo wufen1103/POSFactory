@@ -418,11 +418,20 @@
                         android:textSize="@dimen/tx_size_20" />
 
                     <RadioButton
-                        android:id="@+id/reboot_3min"
+                        android:id="@+id/reboot_5min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_50"
-                        android:text="@string/reboot_3min"
+                        android:text="@string/reboot_5min"
+                        android:textColor="@color/olivedrab"
+                        android:textSize="@dimen/tx_size_20" />
+
+                    <RadioButton
+                        android:id="@+id/reboot_1min"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_50"
+                        android:text="@string/reboot_1min"
                         android:textColor="@color/olivedrab"
                         android:textSize="@dimen/tx_size_20" />
 

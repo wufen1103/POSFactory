@@ -50,15 +50,15 @@ public class VideoAcivity extends Activity {
 
     // int count = 3 * 1;
     int count;
-    int min_new, min_old;
+    float min_new, min_old;
     TextView tv_count;
     Handler mhandler;
     Button setting;
     SharedPreferences sharedPreferences;
     Editor editor;
-    int min;
+    float min;
 
-    int rebootInterval = 0;
+    float rebootInterval = 0;
     int cuttime = 0;
 
     boolean hasExternalVideo = false;
@@ -76,7 +76,7 @@ public class VideoAcivity extends Activity {
 
         hasExternalVideo = intent.getBooleanExtra(TAG_HASEXTERNALVIDEO, false);
 
-        rebootInterval = intent.getIntExtra(TAG_REBOOT_INTERVAL, -100);//-100 软件运行了重启
+        rebootInterval = intent.getFloatExtra(TAG_REBOOT_INTERVAL, -100);//-100 软件运行了重启
 
         cuttime = intent.getIntExtra(TAG_CUT_TIME, -100);//切刀老化时间，即运行多久后第一次重启
 
@@ -126,24 +126,24 @@ public class VideoAcivity extends Activity {
         if (cuttime == -100) {
 
             if (rebootInterval == -100) {     //软件自动启动的情况
-                min = sharedPreferences.getInt(TAG_REBOOT_INTERVAL, 0);
+                min = sharedPreferences.getFloat(TAG_REBOOT_INTERVAL, 0);
 
             } else {
                 min = rebootInterval;         //老化界面进入的情况
-                editor.putInt(TAG_REBOOT_INTERVAL, rebootInterval);
+                editor.putFloat(TAG_REBOOT_INTERVAL, rebootInterval);
                 editor.commit();
             }
 
         } else { //设置了距离第一次重启的时间
             min = cuttime;
 //      	 min = 1;     //for test
-            editor.putInt(TAG_REBOOT_INTERVAL, rebootInterval);
+            editor.putFloat(TAG_REBOOT_INTERVAL, rebootInterval);
             editor.commit();
         }
 
 //        min = sharedPreferences.getInt("reboot_interval", 0);
 
-        count = min * 60;
+        count = (int)(min * 60);
         min_new = min;
         min_old = min;
 
@@ -162,14 +162,14 @@ public class VideoAcivity extends Activity {
                     case 0:
                         // 更新你相应的UI
 
-                        if (min_new <= 0) {
+                        if (min_new <= 0.1) {
                             mhandler.sendEmptyMessageDelayed(0, 1000);
                             tv_count.setText("no reboot.");
                             break;
                         }
 
                         if (min_new != min_old) {
-                            count = min_new * 60;
+                            count = (int)(min_new * 60);
                             min_old = min_new;
                         }
 
@@ -299,7 +299,7 @@ public class VideoAcivity extends Activity {
 //    	Log.i(TAG, "onKeyDown");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             editor.putBoolean("reboot", false);
-            editor.putInt(TAG_REBOOT_INTERVAL, 0);
+            editor.putFloat(TAG_REBOOT_INTERVAL, 0);
             editor.commit();
 
 //       	 mhandler.removeMessages(0);
@@ -324,10 +324,10 @@ public class VideoAcivity extends Activity {
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_customize, null);
 
         final EditText edit_text = (EditText) dialogView.findViewById(R.id.edit_text);
-        edit_text.setText(sharedPreferences.getInt(TAG_REBOOT_INTERVAL, 0) + "");
+        edit_text.setText(sharedPreferences.getFloat(TAG_REBOOT_INTERVAL, 0) + "");
         edit_text.setSelection(edit_text.getText().length());
 
-        customizeDialog.setTitle("Please enter an integer for the reboot interval (min)  \n (Zero means no restart)");
+        customizeDialog.setTitle("Please enter an integer for the reboot interval (min)  \n (Zero{ or }<0.1[3s]} means no restart)");
         customizeDialog.setView(dialogView);
         customizeDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
@@ -339,9 +339,9 @@ public class VideoAcivity extends Activity {
                         String value = edit_text.getText().toString().trim();
 
                         if (!"".equals(value) && isNumeric(value)) {
-                            min = Integer.parseInt(value);
+                            min =  Float.valueOf(value);
                             //使用editor保存数据
-                            editor.putInt(TAG_REBOOT_INTERVAL, min);
+                            editor.putFloat(TAG_REBOOT_INTERVAL, min);
 
                             //注意一定要提交数据，此步骤容易忘记
                             editor.commit();
@@ -361,7 +361,9 @@ public class VideoAcivity extends Activity {
     }
 
     public boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("-?[0-9]*");
+       // Pattern pattern = Pattern.compile("-?[0-9]*");  //整数
+        Pattern pattern = Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");//这个是整数和小数
+//        Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
         Matcher isNum = pattern.matcher(str);
         if (!isNum.matches()) {
             return false;

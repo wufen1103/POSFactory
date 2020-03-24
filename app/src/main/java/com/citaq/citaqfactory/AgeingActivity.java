@@ -96,7 +96,8 @@ public class AgeingActivity extends SerialPortActivity {
 	RadioGroup reboot_type;
 	RadioButton reboot_no = null;
 	RadioButton reboot_5min = null;
-	int rebootInterval = 0;
+	RadioButton reboot_1min = null;
+	float rebootInterval = 0;
 	
 	int cuttime = 0;
 	
@@ -231,7 +232,7 @@ public class AgeingActivity extends SerialPortActivity {
 //						bt_video.callOnClick();
 						Intent intent = new Intent(ctx,VideoAcivity.class);
 						intent.putExtra(TAG_HASEXTERNALVIDEO, false);
-						intent.putExtra(TAG_REBOOT_INTERVAL, Integer.parseInt(edit_reboot_min.getText().toString()));
+						intent.putExtra(TAG_REBOOT_INTERVAL, Float.valueOf(edit_reboot_min.getText().toString()));
 						intent.putExtra(TAG_CUT_TIME, cuttime);
 						startActivityForResult(intent,1);
 					}
@@ -340,6 +341,7 @@ public class AgeingActivity extends SerialPortActivity {
 		reboot_type = (RadioGroup) findViewById(R.id.reboot_type);
 		reboot_no = (RadioButton) findViewById(R.id.reboot_no);
 		reboot_5min = (RadioButton) findViewById(R.id.reboot_3min);
+		reboot_1min = (RadioButton) findViewById(R.id.reboot_1min);
 		
 		reboot_type.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
@@ -349,6 +351,8 @@ public class AgeingActivity extends SerialPortActivity {
 					rebootInterval =0;
 				}else if(reboot_5min.getId()==checkedId){
 					rebootInterval =5;
+				}else if(reboot_1min.getId()==checkedId){
+					rebootInterval =1;
 				}
 			}
 		});
