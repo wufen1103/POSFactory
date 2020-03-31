@@ -452,7 +452,7 @@ public class PDActivity extends SerialPortActivity {
 //						break;
 //					}
 					cmd =et_Cmd.getText().toString();
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.transToPrintText((cmd.split("\n"))[0]));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.transToPrintText((cmd.split("\n"))[0]));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -477,7 +477,7 @@ public class PDActivity extends SerialPortActivity {
 					System.arraycopy(data2,0,data4,data1.length,data2.length);
 					System.arraycopy(data3,0,data4,data1.length + data2.length,data3.length);
 					
-					isSend = mUSBConnectUtil.sendMessageToPoint(data4);
+					isSend = mUSBConnectUtil.sendMessageToPrint(data4);
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -485,7 +485,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_setTime:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getSetTimeCmd());
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getSetTimeCmd());
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -493,7 +493,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_setQR:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.transToPrintText((et_QR.getText().toString().split("\n"))[0]));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.transToPrintText((et_QR.getText().toString().split("\n"))[0]));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -502,7 +502,7 @@ public class PDActivity extends SerialPortActivity {
 					break;
 					
 				case R.id.btn_Red:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getColorCmd(Command.RED));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getColorCmd(Command.RED));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -510,7 +510,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_Blue:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getColorCmd(Command.BLUE));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getColorCmd(Command.BLUE));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -518,7 +518,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_Green:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getColorCmd(Command.GREEN));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getColorCmd(Command.GREEN));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -526,7 +526,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_Black:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getColorCmd(Command.BLACK));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getColorCmd(Command.BLACK));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{
@@ -534,7 +534,7 @@ public class PDActivity extends SerialPortActivity {
 					}
 					break;
 				case R.id.btn_White:
-					isSend = mUSBConnectUtil.sendMessageToPoint(Command.getColorCmd(Command.WHITE));
+					isSend = mUSBConnectUtil.sendMessageToPrint(Command.getColorCmd(Command.WHITE));
 					if(isSend){
 						tv_recevice.setText("Data send!");
 					}else{

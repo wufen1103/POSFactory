@@ -248,7 +248,7 @@ public class USBPDUtil {
 		return sb;
 	}
 	//发送数据byte[]
-	  public  StringBuffer sendMessageToPointByte(byte[] cmd){
+	  public  StringBuffer sendMessageToPrintByte(byte[] cmd){
 		  StringBuffer sb = new StringBuffer();
 		  // bulkOut传输  
 	    	if(epOut != null)
@@ -267,7 +267,7 @@ public class USBPDUtil {
 	  }
 	
 	 // 发送数据  最好在另外一个线程中执行本步骤的操作，以便防止阻塞主UI线程
-    public StringBuffer sendMessageToPoint(String cmdString) {//byte[] buffer
+    public StringBuffer sendMessageToPrint(String cmdString) {//byte[] buffer
     	
     	//byte[] arrayOfByte = new byte[64]; //ESC Q A 12345678 CR
 		
@@ -292,7 +292,7 @@ public class USBPDUtil {
 		
     	byte[] arrayOfByte = Command.transToPrintText((cmdString.split("\n"))[0]);
 		
-       return sendMessageToPointByte(arrayOfByte);
+       return sendMessageToPrintByte(arrayOfByte);
     } 
 
 }

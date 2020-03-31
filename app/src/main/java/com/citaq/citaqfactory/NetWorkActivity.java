@@ -1,15 +1,10 @@
 package com.citaq.citaqfactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,7 +24,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,7 +31,6 @@ import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,8 +65,8 @@ public static final int RSSI_LEVELS = 5;*/
  * Calculates the level of the signal. This should be used any time a signal
  * is being shown.
  *
- * @param rssi The power of the signal measured in RSSI.
- * @param numLevels The number of levels to consider in the calculated
+ * rssi The power of the signal measured in RSSI.
+ * numLevels The number of levels to consider in the calculated
  *            level.
  * @return A level of the signal, given in the range of 0 to numLevels-1
  *         (both inclusive).
@@ -106,7 +99,7 @@ public class NetWorkActivity extends Activity {
 	private WifiManager wifiManager = null; // Wifi管理器
 
 	TelephonyManager telephoneManager;
-	int type;
+	int mNetworkType;
 
 	private int wifi_level;
 
@@ -172,7 +165,7 @@ public class NetWorkActivity extends Activity {
 		registerReceiver(myNetReceiver, mFilter);
 
 		telephoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
-		type = telephoneManager.getNetworkType();
+		mNetworkType = telephoneManager.getNetworkType();
 	}
 
 	private void initView() {
@@ -417,7 +410,13 @@ public class NetWorkActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
 				startActivity(intent);
-				
+
+				//for test
+				/*Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_LAUNCHER);
+				ComponentName cn = new ComponentName("com.android.phone", "com.android.phone.MobileNetworkSettings");
+				intent.setComponent(cn);
+				startActivity(intent);*/
 			}
 		});
 		
@@ -649,9 +648,11 @@ public class NetWorkActivity extends Activity {
 
 			String strength = String.valueOf(asu);
 			String strengthdmb = String.valueOf(signalStrength.getCdmaDbm());
-			if (type == TelephonyManager.NETWORK_TYPE_UMTS
-					|| type == TelephonyManager.NETWORK_TYPE_HSDPA
-					|| type == TelephonyManager.NETWORK_TYPE_HSPAP)  //3288 TD-SCDMA ？？
+			//3368 909S-120 4G:type =17 3G=3
+			//3288 909S-120 4G:type =13 3G=15
+			if (mNetworkType == TelephonyManager.NETWORK_TYPE_UMTS
+					|| mNetworkType == TelephonyManager.NETWORK_TYPE_HSDPA
+					|| mNetworkType == TelephonyManager.NETWORK_TYPE_HSPAP)  //3288 TD-SCDMA ？？
 			{
 				strengthdmb =String.valueOf(-113+(2*asu));
 				// 联通3G
@@ -669,8 +670,8 @@ public class NetWorkActivity extends Activity {
 
 				tv_signal_strength_3G.setText(sb);
 
-			} else if (type == TelephonyManager.NETWORK_TYPE_GPRS
-					|| type == TelephonyManager.NETWORK_TYPE_EDGE) {
+			} else if (mNetworkType == TelephonyManager.NETWORK_TYPE_GPRS
+					|| mNetworkType == TelephonyManager.NETWORK_TYPE_EDGE) {
 				// 移动或者联通2g
 				sb.append(
 						mResources
@@ -679,8 +680,8 @@ public class NetWorkActivity extends Activity {
 						.append(":").append(strengthdmb).append("dBm")
 						.append("  ").append(strength).append("asu");
 				tv_signal_strength_3G.setText(sb);
-			} else if (type == TelephonyManager.NETWORK_TYPE_EVDO_0
-					|| type == TelephonyManager.NETWORK_TYPE_EVDO_A) {
+			} else if (mNetworkType == TelephonyManager.NETWORK_TYPE_EVDO_0
+					|| mNetworkType == TelephonyManager.NETWORK_TYPE_EVDO_A) {
 				// 电信3g
 				strengthdmb = String.valueOf(signalStrength.getEvdoDbm());
 				strengthdmb =String.valueOf(-113+(2*asu));
@@ -689,7 +690,7 @@ public class NetWorkActivity extends Activity {
 						.append(":").append(strengthdmb).append("dBm")
 						.append("  ").append(strength).append("asu");
 				tv_signal_strength_3G.setText(sb);
-			} else if (type == TelephonyManager.NETWORK_TYPE_LTE) {
+			} else if (mNetworkType == TelephonyManager.NETWORK_TYPE_LTE) {
 				// Reflection code starts from here
 				try {
 					Method[] methods = android.telephony.SignalStrength.class

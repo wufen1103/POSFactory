@@ -352,7 +352,7 @@ public class PrintMoreActivity extends SerialPortActivity{
     }
 	
 	private  boolean usbWrite(byte[] cmd){
-		return mUSBConnectUtil.sendMessageToPoint(cmd);
+		return mUSBConnectUtil.sendMessageToPrint(cmd);
     }
 
 	@Override

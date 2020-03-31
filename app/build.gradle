@@ -13,7 +13,7 @@ android {
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
         versionCode 1
-        versionName "3.0.0_Build_88a0"
+        versionName "3.0.0_Build_f759"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

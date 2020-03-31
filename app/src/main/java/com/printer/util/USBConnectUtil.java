@@ -405,7 +405,7 @@ public class USBConnectUtil {
      *
      * @param data
      */
-    public boolean sendMessageToPoint(byte[] data) {
+    public boolean sendMessageToPrint(byte[] data) {
         if (epBulkOut != null) {
             if (mUsbDeviceConnection.bulkTransfer(epBulkOut, data, data.length, 0) >= 0) {
                 //0 或者正数表示成功
@@ -421,8 +421,8 @@ public class USBConnectUtil {
     }
 
 
-    public boolean sendMessageToPoint(String data) {
-        return sendMessageToPoint(data.getBytes());
+    public boolean sendMessageToPrint(String data) {
+        return sendMessageToPrint(data.getBytes());
     }
 
 

@@ -32,6 +32,7 @@ public class BluetoothActivity extends Activity {
     String btdetail;
     FoundReceiver mFoundReceiver;
     int discovery_count = 0;
+    boolean default_bluetoothstate;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,11 +105,12 @@ public class BluetoothActivity extends Activity {
         mFoundReceiver = new FoundReceiver();
         registerReceiver(mFoundReceiver, mIntentFilter);
 
-        if(getBlueToothState()){
+        default_bluetoothstate = getBlueToothState();
+//        if(default_bluetoothstate){
             tb_bluetooth.setChecked(true);
             startBlueToothDiscovery();
 
-        }
+//        }
     }
 
     @Override
@@ -119,6 +121,22 @@ public class BluetoothActivity extends Activity {
             cancelBlueToothDiscovery();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v(TAG, "onDestroy");
+
+        if(getBlueToothState() != default_bluetoothstate){
+            if(default_bluetoothstate){
+                openBlueTooth();
+            }else{
+                colseBlueTooth();
+            }
+
+        }
+
+        super.onDestroy();
     }
 
     public boolean startBlueToothDiscovery(){

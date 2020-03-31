@@ -381,7 +381,7 @@ public class VideoAcivity extends Activity {
     }
 
     public void onReboot_fail() {
-
+        boolean isOk = false;
         Toast.makeText(VideoAcivity.this, "Reboot.", Toast.LENGTH_SHORT).show();
         /*
          * Intent reboot = new Intent(Intent.ACTION_REBOOT);
@@ -392,9 +392,14 @@ public class VideoAcivity extends Activity {
         try {
             Runtime.getRuntime().exec("su");
             Runtime.getRuntime().exec("reboot");
+            isOk = true;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+
+        if(isOk){
+            return;
         }
 
         Process process = null;

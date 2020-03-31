@@ -479,7 +479,7 @@ public class PrintActivity extends SerialPortActivity{
     }
 	
 	private  boolean usbWrite(byte[] cmd){
-		return mUSBConnectUtil.sendMessageToPoint(cmd);
+		return mUSBConnectUtil.sendMessageToPrint(cmd);
     }
 	
     private boolean getLanguageEnv() {  
