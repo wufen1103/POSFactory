@@ -6,7 +6,7 @@ android {
 
     android { compileOptions.encoding = "UTF-8" }
 
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.citaq.citaqfactory"
         minSdkVersion 16
