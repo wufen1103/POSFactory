@@ -172,12 +172,12 @@
             		<EditText
             		    android:id="@+id/edit_cut_hours"
             		    android:layout_width="80dp"
-            		    android:layout_height="40dp"
+            		    android:layout_height="50dp"
             		    android:layout_marginLeft="10dp"
             		    android:layout_marginRight="10dp"
             		    android:textColor="@color/olivedrab"
             		    android:textSize="@dimen/tx_size_20"
-            		    android:inputType="number" />
+                        android:inputType="numberSigned" />
             		 <TextView
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
             		 <EditText
             		    android:id="@+id/edit_reboot_min"
             		    android:layout_width="80dp"
-            		    android:layout_height="40dp"
+            		    android:layout_height="50dp"
             		    android:layout_marginLeft="10dp"
             		    android:layout_marginRight="10dp"
             		    android:textColor="@color/olivedrab"
@@ -306,6 +306,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_ageing_3g_restart_times"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
@@ -328,6 +329,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_ageing_3g_restart_times_tips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ageing_3G_help"

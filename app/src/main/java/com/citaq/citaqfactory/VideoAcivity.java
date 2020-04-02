@@ -135,8 +135,13 @@ public class VideoAcivity extends Activity {
             }
 
         } else { //设置了距离第一次重启的时间
-            min = cuttime;
-//      	 min = 1;     //for test
+            if(cuttime <= 0){
+                //不重启
+                min = 0;
+            }else {
+                min = cuttime;
+//      	    min = 1;     //for test
+            }
             editor.putFloat(TAG_REBOOT_INTERVAL, rebootInterval);
             editor.commit();
         }
@@ -398,9 +403,9 @@ public class VideoAcivity extends Activity {
             e.printStackTrace();
         }
 
-        if(isOk){
-            return;
-        }
+//        if(isOk){
+//            return;
+//        }
 
         Process process = null;
 

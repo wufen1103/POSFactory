@@ -423,7 +423,7 @@ public class NetWorkActivity extends Activity {
 		mPingLooperThread = new PingLooperThread(new Callbak() {
 
 			@Override
-			public boolean handleMessage(int allcount, int success, int faild) {
+			public boolean handleMessage(int allcount, int success, int faild, boolean lastResult) {
 
 				Log.i(TAG, allcount + "   "+ success + "         "+faild);
 

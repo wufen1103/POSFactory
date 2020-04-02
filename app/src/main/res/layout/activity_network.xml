@@ -11,35 +11,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_10"
+		android:layout_marginLeft="@dimen/margin_10"
+		android:layout_marginBottom="@dimen/margin_10"
         android:layout_weight="2"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_margin="@dimen/margin_10"
+			android:layout_weight="7"
+			android:orientation="vertical" >
+			<TextView
+				android:id="@+id/tv_show_status"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/network_info"
+				android:minHeight="@dimen/margin_20"
+				android:text="@string/network_not_connect"
+				android:textColor="@color/lightgreen"
+				android:textSize="@dimen/tx_size_32" />
 
-        <TextView
-            android:id="@+id/tv_show_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/network_info"
-            android:minHeight="@dimen/margin_20"
-            android:text="@string/network_not_connect"
-            android:textColor="@color/lightgreen"
-            android:textSize="@dimen/tx_size_32" />
+			<TextView
+				android:id="@+id/tv_signal_strength"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="@dimen/margin_20"
+				android:textColor="@color/darkorange"
+				android:textSize="@dimen/tx_size_24" />
 
-        <TextView
-            android:id="@+id/tv_signal_strength"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/margin_20"
-            android:textColor="@color/darkorange"
-            android:textSize="@dimen/tx_size_24" />
-
-        <TextView
-            android:id="@+id/tv_signal_strength_3G"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/margin_20"
-            android:textColor="@color/darkorange"
-            android:textSize="@dimen/tx_size_24" />
+			<TextView
+				android:id="@+id/tv_signal_strength_3G"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="@dimen/margin_20"
+				android:textColor="@color/darkorange"
+				android:textSize="@dimen/tx_size_24" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_margin="@dimen/margin_10"
+			android:layout_weight="1"
+			android:orientation="horizontal" >
+			<TextView
+				android:id="@+id/tv_show_status0000"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/network_info"
+				android:minHeight="@dimen/margin_20"
+				android:text="@string/network_msg"
+				android:textColor="@color/gray"
+				android:textSize="@dimen/tx_size_8" />
+		</LinearLayout>
     </LinearLayout>
 
     <LinearLayout style="@style/common_horizontal_division_line_style" />
@@ -180,31 +203,47 @@
                 
         </LinearLayout>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                 android:gravity="right">
-            <Button
-	            android:id="@+id/wifi"
-	            android:layout_width="@dimen/png_hw"
-	            android:layout_height="@dimen/png_hw"
-	            android:background="@drawable/btn_wifi_selector"
-	            android:textSize="@dimen/tx_size_45" 
-	            android:layout_marginTop="@dimen/margin_10"
-	            android:layout_marginRight="@dimen/margin_20"
-	           />
-	        <Button
-	            android:id="@+id/baidu"
-	            android:layout_width="@dimen/png_hw"
-	            android:layout_height="@dimen/png_hw"
-	            android:background="@drawable/btn_baidu_selector"
-	            android:textSize="@dimen/tx_size_45" 
-	            android:layout_marginTop="@dimen/margin_10"
-	            android:layout_marginRight="@dimen/margin_20"
-	            android:layout_marginLeft="@dimen/margin_20"
-	           />
-	    </LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center_vertical">
+
+			<TextView
+				android:id="@+id/tv_network_mac"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:textColor="@color/gray"
+				android:text="@string/connect_appoint_network"
+				android:textSize="@dimen/margin_15"
+				android:gravity="bottom"/>
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="horizontal"
+					android:gravity="right">
+				<Button
+					android:id="@+id/wifi"
+					android:layout_width="@dimen/png_hw"
+					android:layout_height="@dimen/png_hw"
+					android:background="@drawable/btn_wifi_selector"
+					android:textSize="@dimen/tx_size_45"
+					android:layout_marginTop="@dimen/margin_10"
+					android:layout_marginRight="@dimen/margin_20"
+				   />
+				<Button
+					android:id="@+id/baidu"
+					android:layout_width="@dimen/png_hw"
+					android:layout_height="@dimen/png_hw"
+					android:background="@drawable/btn_baidu_selector"
+					android:textSize="@dimen/tx_size_45"
+					android:layout_marginTop="@dimen/margin_10"
+					android:layout_marginRight="@dimen/margin_20"
+					android:layout_marginLeft="@dimen/margin_20"
+				   />
+			</LinearLayout>
+		</LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

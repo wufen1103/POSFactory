@@ -180,7 +180,7 @@
             		    android:layout_marginRight="10dp"
             		    android:textColor="@color/olivedrab"
             		    android:textSize="@dimen/tx_size_20"
-            		    android:inputType="number" />
+                        android:inputType="numberSigned"/>
 					<TextView
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
@@ -197,6 +197,13 @@
             		    android:textSize="@dimen/tx_size_20"
             		    android:inputType="number" />
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_4"
+                android:text="@string/str_parameter_note"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/tx_size_12"/>
         </LinearLayout>
 
         <LinearLayout
@@ -311,6 +318,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_ageing_3g_restart_times"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
@@ -333,6 +341,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_ageing_3g_restart_times_tips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ageing_3G_help"
@@ -419,16 +428,16 @@
                         android:id="@+id/reboot_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_50"
+                        android:layout_marginRight="@dimen/margin_10"
                         android:text="@string/reboot_no"
                         android:textColor="@color/olivedrab"
                         android:textSize="@dimen/tx_size_20"/>
 
                     <RadioButton
-                        android:id="@+id/reboot_3min"
+                        android:id="@+id/reboot_5min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_50"
+                        android:layout_marginRight="@dimen/margin_10"
                         android:text="@string/reboot_5min"
                         android:textColor="@color/olivedrab"
                         android:textSize="@dimen/tx_size_20" />
@@ -437,7 +446,6 @@
                         android:id="@+id/reboot_1min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_50"
                         android:text="@string/reboot_1min"
                         android:textColor="@color/olivedrab"
                         android:textSize="@dimen/tx_size_20" />

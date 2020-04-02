@@ -6,9 +6,9 @@ import java.lang.reflect.Method;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-public class The3GUtils {
+public class MobileNetworkUtils {
 	
-    public static void reset3G(Context context, boolean enable){
+    public static void resetMobileNetwork(Context context, boolean enable){
     	///////////////////5.1 没有权限/////////////////////////
 //    	 try {
 //	            TelephonyManager telephonyService = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -17,13 +17,14 @@ public class The3GUtils {
 //	            if (null != setMobileDataEnabledMethod) {
 //	                setMobileDataEnabledMethod.invoke(telephonyService, enable);
 //	            }
-    	
-    	
-    	
-    	
+
           ///////////////////5.1 这个方法/////////////////////////
-    	
-		 ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);  
+//		从Android L及更高版本开始，setMobileDataEnabled方法不再可调用
+
+//		我已经向Google报告了问题78084，因为该setMobileDataEnabled()方法不再可以通过反射调用。
+//		它可以通过反射从Android 2.1（API 7）到Android 4.4（API 19）进行调用，
+//		但是从Android L及更高版本开始，即使使用root，该setMobileDataEnabled()方法也不可调用。
+		    ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	        Class<?> cmClass = connManager.getClass();    
 	        Class<?>[] argClasses = new Class[1];    
 	        argClasses[0] = boolean.class;    

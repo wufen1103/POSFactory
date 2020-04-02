@@ -151,9 +151,10 @@
     <string name="title_ageing_3">屏幕老化测试：</string>
     <string name="check_blackBlock">打印黑块</string>
     <string name="check_greyBlock">打印灰块</string>
-    <string name="check_openCut">开启切刀</string>
+    <string name="check_openCut">切刀</string>
     <string name="check_playvideo">"Print &#038;  Cut &#038;  Video (hour):" </string>
     <string name="str_reboot_interval"> ,Then Reboot interval (min): </string>
+    <string name="str_parameter_note"> PS: 第一个参数 &#60;=0 不会重启. </string>
     <string name="start_testing">开始测试</string>
     <string name="stop_testing">停止测试</string>
     <string name="ageing_network_ok">成功次数：</string>
@@ -171,8 +172,8 @@
     <string name="print_serial">Serial</string>
     <string name="print_usb">USB</string>
     <string name="reboot_no">no reboot</string>
-    <string name="reboot_5min">reboot  (5 minute intervals)</string>
-    <string name="reboot_1min">reboot  (1 minute intervals)</string>
+    <string name="reboot_5min">reboot  (5 min interval)</string>
+    <string name="reboot_1min">reboot  (1 min interval)</string>
     <string name="nousbdevice">Can not find USB device.</string>
     <string name="volume_mute">Mute</string>
     <string name="volume_medium">medium</string>

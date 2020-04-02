@@ -9,6 +9,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -28,6 +30,10 @@ import android.util.Log;
 public class HttpUtil {
 	private static final String TAG = "HttpUtil";
 	private static HttpClient httpClient;
+	static HttpGet httpGet;
+	static HttpParams httpParameters;
+
+	static HttpResponse httpResponse;
 	
 	static
 	{
@@ -44,7 +50,7 @@ public class HttpUtil {
 	private static void openHttp(){
 		if(httpClient == null){
 			Log.i(TAG, "Create HttpClient...");  
-	        HttpParams params = new BasicHttpParams();  
+	        HttpParams params = new BasicHttpParams();
 	        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);  
 	        HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);  
 	        HttpProtocolParams.setUseExpectContinue(params, true);  
@@ -52,7 +58,11 @@ public class HttpUtil {
 	        schReg.register(new Scheme("http",PlainSocketFactory.getSocketFactory(),80));  
 	        schReg.register(new Scheme("https",SSLSocketFactory.getSocketFactory(),443));  
 	        ThreadSafeClientConnManager  conMgr = new ThreadSafeClientConnManager(params, schReg);  
-	        httpClient = new DefaultHttpClient(conMgr,params);  
+	        httpClient = new DefaultHttpClient(conMgr,params);
+
+	        //W/ResponseProcessCookies: Invalid cookie header: "Set-Cookie: ...
+			HttpClientParams.setCookiePolicy(httpClient.getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
+
 		}
 	}
 	
@@ -65,18 +75,25 @@ public class HttpUtil {
 				return false;
 			}
 
-			HttpGet httpGet = new HttpGet(request); 
-			HttpParams httpParameters = new BasicHttpParams();
+			httpGet = new HttpGet(request);
+			httpParameters = new BasicHttpParams();
 		    HttpConnectionParams.setConnectionTimeout(httpParameters, 10000 );
 		    HttpConnectionParams.setSoTimeout(httpParameters, 5000);
 		    httpGet.setParams(httpParameters);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
+			httpResponse = httpClient.execute(httpGet);     // //到这里卡住了，不向下执行了。但不抛出任何错误，也没有被catch捕获
+															//httpclient多次进行post请求的时候，会阻塞，无法循环执行
 			if (httpResponse.getStatusLine().getStatusCode() == 200){
-				return "0".equals(EntityUtils.toString(httpResponse.getEntity()));
-				//return true;
+//				return "0".equals(EntityUtils.toString(httpResponse.getEntity()));
+
+				//httpclient多次进行post请求的时候，会阻塞，无法循环执行,因为response结果集未关闭，在做完数据结果处理后关闭结果集即可
+				httpResponse.getEntity().getContent().close();//关闭结果集
+				return true;
 			}
+			httpResponse.getEntity().getContent().close();//关闭结果集
 		}catch(Exception e){
+			e.printStackTrace();
 		}
+
 		return false;
 	}
 
@@ -97,8 +114,8 @@ public class HttpUtil {
 			// 判断请求响应状态码，状态码为200表示服务端成功响应了客户端的请求 
 			if(httpResponse.getStatusLine().getStatusCode() == 200){ 
 			//获取返回结果 
-				return "0".equals(EntityUtils.toString(httpResponse.getEntity()));
-				//return true;
+//				return "0".equals(EntityUtils.toString(httpResponse.getEntity()));
+				return true;
 			}
 		}catch(Exception e){
 		}
@@ -114,12 +131,12 @@ public class HttpUtil {
 				return "";
 			}
 
-			HttpGet httpGet = new HttpGet(request); 
-			HttpParams httpParameters = new BasicHttpParams();
+			httpGet = new HttpGet(request);
+			httpParameters = new BasicHttpParams();
 		    HttpConnectionParams.setConnectionTimeout(httpParameters, 10000 );
 		    HttpConnectionParams.setSoTimeout(httpParameters, 5000);
 		    httpGet.setParams(httpParameters);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
+			httpResponse = httpClient.execute(httpGet);
 			if (httpResponse.getStatusLine().getStatusCode() == 200){
 				return (EntityUtils.toString(httpResponse.getEntity(),HTTP.UTF_8));
 			}

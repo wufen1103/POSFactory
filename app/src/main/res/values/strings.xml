@@ -281,6 +281,7 @@
     <string name="connect_appoint_network">connect given SSID</string>
     <string name="network_ping_result">Ping Result</string>
     <string name="network_not_connect">Network Not Connect</string>
+    <string name="network_msg"> "WiFi(dbm): \n 0 rssi &#60;=-100  1 (-100, -88] \n 2 (-88, -77]  3 (-66, -55] \n 4 rssi&#62;=-55"</string>
     <string name="network_wifi">WiFi </string>
     <string name="network_ethernet">Ethernet</string>
     <string name="network_mobile">MOBILE</string>
@@ -299,9 +300,10 @@
     <string name="title_ageing_3">Screen Aging Test：</string>
     <string name="check_blackBlock">Print Black Block</string>
     <string name="check_greyBlock">Print Grey Block</string>
-    <string name="check_openCut">Open Cut </string>
+    <string name="check_openCut">Cut </string>
     <string name="check_playvideo">"Print &#038;  Cut &#038;  Video (hour):" </string>
     <string name="str_reboot_interval"> ,Then Reboot interval (min): </string>
+    <string name="str_parameter_note"> PS: The first parameter  &#60;=0 will not restart. </string>
     <string name="start_testing">Start testing</string>
     <string name="stop_testing">Stop testing</string>
     <string name="ageing_network_ok">Success Times：</string>
@@ -318,8 +320,8 @@
     <string name="print_serial">Serial</string>
     <string name="print_usb">USB</string>
     <string name="reboot_no">no reboot</string>
-    <string name="reboot_5min">reboot  (5 minute intervals)</string>
-    <string name="reboot_1min">reboot  (1 minute intervals)</string>
+    <string name="reboot_5min">reboot  (5 min interval)</string>
+    <string name="reboot_1min">reboot  (1 min interval)</string>
     <string name="nousbdevice">Can not find USB device.</string>
     <string name="volume_mute">Mute</string>
     <string name="volume_medium">medium</string>

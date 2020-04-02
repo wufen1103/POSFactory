@@ -52,7 +52,7 @@ public class PingLooperThread {
 //    }
     
     public static interface Callbak {
-    	public boolean handleMessage(int allcount, int success, int faild);
+    	public boolean handleMessage(int allcount, int success, int faild, boolean lastResult);
     }
     
     public PingLooperThread( Callbak callback, int time , String web) {
@@ -135,7 +135,7 @@ public class PingLooperThread {
 	};	
 	
 	public void Ping(String web) {
-
+        boolean lastResult =false;
 		Process p;
 		// 10 packets transmitted, 10 received, 0% packet loss, time 9030ms
 
@@ -155,9 +155,10 @@ public class PingLooperThread {
 			// System.out.println("Return ============" +
 			// buffer.toString());
 			if (status == 0) {
-			success++;
+				success++;
+				lastResult = true;
 			} else {
-			faild++;
+				faild++;
 			}
 
 		} catch (IOException e) {
@@ -167,7 +168,7 @@ public class PingLooperThread {
 			e1.printStackTrace();
 		}
 		
-		mCallbak.handleMessage(allcount,success, faild);
+		mCallbak.handleMessage(allcount,success, faild, lastResult);
 
 	}
 }

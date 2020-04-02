@@ -1,13 +1,10 @@
 package com.citaq.citaqfactory;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.citaq.citaqfactory.SerialPortActivity.ReadThread;
 import com.citaq.util.CitaqBuildConfig;
 import com.citaq.util.Command;
 import com.citaq.util.HttpUtil;
@@ -15,27 +12,26 @@ import com.citaq.util.MainBoardUtil;
 import com.citaq.util.SharePreferencesHelper;
 import com.citaq.util.SharePreferencesHelper.ContentValue;
 import com.citaq.util.SoundManager;
-import com.citaq.util.The3GUtils;
+import com.citaq.util.MobileNetworkUtils;
 import com.citaq.util.ThreadPoolManager;
 import com.printer.util.CallbackUSB;
 import com.printer.util.USBConnectUtil;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -52,13 +48,13 @@ public class AgeingActivity extends SerialPortActivity {
 	protected static final int DEFAULT_HOURS = 8;   //切刀老化多少小时后重启test
 	protected static final int DEFAULT_MIN = 5;   //重启间隔
 	TextView tv_ok, tv_fail, tv_3g_restart, tv_ageing_success_rate, tv_run_time;
-	Button bt_network, bt_print,bt_video;
+	Button bt_print, bt_network, bt_video;
 	CheckBox cb_black, cb_grey, cb_cut, cb_sound;
 
-	private static final int nextCheck = 0;
-	private static final int refreshNum = 1001;
-	private static final int toPrint = 1002;
-	private static final int reset3G = 1003;
+	private static final int NETWORK_CHECK_CODES = 1000;
+	private static final int REFRESH_NUM_CODES = 1001;
+	private static final int PRINT_CHECK_CODES = 1002;
+	private static final int RESET_MOBILENETWORK_CODES = 1003;
 
 	private int countSuccess = 0;
 	private int countFailue = 0;
@@ -101,7 +97,6 @@ public class AgeingActivity extends SerialPortActivity {
 	
 	int cuttime = 0;
 	
-	
 	////////////////
 	USBConnectUtil mUSBConnectUtil = null;
 	
@@ -121,24 +116,20 @@ public class AgeingActivity extends SerialPortActivity {
 
 		ctx = this;
 		setContentView(R.layout.activity_ageing);
-		
+
 		SyncThread syncThread = new SyncThread();
-	    syncThread.start();
-	    
-	    initView();
-	    
-        if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
+		syncThread.start();
+		initView();
+
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
         	print_usb.setChecked(true);
 			print_serial.setVisibility(View.GONE);
 		}else{
 			initSerial();
 		}
 
-		
-		
 		//通过构造方法来传入上下文和文件名
         mSharePreferencesHelper = new SharePreferencesHelper(this,CitaqBuildConfig.SHAREPREFERENCESNAME);
-
 	}
 	
 	private void initSerial(){
@@ -198,14 +189,13 @@ public class AgeingActivity extends SerialPortActivity {
                     	edit_cut_hours.setText("");
                     }
                 }*/
-            	if (edit_cut_hours.getText().toString().equals(String.valueOf(0))) {
-                	edit_cut_hours.setText("");
-                }
+//            	if (edit_cut_hours.getText().toString().equals(String.valueOf(0))) {
+//                	edit_cut_hours.setText("");
+//                }
             	
             }
         });
 
-		
 		edit_reboot_min = (EditText) findViewById(R.id.edit_reboot_min);
 		edit_reboot_min.setText(DEFAULT_MIN+"");
 
@@ -219,7 +209,7 @@ public class AgeingActivity extends SerialPortActivity {
 					isPrint = true;
 					// cs
 					((Button) v).setText(ctx.getString(R.string.stop_testing));
-					handler.sendEmptyMessage(toPrint);
+					handler.sendEmptyMessage(PRINT_CHECK_CODES);
 			/*		Log.i(TAG,
 							"checkout--->" + cb_black.isChecked()
 									+ cb_grey.isChecked() + cb_cut.isChecked());*/
@@ -256,7 +246,7 @@ public class AgeingActivity extends SerialPortActivity {
 					((Button) v).setText(ctx.getString(R.string.stop_testing));
 
 					isTestWeb = true;
-					handler.sendEmptyMessage(nextCheck);
+					handler.sendEmptyMessage(NETWORK_CHECK_CODES);
 				} else {
 					// 执行 停止
 					v.setTag("start");
@@ -283,8 +273,7 @@ public class AgeingActivity extends SerialPortActivity {
 					path =getVideo(mVideoPath3,videoName,videType);
 					
 				}
-				
-				
+
 				if(null == path){
 //					Toast.makeText(ctx, R.string.no_video, Toast.LENGTH_LONG).show();
 					intent.putExtra(TAG_HASEXTERNALVIDEO, false);
@@ -300,9 +289,6 @@ public class AgeingActivity extends SerialPortActivity {
 			}
 		});
 		
-		
-	
-
 //		long a = System.currentTimeMillis();
 //		blackblock = Command.transToPrintText(getString(R.string.black_block));
 //		long b = System.currentTimeMillis();
@@ -312,9 +298,7 @@ public class AgeingActivity extends SerialPortActivity {
 //		long d = System.currentTimeMillis();
 		
 //		Log.i(TAG, "b-a =" + (b - a) + ",,,,,d - a =" + (d - a));
-		
-		 
-		
+
 		rg_speed = (RadioGroup) findViewById(R.id.rg_speed);
 		speed_1000 = (RadioButton) findViewById(R.id.speed_1000);
 		speed_3000 = (RadioButton) findViewById(R.id.speed_3000);
@@ -336,11 +320,10 @@ public class AgeingActivity extends SerialPortActivity {
 		});
 		
 		speed_3000.setChecked(true);
-		
-		
+
 		reboot_type = (RadioGroup) findViewById(R.id.reboot_type);
 		reboot_no = (RadioButton) findViewById(R.id.reboot_no);
-		reboot_5min = (RadioButton) findViewById(R.id.reboot_3min);
+		reboot_5min = (RadioButton) findViewById(R.id.reboot_5min);
 		reboot_1min = (RadioButton) findViewById(R.id.reboot_1min);
 		
 		reboot_type.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -358,9 +341,7 @@ public class AgeingActivity extends SerialPortActivity {
 		});
 		
 		reboot_5min.setChecked(true);
-		
-		
-		
+
 		print_type = (RadioGroup) findViewById(R.id.print_type);
 		print_serial = (RadioButton) findViewById(R.id.print_serial);
 		print_usb = (RadioButton) findViewById(R.id.print_usb);
@@ -379,9 +360,15 @@ public class AgeingActivity extends SerialPortActivity {
 				
 			}
 		});
-				
 		
-		timeHandler.postDelayed(runnable, 1000);    
+		timeHandler.postDelayed(runnable, 1000);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			LinearLayout ll_3g_restart = (LinearLayout) findViewById(R.id.ll_ageing_3g_restart_times);
+			ll_3g_restart.setVisibility(View.INVISIBLE);
+			TextView tv_3g_restart_tips = (TextView) findViewById(R.id.tv_ageing_3g_restart_times_tips);
+			tv_3g_restart_tips.setVisibility(View.GONE);
+		}
+
 	}
 	
 	@Override
@@ -538,7 +525,7 @@ public class AgeingActivity extends SerialPortActivity {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case refreshNum:
+			case REFRESH_NUM_CODES:
 				tv_ok.setText(countSuccess+"");
 				tv_fail.setText(countFailue+"");
 				
@@ -547,13 +534,13 @@ public class AgeingActivity extends SerialPortActivity {
 					tv_ageing_success_rate.setText(String.format("%.2f", (double)countSuccess/(double)( countSuccess+countFailue) * 100) +"%");
 				}
 				
-				tv_3g_restart.setText(The3GUtils.get3GResetSum()+"");
-				handler.sendEmptyMessageDelayed(nextCheck, 1000);
+				tv_3g_restart.setText(MobileNetworkUtils.get3GResetSum()+"");
+				handler.sendEmptyMessageDelayed(NETWORK_CHECK_CODES, 2000);
 				break;
-			case nextCheck:
+			case NETWORK_CHECK_CODES:
 				checkNet();
 				break;
-			case toPrint:
+			case PRINT_CHECK_CODES:
 				doPrint();
 				
 			/*	if(checkBox_playvideo.isChecked()){
@@ -563,8 +550,8 @@ public class AgeingActivity extends SerialPortActivity {
 					}
 				}*/
 				break;
-			case reset3G:
-				reset();
+			case RESET_MOBILENETWORK_CODES:
+				resetMobileNetwork();
 				break;
 			default:
 				break;
@@ -572,13 +559,15 @@ public class AgeingActivity extends SerialPortActivity {
 		}
 	};
 
-	private void reset() {
+
+
+	private void resetMobileNetwork() {
 		ThreadPoolManager.getInstance().executeTask(new Runnable() {
 			@Override
 			public void run() {
-				The3GUtils.reset3G(ctx, false);
-				The3GUtils.reset3G(ctx, true);
-				The3GUtils.reset3GCount();
+				MobileNetworkUtils.resetMobileNetwork(ctx, false);
+				MobileNetworkUtils.resetMobileNetwork(ctx, true);
+				MobileNetworkUtils.reset3GCount();
 			}
 		});
 	}
@@ -600,7 +589,7 @@ public class AgeingActivity extends SerialPortActivity {
 			printerWrite(cutpaper);
 		}
 		
-		handler.sendEmptyMessageDelayed(toPrint, printSpeed);
+		handler.sendEmptyMessageDelayed(PRINT_CHECK_CODES, printSpeed);
 	}
 
 	private void checkNet(){
@@ -610,7 +599,8 @@ public class AgeingActivity extends SerialPortActivity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				String url ="http://yx.ideliver.cn/checkNet.asp";
+//				String url ="http://yx.ideliver.cn/checkNet.asp";
+				String url ="http://www.baidu.com";
 				boolean b = HttpUtil.httpString(url);
 				if (b){
 					countSuccess++;
@@ -619,12 +609,15 @@ public class AgeingActivity extends SerialPortActivity {
 					countFailue++;
 					failueCount++;
 					if(cb_sound.isChecked())SoundManager.playSound(0, 1);;
-					if(failueCount>=10){
-						failueCount = 0;
-						handler.sendEmptyMessage(reset3G);
-					}					
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+						if(failueCount>=10){
+							failueCount = 0;
+							handler.sendEmptyMessage(RESET_MOBILENETWORK_CODES);
+						}
+					}
+
 				}
-				handler.sendEmptyMessage(refreshNum);
+				handler.sendEmptyMessage(REFRESH_NUM_CODES);
 
 			}});
 	}
