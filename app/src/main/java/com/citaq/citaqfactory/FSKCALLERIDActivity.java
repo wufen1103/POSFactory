@@ -4,6 +4,8 @@ package com.citaq.citaqfactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.citaq.util.FSKUtil;
 
 
 public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickListener{
@@ -36,14 +40,14 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 	byte[] cmd = new byte[] { 0x1D,0x49,0x43 };
 	
 	boolean auto = false;
+
+	FSKUtil mFSKUtil ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fskcallerid);
-		
-		
-		
+
 		send = (Button) findViewById(R.id.send);
 		send.setOnClickListener(this);
 		
@@ -86,6 +90,8 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 			info.setText(R.string.failed);
 			tvStatus.setText(R.string.failed);
 		}
+
+		mFSKUtil = new FSKUtil(this);
 		 
 	}
 	
@@ -198,9 +204,90 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 			interrupt();
 		}
 	}
-	
 
-    protected void onDataReceived(final byte buffer[], final int size) {
+	int receiveIndex  = 0;
+	boolean isAdd = false;
+	boolean isBroadID = false;
+	protected void onDataReceived(final byte buffer[], final int size) {
+		//System.out.println("onDataReceived ---> " +size +"///" + bytes2HexString(buffer,size));
+		//	mFileUtil.appendFile(buffer);
+
+		AsyncTask<Void, Void, String> thread = new AsyncTask<Void, Void, String>() {
+			@Override
+			public String doInBackground(Void... params) {
+
+				mFSKUtil.appendFile(buffer,size);
+				return "";
+			}
+			@Override
+			public void onPostExecute(String msg) {
+
+			}
+		};
+		thread.execute();
+
+		runOnUiThread(new Runnable() {
+			public void run() {
+				for(int i = 0; i < size; i++){
+					if(buffer[i] == 0x04 || buffer[i] == (byte)0x80 || buffer[i] == 0x43) { //0x43 板子id
+						receivedBuffer[0] = buffer[i];//
+						receiveIndex = 0;
+						isAdd = true;
+						isBroadID = false;
+					}else {
+						if(receiveIndex >= receivedBuffer.length) {
+							receiveIndex = 0;
+							isAdd = false;
+							isBroadID = false;
+						}
+						if (isAdd ) {
+							receiveIndex++;
+							receivedBuffer[receiveIndex] = buffer[i];//
+
+							if(receiveIndex==1) { //判断数据长度
+								if(receivedBuffer[0] ==  (byte)0x80) {
+									if(receivedBuffer[1] < (byte)0x0D || receivedBuffer[1] > (byte)0x20) {
+										receiveIndex = 0;
+										isAdd = false;
+									}
+								}
+
+							}
+
+							if(receiveIndex==2) { //判断是否是板子id
+								if(receivedBuffer[0] ==  (byte)0x43) {
+									if(receivedBuffer[1] == 0x54 && receivedBuffer[2] == 0x45 ){
+										isBroadID = true;  //isisCallerID
+									}else{
+
+									}
+								}
+
+							}
+						}
+						//
+
+					}
+
+					if(isAdd && isBroadID) {
+						refreshTel(true);
+						receiveIndex = 0;
+						isAdd = false;
+						isBroadID = false;
+					}
+
+					if(isAdd && receiveIndex >= receivedBuffer[1] + 2){//received
+						refreshTel(false);
+						receiveIndex = 0;
+						isAdd = false;
+					}
+				}
+
+			}
+		});
+
+	}
+    protected void onDataReceivedEorr(final byte buffer[], final int size) {
     	System.out.println("onDataReceived ---> " +size +"///" + bytes2HexString(buffer,size));	
 		runOnUiThread(new Runnable() {
 			public void run() {
