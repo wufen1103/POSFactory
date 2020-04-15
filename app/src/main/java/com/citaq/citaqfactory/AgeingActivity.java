@@ -45,7 +45,7 @@ public class AgeingActivity extends SerialPortActivity {
 	protected static final String TAG_REBOOT_INTERVAL = "reboot_type";
 	protected static final String TAG_CUT_TIME = "cut_time";
 	
-	protected static final int DEFAULT_HOURS = 8;   //切刀老化多少小时后重启test
+	protected static final int DEFAULT_HOURS = 0;   //切刀老化多少小时后重启test
 	protected static final int DEFAULT_MIN = 5;   //重启间隔
 	TextView tv_ok, tv_fail, tv_3g_restart, tv_ageing_success_rate, tv_run_time;
 	Button bt_print, bt_network, bt_video;
@@ -124,6 +124,11 @@ public class AgeingActivity extends SerialPortActivity {
 		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
         	print_usb.setChecked(true);
 			print_serial.setVisibility(View.GONE);
+
+			cb_black.setChecked(true);
+			cb_grey.setChecked(true);
+			cb_cut.setChecked(false);
+			cb_cut.setEnabled(false);
 		}else{
 			initSerial();
 		}
@@ -417,10 +422,7 @@ public class AgeingActivity extends SerialPortActivity {
     Runnable runnable = new Runnable() {    
         @Override    
         public void run() {    
-            recLen++;    
-            
-           
-    		
+            recLen++;
             tv_run_time.setText(getRunTime(recLen));    
             handler.postDelayed(this, 1000);    
         }    

@@ -455,8 +455,7 @@ public class SysInfoActivity extends Activity {
 			display.getSize(point);
 			int width = point.x;
 			int height = point.y;
-			displayInformation.append("display").append(':')
-					.append(width).append('x').append(height);
+			displayInformation.append(width).append('x').append(height);
 
 		}
 		return displayInformation.toString();
@@ -701,7 +700,10 @@ public class SysInfoActivity extends Activity {
 //					intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", mEraseSdCard);
 //					intent.putExtra("com.android.internal.intent.extra.WIPE_ESIMS", mEraseEsims);
 //					sendBroadcast(intent);
-					doMasterClear();
+//					doMasterClear();
+					Intent in = new Intent();
+					in.setClassName("com.android.settings", "com.android.settings.Settings$PrivacySettingsActivity");
+					startActivity(in);
 				}
 				/*intent = new Intent(Intent.ACTION_MAIN);
 				        intent.setComponent( new ComponentName("com.android.settings", "com.android.settings.backup.BackupSettingsActivity"));

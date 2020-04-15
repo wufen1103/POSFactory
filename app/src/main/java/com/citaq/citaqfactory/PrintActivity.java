@@ -124,6 +124,7 @@ public class PrintActivity extends SerialPortActivity{
 		}else{
 			print_usb.setChecked(true);
 			print_serial.setEnabled(false);
+			bt_More.setVisibility(View.INVISIBLE);
 		}
 		
 	}

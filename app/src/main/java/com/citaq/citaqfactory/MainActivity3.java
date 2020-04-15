@@ -63,17 +63,17 @@ public class MainActivity3 extends Activity {
 		while (iterator.hasNext()) {
 			MetroItem mMetroItem = iterator.next();
 			if (!mMetroItem.isShow()) {
-				iterator.remove();
+				if(mMetroItem.isShow()) iterator.remove();
 			}
 			//3288 不显示led测试 FSK来电显示
 			if((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())
 					&& (mMetroItem.getNameEN().contains("LED") || mMetroItem.getNameEN().contains("FSK"))) {
-				iterator.remove();
+				if(mMetroItem.isShow()) iterator.remove();
 			}
 			if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
 				if(mMetroItem.getNameEN().contains("Serial Test") || mMetroItem.getNameEN().contains("Printer Firmware Upgrade")
 						|| mMetroItem.getNameEN().contains("Other Test")){
-					iterator.remove();
+					if(mMetroItem.isShow()) iterator.remove();
 				}
 			}
 		}

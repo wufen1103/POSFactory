@@ -107,7 +107,7 @@
         <className>com.citaq.citaqfactory.FSKCALLERIDActivity</className>
         <position>100</position>
         <color>1</color>
-        <show>true</show>
+        <show>false</show>
         <permission></permission>
     </item>
     <item>

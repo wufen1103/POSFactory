@@ -84,7 +84,7 @@
                     android:id="@+id/checkBox_BlackBlock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
+                    android:checked="false"
                     android:text="@string/check_blackBlock"
                     android:textColor="@color/olivedrab"
                     android:textSize="@dimen/tx_size_20" />
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_50"
                     android:layout_marginRight="@dimen/margin_50"
-                    android:checked="true"
+                    android:checked="false"
                     android:text="@string/check_greyBlock"
                     android:textColor="@color/olivedrab"
                     android:textSize="@dimen/tx_size_20" />
