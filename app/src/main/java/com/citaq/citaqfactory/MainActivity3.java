@@ -101,60 +101,9 @@ public class MainActivity3 extends Activity {
 			}
 
 		});
-
-
-//		getMacDefault(this);
-//		getWifiMacAddress();
-	    
-	}
-	WifiManager WifiManager;
-	private static String getMacDefault(Context context) {
-		String mac = "02:00:00:00:00:00";
-		if (context == null) {
-			return mac;
-		}
-
-		WifiManager wifi = (WifiManager) context.getApplicationContext()
-				.getSystemService(Context.WIFI_SERVICE);
-		if (wifi == null) {
-			return mac;
-		}
-		WifiInfo info = null;
-		try {
-			info = wifi.getConnectionInfo();
-		} catch (Exception e) {
-		}
-		if (info == null) {
-			return null;
-		}
-		mac = info.getMacAddress();
-		if (!TextUtils.isEmpty(mac)) {
-			mac = mac.toUpperCase(Locale.ENGLISH);
-		}
-		return mac;
 	}
 
-	private String getWifiMacAddress() {
-		String str = "";
-		String mac = "";
-		try {
-			Process pp = Runtime.getRuntime().exec("cat /sys/class/net/wlan0/address");
-			InputStreamReader ir = new InputStreamReader(pp.getInputStream());
-			LineNumberReader input = new LineNumberReader(ir);
-			for (; null != str; ) {
-				str = input.readLine();
-				if (str != null) {
-					mac = str.trim();
-					break;
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return mac;
-	}
 
-	 
 	 @Override
 	protected void onDestroy() {
 		if(BuildConfig.DEBUG) Log.i(Tag, "onDestroy----");

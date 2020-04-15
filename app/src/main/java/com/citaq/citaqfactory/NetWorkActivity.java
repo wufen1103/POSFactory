@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.citaq.util.NetworkUtil;
 import com.citaq.util.PingLooperThread;
 import com.citaq.util.PingLooperThread.Callbak;
 import com.citaq.util.WifiAdmin;
@@ -84,6 +85,49 @@ public static final int RSSI_LEVELS = 5;*/
 		}
 		}*/
 
+/**wifi
+ * 一般信号强度在-30~-120之间。
+ * 正常信号强度应该是-40 dbm ~ -85 dbm之间。
+ * 小于 -90 dbm 就很差了，几乎没法连接。
+ * android中wifi分为5个等级，对应的图标是0格，1格，2格，3格，4格.
+ * 那么对应的信号强度是多少呢？
+ * 根据wifimanager中的算法calculateSignalLevel可以算得：
+ * 0 rssi<=-100
+ * 1 (-100, -88]
+ * 2 (-88, -77]
+ * 3 (-66, -55]
+ * 4 rssi>=-55
+ */
+
+/**
+ * 中国移动的规范规定,手机接收电平>=(城市取-90dBm;乡村取-94dBm)时,则满足覆盖要求,
+ * 也就是说此处无线信号强度满足覆盖要求，即接收电平>=-90dBm，就可以满足覆盖要求
+ *
+ * 电信
+ * 2G CDMA
+ * 3G CDMA2000
+ * 4G TD-LTE，FDD-LTE
+ *
+ * 移动
+ * 2G GSM
+ * 3G TD-SCDMA
+ * 4G TD-LTE，FDD-LTE
+ *
+ * 联通
+ * 2G GSM
+ * 3G WCDMA
+ * 4G TD-LTE，FDD-LTE
+ *
+ * <-100
+ *(-100,-85])dbm 1格信号
+ * (-85,-70]) dbm　2格信号
+ * (-70,-55] dbm 3格信号
+ * [-55,0] dbm 满格(4格)信号
+ *
+ *
+ *
+ */
+
 
 public class NetWorkActivity extends Activity {
 	protected static final String TAG = "NetWorkActivity";
@@ -108,6 +152,7 @@ public class NetWorkActivity extends Activity {
 	TextView tv_signal_strength_3G;
 	TextView tv_ping_result;
 	TextView tv_success_percentage;
+	TextView tv_network_mac;
 	Button bt_start;
 	Button bt_baidu, bt_wifi;
 	EditText et_network_addr;
@@ -151,7 +196,6 @@ public class NetWorkActivity extends Activity {
 		telephoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
 		wifiAdmin = new WifiAdmin(mContext);
-	
 
 		initView();
 	}
@@ -166,6 +210,7 @@ public class NetWorkActivity extends Activity {
 
 		telephoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 		mNetworkType = telephoneManager.getNetworkType();
+		Log.i(TAG, "mNetworkType = " +mNetworkType);
 	}
 
 	private void initView() {
@@ -187,6 +232,9 @@ public class NetWorkActivity extends Activity {
 		tv_signal_strength = (TextView) findViewById(R.id.tv_signal_strength);
 		tv_signal_strength_3G = (TextView) findViewById(R.id.tv_signal_strength_3G);
 		spinner_time_count = (Spinner) findViewById(R.id.spinner_time_count);
+		tv_network_mac = (TextView) findViewById(R.id.tv_network_mac);
+
+		tv_network_mac.setText("  eth0 mac: " + NetworkUtil.getEthMacAddress() + "\nwlan0 mac: " + NetworkUtil.getWifiMacAddress());
 		
 		adapter_time= ArrayAdapter.createFromResource(this, R.array.ping_time, android.R.layout.simple_spinner_item);
 		adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
