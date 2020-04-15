@@ -179,21 +179,25 @@ public class MusicPlayerActivity extends Activity {
 				
 			}
 		});*/
-		
-	
-		
-		
+
+
 		bt_play_pause.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
 				// 点击 播放png  isChecked true;
 				// 暂停png  isChecked true;
-				 if(isChecked){	 
-					 //选择暂停时
-					 if(mMediaPlayer!=null && mMediaPlayer.isPlaying()){
-						 mMediaPlayer.start();
-					}else{
+				if (isChecked) {
+					if (bt_left.isChecked()) {
+						bt_left.setChecked(false);
+					}
+					if (bt_right.isChecked()) {
+						bt_right.setChecked(false);
+					}
+					//选择暂停时
+					if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+						mMediaPlayer.start();
+					} else {
 						try {
 							mMediaPlayer.prepare();
 						} catch (IllegalStateException e) {
@@ -203,17 +207,17 @@ public class MusicPlayerActivity extends Activity {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-		            	mMediaPlayer.start();
+						mMediaPlayer.start();
 					}
-						
-		         }else{
-		        	 if(mMediaPlayer!=null && mMediaPlayer.isPlaying()){
-						 mMediaPlayer.pause();
-					}else{  
-		            	
-		            }  
-		         }
-				
+
+				} else {
+					if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+						mMediaPlayer.pause();
+					} else {
+
+					}
+				}
+
 			}
 		});
 		
@@ -225,6 +229,9 @@ public class MusicPlayerActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
+					if(mMediaPlayer!=null && mMediaPlayer.isPlaying()){
+						bt_play_pause.setChecked(false);
+					}
 					if(soundID_left == -1){
 						soundID_left = mSoundPoolManager.playLeft(laser);
 					}else{
@@ -245,6 +252,9 @@ public class MusicPlayerActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if(arg1){
+					if(mMediaPlayer!=null && mMediaPlayer.isPlaying()){
+						bt_play_pause.setChecked(false);
+					}
 					if(soundID_right == -1){
 						soundID_right = mSoundPoolManager.playRight(laser);
 					}else{
