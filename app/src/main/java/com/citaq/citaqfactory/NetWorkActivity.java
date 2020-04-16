@@ -210,7 +210,8 @@ public class NetWorkActivity extends Activity {
 
 		telephoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 		mNetworkType = telephoneManager.getNetworkType();
-		Log.i(TAG, "mNetworkType = " +mNetworkType);
+		Log.i(TAG, "mNetworkType = " +mNetworkType+";NetworkOperatorName = " + telephoneManager.getNetworkOperatorName());
+		//Toast.makeText(mContext,"mNetworkType = " +mNetworkType +"  "+telephoneManager.getNetworkOperatorName(), Toast.LENGTH_SHORT).show();
 	}
 
 	private void initView() {
@@ -234,7 +235,7 @@ public class NetWorkActivity extends Activity {
 		spinner_time_count = (Spinner) findViewById(R.id.spinner_time_count);
 		tv_network_mac = (TextView) findViewById(R.id.tv_network_mac);
 
-		tv_network_mac.setText("  eth0 mac: " + NetworkUtil.getEthMacAddress() + "\nwlan0 mac: " + NetworkUtil.getWifiMacAddress());
+		tv_network_mac.setText("eth0 mac: " + NetworkUtil.getEthMacAddress() + "\nwlan0 mac: " + NetworkUtil.getWifiMacAddress());
 		
 		adapter_time= ArrayAdapter.createFromResource(this, R.array.ping_time, android.R.layout.simple_spinner_item);
 		adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

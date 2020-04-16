@@ -332,7 +332,7 @@ public class VideoAcivity extends Activity {
         edit_text.setText(sharedPreferences.getFloat(TAG_REBOOT_INTERVAL, 0) + "");
         edit_text.setSelection(edit_text.getText().length());
 
-        customizeDialog.setTitle("Please enter an integer for the reboot interval (min)  \n (Zero{ or }<0.1[3s]} means no restart)");
+        customizeDialog.setTitle("Please enter an integer for the reboot interval (min)  \n (less than 0.1 means no restart)");
         customizeDialog.setView(dialogView);
         customizeDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {

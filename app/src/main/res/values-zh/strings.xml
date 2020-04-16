@@ -216,7 +216,7 @@
     <string name="str_open_firmwareFile">打开固件文件</string>
     <string name="str_open_firmware">请选择要升级的固件...</string>
     <string name="str_no_firmware">请先选择要升级的固件.</string>
-    <string name="str_auto_operation">自动升级</string>
+    <string name="str_auto_operation">一键升级</string>
     <string name="str_mass_erase">大容量擦除</string>
     <string name="str_fast_operation">快速升级</string>
     <string name="str_enter_dfu">进入 DFU 模式</string>

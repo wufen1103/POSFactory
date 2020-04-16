@@ -1,15 +1,11 @@
 package com.citaq.citaqfactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -17,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -38,9 +33,7 @@ import android.widget.Toast;
 
 import com.citaq.util.BitmapUtil;
 import com.citaq.util.Command;
-import com.citaq.util.InterAddressUtil;
 import com.citaq.util.MainBoardUtil;
-import com.citaq.util.ZXingUtil;
 import com.printer.util.CallbackUSB;
 import com.printer.util.DataQueue;
 import com.printer.util.USBConnectUtil;

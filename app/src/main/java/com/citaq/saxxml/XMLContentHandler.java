@@ -35,7 +35,9 @@ public class XMLContentHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (tagName != null) {
             String data = new String(ch, start, length);
-            if (tagName.equals("nameEN")) {
+            if (tagName.equals("itemId")) {
+                this.currentMetroItem.setItemId(Integer.parseInt(data));
+            } else if (tagName.equals("nameEN")) {
                 this.currentMetroItem.setNameEN(data);
             } else if (tagName.equals("nameCH")) {
                 this.currentMetroItem.setNameCH(data);

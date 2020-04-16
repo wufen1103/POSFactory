@@ -2,16 +2,11 @@ package com.citaq.citaqfactory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Presentation;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -26,23 +21,22 @@ import com.citaq.util.CitaqBuildConfig;
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.PermissionUtil;
 import com.citaq.util.SharePreferencesHelper;
-import com.citaq.view.ImageAdapter;
 import com.citaq.view.MetroItemAdapter;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressLint("NewApi")
 public class MainActivity3 extends Activity {
-	protected static final String Tag = "MainActivity2";
+	protected static final String Tag = "MainActivity3";
 	MetroItemAdapter adapter;
 	Context mContext;
 	Intent mIntent;
 	String permission;
+
+	private int[] metroIgnoreList1 ={1001}; //3288 LED Test
+	private int[] metroIgnoreList2 ={1010,1012,1013}; //3368 Serial test , Other Test , Printer Firmware Upgrade ,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,36 +44,14 @@ public class MainActivity3 extends Activity {
 		super.onCreate(savedInstanceState);
 		mContext = this;
 
-		setContentView(R.layout.activity_main_gride);  
+		setContentView(R.layout.activity_main_gride);
 
+		loadMetro();
+	}
+
+	private void loadMetro(){
 		GridView gridView = (GridView) findViewById(R.id.gridview);
-
-		InputStream inputStream = getResources().openRawResource(R.raw.default_workspace);
-		List<MetroItem> metroItemList = AnalyzeSAX.readXML(inputStream);
-
-		//针对不同的主板设置那些MetroItem不显示
-
-		Iterator<MetroItem> iterator = metroItemList.iterator();
-		while (iterator.hasNext()) {
-			MetroItem mMetroItem = iterator.next();
-			if (!mMetroItem.isShow()) {
-				if(mMetroItem.isShow()) iterator.remove();
-			}
-			//3288 不显示led测试 FSK来电显示
-			if((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())
-					&& (mMetroItem.getNameEN().contains("LED") || mMetroItem.getNameEN().contains("FSK"))) {
-				if(mMetroItem.isShow()) iterator.remove();
-			}
-			if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
-				if(mMetroItem.getNameEN().contains("Serial Test") || mMetroItem.getNameEN().contains("Printer Firmware Upgrade")
-						|| mMetroItem.getNameEN().contains("Other Test")){
-					if(mMetroItem.isShow()) iterator.remove();
-				}
-			}
-		}
-
-
-		adapter = new MetroItemAdapter(this, metroItemList);
+		adapter = new MetroItemAdapter(this, metroForBoard());
 		gridView.setAdapter(adapter);
 
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,11 +75,46 @@ public class MainActivity3 extends Activity {
 		});
 	}
 
+	/**
+	 * 针对不同的主板设置那些MetroItem不显示
+	 * @return
+	 */
+	private List<MetroItem> metroForBoard(){
+		InputStream inputStream = getResources().openRawResource(R.raw.default_workspace);
+		List<MetroItem> metroItemList = AnalyzeSAX.readXML(inputStream);
+
+		Iterator<MetroItem> iterator = metroItemList.iterator();
+		while (iterator.hasNext()) {
+			MetroItem mMetroItem = iterator.next();
+			if (!mMetroItem.isShow()) {
+				iterator.remove();
+			}
+			if((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())){
+				for(int i: metroIgnoreList1){
+					if(mMetroItem.getItemId() == i){
+						iterator.remove();
+					}
+
+				}
+
+			}else if (MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
+				for(int i: metroIgnoreList2){
+					if(mMetroItem.getItemId() == i){
+						iterator.remove();
+					}
+
+				}
+			}
+
+		}
+
+		return metroItemList;
+	}
 
 	 @Override
 	protected void onDestroy() {
-		if(BuildConfig.DEBUG) Log.i(Tag, "onDestroy----");
-		
+		Log.i(Tag, "onDestroy----");
+
 		SharePreferencesHelper mSharePreferencesHelper = new SharePreferencesHelper(this,CitaqBuildConfig.SHAREPREFERENCESNAME);
 		mSharePreferencesHelper.clear();
 		

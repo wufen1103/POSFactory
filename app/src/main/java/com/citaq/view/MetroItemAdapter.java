@@ -37,20 +37,20 @@ public class MetroItemAdapter extends BaseAdapter {
         iconsColor = mContext.getResources().obtainTypedArray(R.array.plain_arr);
         isShowTitleEn = isLanguageEn();
 
-        delANDsort(metroItems);
+        sort(metroItems);
     }
 
     //
 
     //item 删除不显示的item 然后排序
-    private void delANDsort(List<MetroItem> metroItems){
-        Iterator<MetroItem> iterator = metroItems.iterator();
-        while (iterator.hasNext()) {
-            MetroItem mMetroItem = iterator.next();
-            if (!mMetroItem.isShow()) {
-                iterator.remove();
-            }
-        }
+    private void sort(List<MetroItem> metroItems){
+//        Iterator<MetroItem> iterator = metroItems.iterator();
+//        while (iterator.hasNext()) {
+//            MetroItem mMetroItem = iterator.next();
+//            if (!mMetroItem.isShow()) {
+//                iterator.remove();
+//            }
+//        }
 
         Comparator<MetroItem> comparator = new Comparator<MetroItem>() {
             public int compare(MetroItem mMetroItem1, MetroItem mMetroItem2) {

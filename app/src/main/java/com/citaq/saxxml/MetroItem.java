@@ -1,6 +1,7 @@
 package com.citaq.saxxml;
 
 public class MetroItem {
+    private int itemId;
     private String nameEN;
     private String nameCH;
     private String packageName;
@@ -9,6 +10,14 @@ public class MetroItem {
     private String color;
     private boolean show;
     private String permission;
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
 
     public String getNameEN() {
         return nameEN;

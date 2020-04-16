@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metroItems>
     <item>
+        <itemId>1001</itemId>
         <nameEN>LED Test</nameEN>
         <nameCH>LED测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -11,6 +12,7 @@
         <permission>  </permission> <!--  |   分割符-->
     </item>
     <item>
+        <itemId>1002</itemId>
         <nameEN>Print Test</nameEN>
         <nameCH>打印机测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -21,6 +23,7 @@
         <permission>android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
     </item>
     <item>
+        <itemId>1003</itemId>
         <nameEN>Touch Test</nameEN>
         <nameCH>触控测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -31,6 +34,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1004</itemId>
         <nameEN>Display Test</nameEN>
         <nameCH>屏幕测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -41,6 +45,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1005</itemId>
         <nameEN>Audio Test</nameEN>
         <nameCH>音频测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -51,6 +56,7 @@
         <permission>android.permission.RECORD_AUDIO|android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
     </item>
     <item>
+        <itemId>1006</itemId>
         <nameEN>PD Test</nameEN>
         <nameCH>顾显测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -61,6 +67,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1007</itemId>
         <nameEN>MSR Test</nameEN>
         <nameCH>磁卡槽测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -71,6 +78,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1008</itemId>
         <nameEN>Network Test</nameEN>
         <nameCH>网络测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -81,6 +89,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1009</itemId>
         <nameEN>Bluetooth Test</nameEN>
         <nameCH>蓝牙测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -91,6 +100,7 @@
         <permission>android.permission.ACCESS_FINE_LOCATION</permission>
     </item>
     <item>
+        <itemId>1010</itemId>
         <nameEN>Serial Test</nameEN>
         <nameCH>串口测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -101,6 +111,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1011</itemId>
         <nameEN>FSK Caller ID Test</nameEN>
         <nameCH>来电显示(FSK)测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -111,6 +122,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1012</itemId>
         <nameEN>Other Test</nameEN>
         <nameCH>其他测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -121,6 +133,7 @@
         <permission></permission>
     </item>
     <item>
+        <itemId>1013</itemId>
         <nameEN>Printer Firmware Upgrade</nameEN>
         <nameCH>打印机固件升级</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
@@ -131,24 +144,26 @@
         <permission>android.permission.READ_EXTERNAL_STORAGE|android.permission.WRITE_EXTERNAL_STORAGE</permission>
     </item>
     <item>
-        <nameEN>System information</nameEN>
-        <nameCH>系统信息</nameCH>
-        <packageName>com.citaq.citaqfactory</packageName>
-        <className>com.citaq.citaqfactory.SysInfoActivity</className>
-        <position>110</position>
-        <color>1</color>
-        <show>true</show>
-        <permission>android.permission.READ_PHONE_STATE</permission>
-    </item>
-    <item>
+        <itemId>1014</itemId>
         <nameEN>Aging Test</nameEN>
         <nameCH>老化测试</nameCH>
         <packageName>com.citaq.citaqfactory</packageName>
         <className>com.citaq.citaqfactory.AgeingActivity</className>
-        <position>120</position>
+        <position>110</position>
         <color>1</color>
         <show>true</show>
         <permission></permission>
+    </item>
+    <item>
+        <itemId>1015</itemId>
+        <nameEN>System information</nameEN>
+        <nameCH>系统信息</nameCH>
+        <packageName>com.citaq.citaqfactory</packageName>
+        <className>com.citaq.citaqfactory.SysInfoActivity</className>
+        <position>120</position>
+        <color>1</color>
+        <show>true</show>
+        <permission>android.permission.READ_PHONE_STATE</permission>
     </item>
 
 

@@ -46,7 +46,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.citaq.util.InterAddressUtil;
+import com.citaq.util.NetworkUtil;
 import com.citaq.util.RAMandROMInfo;
 import com.citaq.util.ZXingUtil;
 
@@ -112,7 +112,7 @@ public class SysInfoActivity extends Activity {
 		tv_version_name = (TextView) findViewById(R.id.version_name);
 		iv_mac = (ImageView) findViewById(R.id.iv_mac);
 		
-		String mac = InterAddressUtil.getMacAddress();
+		String mac =  NetworkUtil.getEthMacAddress();
 		
 		if (mac !=null ){
 			tv_sys_net_meg.setText(mac);

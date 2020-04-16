@@ -281,7 +281,7 @@
     <string name="connect_appoint_network">connect given SSID</string>
     <string name="network_ping_result">Ping Result</string>
     <string name="network_not_connect">Network Not Connect</string>
-    <string name="network_msg"> "WiFi(dbm): \n 0 rssi &#60;=-100  1 (-100, -88] \n 2 (-88, -77]  3 (-66, -55] \n 4 rssi&#62;=-55"</string>
+    <string name="network_msg"> "WiFi(dbm): \n 0 rssi &#60;=-100 \n 1 (-100, -88] \n 2 (-88, -77] \n 3 (-66, -55] \n 4 rssi&#62;=-55"</string>
     <string name="network_wifi">WiFi </string>
     <string name="network_ethernet">Ethernet</string>
     <string name="network_mobile">MOBILE</string>
