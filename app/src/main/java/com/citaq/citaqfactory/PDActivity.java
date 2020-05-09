@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,7 +38,7 @@ public class PDActivity extends SerialPortActivity {
 
 	protected static final String PDCOMF15 = "/dev/ttyACM0";
 	protected static final String PDCOMH10 = "/dev/ttyS3";
-	private String[] mDevices;
+	private String[] mDevices = null;
 	Context mContext;
 	
 	private TextView tv_title;
@@ -127,11 +128,20 @@ public class PDActivity extends SerialPortActivity {
 	
 	private void initSerial(){
 		try {
-			if(getDevice().toString().contains(PDCOMF15)){
-				mSerialPort = mApplication.getCtmDisplaySerialPort2();
-			}else if(getDevice().toString().contains(PDCOMH10)){
-				mSerialPort = mApplication.getCtmDisplaySerialPort();
-			}else {
+			boolean hasPDSerial = false;
+			for(String str: getDevice()){
+				if (str.contains(PDCOMF15)){
+					hasPDSerial = true;
+					mSerialPort = mApplication.getCtmDisplaySerialPort2();
+					break;
+				}else if (str.contains(PDCOMH10)){
+					hasPDSerial = true;
+					mSerialPort = mApplication.getCtmDisplaySerialPort();
+					break;
+				}
+			}
+
+			if(!hasPDSerial){
 				DisplayError(R.string.error_unknown2);
 				return;
 			}
@@ -178,9 +188,7 @@ public class PDActivity extends SerialPortActivity {
 	}
 
 	private String[] getDevice() {
-
 		SerialPortFinder serialPortFinder = new SerialPortFinder();
-
 		// 设备
 		mDevices = serialPortFinder.getAllDevicesPath();
 		if (mDevices.length == 0) {
@@ -188,6 +196,7 @@ public class PDActivity extends SerialPortActivity {
 					getString(R.string.no_serial_device)
 			};
 		}
+
 		return mDevices;
 	}
 
