@@ -1,41 +1,27 @@
 package com.citaq.citaqfactory;
 
-import java.io.IOException;
-import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.citaq.citaqfactory.SerialPortActivity.ReadThread;
 import com.citaq.util.Command;
 import com.citaq.util.MainBoardUtil;
-import com.printer.util.CallbackUSB;
+import com.citaq.util.SerialPortManager;
 import com.printer.util.USBConnectUtil;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
-public class PrintMoreActivity extends SerialPortActivity{
+public class PrintMoreActivity extends Activity {
 	private static final String TAG  ="PrintActivityMore";
 	private Button btn_SetCodepage;
 	private Button btn_SetCharacterSet;
@@ -62,6 +48,8 @@ public class PrintMoreActivity extends SerialPortActivity{
 	final static int COUNTS = 20;// 点击次数
 	final static long DURATION = 10000;// 规定有效时间
 	long[] mHits = new long[COUNTS];
+
+	SerialPortManager mSerialPortManager = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +57,7 @@ public class PrintMoreActivity extends SerialPortActivity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_printmore);
-		
-		try {
-//			mSerialPort = mApplication.getSerialPort();
-			mSerialPort = mApplication.getPrintSerialPort();
-			mOutputStream = mSerialPort.getOutputStream();
-//			initInputStream();
-		} catch (SecurityException e) {
-			DisplayError(R.string.error_security);
-		} catch (IOException e) {
-			DisplayError(R.string.error_unknown);
-		} catch (InvalidParameterException e) {
-			DisplayError(R.string.error_configuration);
-		}
-		
+
 		initView();
 		
 		// now we olny want it to run in serial.
@@ -91,21 +66,19 @@ public class PrintMoreActivity extends SerialPortActivity{
 		
 		if(Print_type == 1){
 			initUSBConnect();
+		}else{
+			initSerial();
 		}
+	}
+
+	private void initSerial(){
+		mSerialPortManager = new SerialPortManager(this,SerialPortManager.PRINTSERIALPORT_TTYS1);
 	}
 	
 	private void initUSBConnect() {       // remember to destroyPrinter on
 		 mUSBConnectUtil = USBConnectUtil.getInstance();
 	    
 			
-	}
-	
-	private void initInputStream(){
-		mInputStream = mSerialPort.getInputStream();
-
-		/* Create a receiving thread */
-		mReadThread = new ReadThread();
-		mReadThread.start();
 	}
 	
 	private void initView(){
@@ -341,8 +314,8 @@ public class PrintMoreActivity extends SerialPortActivity{
 	private  boolean serialWrite(byte[] cmd){
     	boolean returnValue=true;
     	try{
-		
-			mOutputStream.write(cmd);
+
+			mSerialPortManager.write(cmd);
     	}
     	catch(Exception ex)
     	{
@@ -355,15 +328,16 @@ public class PrintMoreActivity extends SerialPortActivity{
 		return mUSBConnectUtil.sendMessageToPrint(cmd);
     }
 
-	@Override
-	protected void onDataReceived(final byte[] buffer, final int size) {
-	}
-	
 	 
 	 @Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+
+		 if(mUSBConnectUtil != null)
+			 mUSBConnectUtil.destroyPrinter();
+		 if(mSerialPortManager != null)
+			 mSerialPortManager.destroy();
 
 		Log.v(TAG, "onDestroy");
 	}

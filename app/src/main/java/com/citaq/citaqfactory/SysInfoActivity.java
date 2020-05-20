@@ -13,9 +13,11 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
@@ -46,6 +48,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.citaq.util.MainBoardUtil;
 import com.citaq.util.NetworkUtil;
 import com.citaq.util.RAMandROMInfo;
 import com.citaq.util.ZXingUtil;
@@ -686,36 +689,13 @@ public class SysInfoActivity extends Activity {
 //				startActivity(intent);
 
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {//26 8.0.0
-//					sendBroadcast(new Intent("android.intent.action.MASTER_CLEAR"));
 					intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
 					startActivity(intent);
 				} else {
-//					Bundle args = getArguments();
-//					boolean mEraseSdCard = args !=null && args.getBoolean("erase_sd");
-//					boolean mEraseEsims = args != null && args.getBoolean("erase_esim");
-//					intent = new Intent("android.intent.action.FACTORY_RESET");
-//					intent.setPackage("android");
-//					intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-//					intent.putExtra("android.intent.extra.REASON", "MasterClearConfirm");
-//					intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", mEraseSdCard);
-//					intent.putExtra("com.android.internal.intent.extra.WIPE_ESIMS", mEraseEsims);
-//					sendBroadcast(intent);
-//					doMasterClear();
-					Intent in = new Intent();
-					in.setClassName("com.android.settings", "com.android.settings.Settings$PrivacySettingsActivity");
-					startActivity(in);
+					if(MainBoardUtil.isRK3288()){
+						showConfirmDialog();
+					}
 				}
-				/*intent = new Intent(Intent.ACTION_MAIN);
-				        intent.setComponent( new ComponentName("com.android.settings", "com.android.settings.backup.BackupSettingsActivity"));
-				       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				        startActivity(intent);*/
-				 
-/*
-				         intent = new Intent("android.intent.action.FACTORY_RESET");
-				        intent.setPackage("android");
-				        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-				        intent.putExtra("android.intent.extra.REASON", "MasterClearConfirm");
-				        ctx.sendBroadcast(intent);*/
 				    
 				break;
 			case R.id.sys_settings:
@@ -727,15 +707,34 @@ public class SysInfoActivity extends Activity {
 			
 	};
 
+	/**
+	 *  dialog
+	 */
+	private void showConfirmDialog() {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle("Clear")
+				.setMessage("Erase all data(factory reset)").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						doMasterClear();
+					}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						dialogInterface.dismiss();
+					}
+				});
+		builder.create().show();
+	}
+
+	@SuppressLint("WrongConstant")
 	private void doMasterClear() {
-		Intent intent = new Intent("android.intent.action.FACTORY_RESET");
-		intent.setPackage("android");
+		//发送广播的代码：这句话（intent1.addFlags(0x01000000)）会有红色的波浪线提醒，按Alt + Enter 消除，会添加这句话。@SuppressLint("WrongConstant")
+		//给系统发送一个广播
+		Intent intent = new Intent("android.intent.action.MASTER_CLEAR");
 		intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-		intent.putExtra("android.intent.extra.REASON", "MasterClearConfirm");
-		intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", true);
-		intent.putExtra("com.android.internal.intent.extra.WIPE_ESIMS", true);
+		intent.addFlags(0x01000000); //FLAG_RECEIVER_INCLUDE_BACKGROUND
 		sendBroadcast(intent);
-		// Intent handling is asynchronous -- assume it will happen soon.
 	}
 
 	Dialog dialog = null;

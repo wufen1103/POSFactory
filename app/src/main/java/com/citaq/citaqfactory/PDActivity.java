@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -28,12 +29,14 @@ import android.widget.Toast;
 
 import com.citaq.util.Command;
 import com.citaq.util.MainBoardUtil;
+import com.citaq.util.SerialPortManager;
+import com.printer.util.CallbackSerial;
 import com.printer.util.CallbackUSB;
 import com.printer.util.USBConnectUtil;
 
 import android_serialport_api.SerialPortFinder;
 
-public class PDActivity extends SerialPortActivity {
+public class PDActivity extends Activity {
 	protected static final String TAG = "PDActivity";
 
 	protected static final String PDCOMF15 = "/dev/ttyACM0";
@@ -78,7 +81,7 @@ public class PDActivity extends SerialPortActivity {
 	LinearLayout layout_send1,layout_send2,layout_send3;
 	
 	USBConnectUtil mUSBConnectUtil = null;
-	
+	SerialPortManager mSerialPortManager = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +92,6 @@ public class PDActivity extends SerialPortActivity {
 		mContext =this;
 		initView();
 		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()) {
-			mOutputStream =null;
-
 			cmdPD2 = getResources().getStringArray(R.array.PD_cmd2);
 			cmdPD3 = getResources().getStringArray(R.array.PD_cmd3);
 //			pd_usb.setVisibility(View.INVISIBLE);
@@ -125,40 +126,40 @@ public class PDActivity extends SerialPortActivity {
 		}
 		return false;
 	}
-	
-	private void initSerial(){
-		try {
-			boolean hasPDSerial = false;
-			for(String str: getDevice()){
-				if (str.contains(PDCOMF15)){
-					hasPDSerial = true;
-					mSerialPort = mApplication.getCtmDisplaySerialPort2();
-					break;
-				}else if (str.contains(PDCOMH10)){
-					hasPDSerial = true;
-					mSerialPort = mApplication.getCtmDisplaySerialPort();
-					break;
-				}
+
+	private void initSerial() {
+		boolean hasPDSerial = false;
+		for (String str : getDevice()) {
+			if (str.contains(PDCOMF15)) {
+				hasPDSerial = true;
+				mSerialPortManager = new SerialPortManager(this, SerialPortManager.CTMDISPLAYSERIALPORT_TTYACM0);
+				break;
+			} else if (str.contains(PDCOMH10)) {
+				hasPDSerial = true;
+				mSerialPortManager = new SerialPortManager(this, SerialPortManager.CTMDISPLAYSERIALPORT_TTYS3);
+				break;
 			}
-
-			if(!hasPDSerial){
-				DisplayError(R.string.error_unknown2);
-				return;
-			}
-
-			mOutputStream = mSerialPort.getOutputStream();
-			mInputStream = mSerialPort.getInputStream();
-
-			/* Create a receiving thread */
-			mReadThread = new ReadThread();
-			mReadThread.start();
-		} catch (SecurityException e) {
-			DisplayError(R.string.error_security);
-		} catch (IOException e) {
-			DisplayError(R.string.error_unknown);
-		} catch (InvalidParameterException e) {
-			DisplayError(R.string.error_configuration);
 		}
+
+		if (!hasPDSerial) {
+			mSerialPortManager.DisplayError(R.string.error_unknown2);
+			return;
+		}
+
+		mSerialPortManager.setCallback(new CallbackSerial() {
+			@Override
+			public void onDataReceived(final byte[] buffer, final int size) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if (tv_recevice != null) {
+							tv_recevice.append(new String(buffer, 0, size));
+						}
+					}
+				});
+			}
+		});
+
+
 	}
 	
 	private void initUSBConnect() {       // remember to destroyPrinter on
@@ -228,6 +229,8 @@ public class PDActivity extends SerialPortActivity {
 			}
 		}
 
+		if(mSerialPortManager != null)
+			mSerialPortManager.destroy();
 
 		Log.v(TAG, "onDestroy");
 
@@ -298,7 +301,10 @@ public class PDActivity extends SerialPortActivity {
 		
 		//
 		spinner_cmd = (Spinner) findViewById(R.id.spinner_cmd);
-		int pd_command = cmdPD2.length == 0 ? R.array.PD_cmd:  R.array.PD_cmd2; //MainBoardUtil.isRK3288() cmdPD2.length == 0 is false
+		int pd_command = R.array.PD_cmd;
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()) {
+			pd_command = R.array.PD_cmd2;
+		}
 		adapter_cmd=ArrayAdapter.createFromResource(this, pd_command, android.R.layout.simple_spinner_item);
 		adapter_cmd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_cmd.setAdapter(adapter_cmd);
@@ -570,8 +576,8 @@ public class PDActivity extends SerialPortActivity {
 	private  boolean serialWrite1(byte[] cmd){
     	boolean returnValue=true;
     	try{
-		
-			mOutputStream.write(cmd);
+
+			mSerialPortManager.write(cmd);
     	}
     	catch(Exception ex)
     	{
@@ -579,18 +585,6 @@ public class PDActivity extends SerialPortActivity {
     	}
     	return returnValue;
     }
-
-	@Override
-	protected void onDataReceived(final byte[] buffer, final int size) {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				if (tv_recevice != null) {
-					tv_recevice.append(new String(buffer, 0, size));
-				}
-			}
-		});
-
-	}
 
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {

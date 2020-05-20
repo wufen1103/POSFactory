@@ -1,14 +1,13 @@
 package com.citaq.citaqfactory;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import com.citaq.util.CitaqBuildConfig;
 import com.citaq.util.Command;
 import com.citaq.util.HttpUtil;
 import com.citaq.util.MainBoardUtil;
+import com.citaq.util.SerialPortManager;
 import com.citaq.util.SharePreferencesHelper;
 import com.citaq.util.SharePreferencesHelper.ContentValue;
 import com.citaq.util.SoundManager;
@@ -17,6 +16,7 @@ import com.citaq.util.ThreadPoolManager;
 import com.printer.util.CallbackUSB;
 import com.printer.util.USBConnectUtil;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -38,7 +38,7 @@ import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-public class AgeingActivity extends SerialPortActivity {
+public class AgeingActivity extends Activity {
 	protected static final String TAG = "AgeingActivity";
 	
 	protected static final String TAG_HASEXTERNALVIDEO = "hasExternalVideo";
@@ -99,6 +99,8 @@ public class AgeingActivity extends SerialPortActivity {
 	
 	////////////////
 	USBConnectUtil mUSBConnectUtil = null;
+
+	SerialPortManager mSerialPortManager = null;
 	
     private String videoName ="Video_Test";
     private String mVideoUriPath = "http://oleeed73x.bkt.clouddn.com/me.mp4";
@@ -138,22 +140,7 @@ public class AgeingActivity extends SerialPortActivity {
 	}
 	
 	private void initSerial(){
-		try {
-			// mSerialPort = mApplication.getSerialPort();
-			mSerialPort = mApplication.getPrintSerialPort();
-			mOutputStream = mSerialPort.getOutputStream();
-			mInputStream = mSerialPort.getInputStream();
-
-			/* Create a receiving thread */
-		//	mReadThread = new ReadThread();
-		//	mReadThread.start();
-		} catch (SecurityException e) {
-			DisplayError(R.string.error_security);
-		} catch (IOException e) {
-			DisplayError(R.string.error_unknown);
-		} catch (InvalidParameterException e) {
-			DisplayError(R.string.error_configuration);
-		}
+		mSerialPortManager = new SerialPortManager(this,SerialPortManager.PRINTSERIALPORT_TTYS1);
 	}
 
 	private void initView() {	
@@ -491,17 +478,12 @@ public class AgeingActivity extends SerialPortActivity {
     	
     }
 
-	@Override
-	protected void onDataReceived(byte[] buffer, int size) {
-		// TODO Auto-generated method stub
-
-	}
 
 	private boolean serialWrite(byte[] cmd) {
 		boolean returnValue = true;
 		try {
 
-			mOutputStream.write(cmd);
+			mSerialPortManager.write(cmd);
 		} catch (Exception ex) {
 			returnValue = false;
 		}
@@ -662,5 +644,8 @@ public class AgeingActivity extends SerialPortActivity {
 		
 		if(mUSBConnectUtil != null)
 			mUSBConnectUtil.destroyPrinter();
+
+		 if(mSerialPortManager != null)
+			 mSerialPortManager.destroy();
 	}
 }

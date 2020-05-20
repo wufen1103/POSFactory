@@ -1,5 +1,6 @@
 package com.citaq.citaqfactory;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +11,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.citaq.util.SerialPortManager;
 import com.citaq.util.ShellUtils;
+import com.printer.util.CallbackSerial;
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
 
 import android_serialport_api.SerialPortFinder;
 
-public class SerialToolActivity extends SerialPortActivity {
+public class SerialToolActivity extends Activity {
     protected static final String TAG = "SerialToolActivity";
 
     private Spinner spinner_devices,spinner_baudrates;
@@ -31,6 +33,8 @@ public class SerialToolActivity extends SerialPortActivity {
     private String[] mDevices;
     private String[] mBaudrates;
     ShellUtils mShellUtils;
+    SerialPortManager mSerialPortManager = null;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,6 @@ public class SerialToolActivity extends SerialPortActivity {
 
         initView();
         initSerial();
-        initInputStream();
 
         try {
            Runtime.getRuntime().exec("cat /dev/ttyS1");
@@ -117,18 +120,23 @@ public class SerialToolActivity extends SerialPortActivity {
     }
 
     private void initSerial(){
-        try {
-           mSerialPort = mApplication.getttyS3();
-           mOutputStream = mSerialPort.getOutputStream();
+        mSerialPortManager = new SerialPortManager(this,SerialPortManager.SERIALPORT_TTYS3);
+        mSerialPortManager.setCallback(new CallbackSerial() {
+            @Override
+            public void onDataReceived(final byte[] buffer, final int size) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        for(int i = 0; i < size; i++){
+                            String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
+//                        tv_receive.append(s + ' ');
 
-        } catch (SecurityException e) {
-            DisplayError(R.string.error_security);
-        } catch (IOException e) {
-            DisplayError(R.string.error_unknown);
-        } catch (InvalidParameterException e) {
-            DisplayError(R.string.error_configuration);
-        }
+                        }
+                        tv_receive.append(new String(buffer) + '\n');
+                    }
 
+                });
+            }
+        });
     }
 
     /**
@@ -148,18 +156,12 @@ public class SerialToolActivity extends SerialPortActivity {
        return mDevices;
     }
 
-    private void initInputStream(){
-        mInputStream = mSerialPort.getInputStream();
-        /* Create a receiving thread */
-        mReadThread = new ReadThread();
-        mReadThread.start();
-    }
 
     private  boolean serialWrite(byte[] cmd){
         boolean returnValue=true;
         try{
 
-            mOutputStream.write(cmd);
+            mSerialPortManager.write(cmd);
         }
         catch(Exception ex)
         {
@@ -172,7 +174,7 @@ public class SerialToolActivity extends SerialPortActivity {
 
             try{
 
-                mOutputStream.write(cmd);
+                mSerialPortManager.write(cmd);
             }
             catch(Exception e)
             {
@@ -184,20 +186,12 @@ public class SerialToolActivity extends SerialPortActivity {
         return returnValue;
     }
 
-
     @Override
-    protected void onDataReceived(final byte[] buffer, final int size) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-					for(int i = 0; i < size; i++){
-						String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
-//                        tv_receive.append(s + ' ');
+    protected void onDestroy() {
+        super.onDestroy();
 
-					}
-                    tv_receive.append(new String(buffer) + '\n');
-            }
+        if(mSerialPortManager != null)
+            mSerialPortManager.destroy();
 
-        });
     }
-
 }

@@ -1,15 +1,7 @@
 package com.citaq.citaqfactory;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,12 +26,23 @@ import android.widget.Toast;
 import com.citaq.util.BitmapUtil;
 import com.citaq.util.Command;
 import com.citaq.util.MainBoardUtil;
+import com.citaq.util.SerialPortManager;
+import com.printer.util.CallbackSerial;
 import com.printer.util.CallbackUSB;
 import com.printer.util.DataQueue;
 import com.printer.util.USBConnectUtil;
 
-public class PrintActivity extends SerialPortActivity{
-	private static final String TAG  ="PrintActivity";
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+public class PrintActivity extends Activity {
+	private static final String TAG  ="PrintActivity2";
 	
 	Context mContext;
 	
@@ -50,13 +53,6 @@ public class PrintActivity extends SerialPortActivity{
 	private Button btn_Printdemo;
 	private Button btn_OpenPicture;
 	private Button btn_PrintPicture;
-//	private Button btn_SetCodepage;
-//	private Button btn_SetCharacterSet;
-//	private Button btn_SetResidentCharacterSet;
-//	private Button btn_EnableChinese;
-//	private Button btn_DisableChinese;
-//	private Button btn_EnableBuzzer;
-//	private Button btn_DisableBuzzer;
 	
 	private EditText et_cmd;
 	private Button btn_cmd;
@@ -78,6 +74,8 @@ public class PrintActivity extends SerialPortActivity{
 	
 	////////////////
 	USBConnectUtil mUSBConnectUtil = null;
+
+	SerialPortManager mSerialPortManager = null;
 	
 	private ArrayAdapter<?> adapter_type, adapter_cmd;
 	
@@ -123,23 +121,46 @@ public class PrintActivity extends SerialPortActivity{
 	}
 	
 	private void initSerial(){
-		try {
-//			mSerialPort = mApplication.getSerialPort();
-			mSerialPort = mApplication.getPrintSerialPort();
-			mOutputStream = mSerialPort.getOutputStream();
-//			mInputStream = mSerialPort.getInputStream();
-//
-//			/* Create a receiving thread */
-//			mReadThread = new ReadThread();
-//			mReadThread.start();
-		} catch (SecurityException e) {
-			DisplayError(R.string.error_security);
-		} catch (IOException e) {
-			DisplayError(R.string.error_unknown);
-		} catch (InvalidParameterException e) {
-			DisplayError(R.string.error_configuration);
-		}	
-		
+		mSerialPortManager = new SerialPortManager(this,SerialPortManager.PRINTSERIALPORT_TTYS1);
+		mSerialPortManager.setCallback(new CallbackSerial() {
+			@Override
+			public void onDataReceived(final byte[] buffer, final int size) {
+				if(mCurrentBt == R.id.btn_getprintstatus){
+					runOnUiThread(new Runnable() {
+						public void run() {
+					/*for(int i = 0; i < size; i++){
+							String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
+							tv_Reception.append(s + ' ');
+					}*/
+							if(size > 0){
+								String debstr;
+								debstr = "Rec " + size + " bytes(Serial):   ";
+								for (int i = 0; i < size; i++) {
+									String s;
+									if(buffer[i] < 0){
+										s = Integer.toHexString(256 + buffer[i]);//String.valueOf(((char)buffer[i]));
+									}
+									else {
+										s = Integer.toHexString(buffer[i]);//String.valueOf(((char)buffer[i]));
+									}
+
+									if(s.length() < 2){
+										s = "0x0" + s + ',';
+									}else{
+										s = "0x" + s + ',';
+									}
+									debstr += s;
+								}
+								debstr += "\r\n";
+								System.out.println(debstr);
+								tv_Reception.append(debstr);
+							}
+						}
+
+					});
+				}
+			}
+		});
 	}
 	
 	private void initUSBConnect() {       // remember to destroyPrinter on
@@ -173,18 +194,6 @@ public class PrintActivity extends SerialPortActivity{
 			
 	}
 	
-	private void initInputStream(){
-			mInputStream = mSerialPort.getInputStream();
-
-		/* Create a receiving thread */
-		
-			if(mReadThread == null){
-				mReadThread = new ReadThread();
-				mReadThread.start();
-			}
-		
-	}
-	
 	private void initView(){
 		btn_Opencash = (Button) findViewById(R.id.btn_opencash);
 		btn_Opencash.setOnClickListener(SendPrintListener);
@@ -211,7 +220,6 @@ public class PrintActivity extends SerialPortActivity{
 		btn_cmd = (Button) findViewById(R.id.btn_cmd);
 		btn_cmd.setOnClickListener(SendPrintListener);
 
-		
 		bt_More = (Button) findViewById(R.id.bt_more);
 		bt_More.setOnClickListener(SendPrintListener);
 		
@@ -340,7 +348,6 @@ public class PrintActivity extends SerialPortActivity{
 				printerWrite(Command.cutPaper);
 				break;
 			case R.id.btn_getprintstatus:
-				initInputStream();
 				printerWrite(Command.printStatus);
 				break;
 			case R.id.btn_printtest:
@@ -446,8 +453,8 @@ public class PrintActivity extends SerialPortActivity{
 	private  boolean serialWrite(byte[] cmd){
     	boolean returnValue=true;
     	try{
-		
-			mOutputStream.write(cmd);
+
+			mSerialPortManager.write(cmd);
     	}
     	catch(Exception ex)
     	{
@@ -459,8 +466,8 @@ public class PrintActivity extends SerialPortActivity{
     		initSerial();
     		
     		try{
-    			
-    			mOutputStream.write(cmd);
+
+				mSerialPortManager.write(cmd);
         	}
         	catch(Exception e)
         	{
@@ -485,45 +492,6 @@ public class PrintActivity extends SerialPortActivity{
         return false;  
     }  
 
-	@Override
-	protected void onDataReceived(final byte[] buffer, final int size) {
-		if(mCurrentBt == R.id.btn_getprintstatus){
-			runOnUiThread(new Runnable() {
-				public void run() {
-					/*for(int i = 0; i < size; i++){
-							String s = Integer.toHexString((int)buffer[i]);//String.valueOf(((char)buffer[i]));
-							tv_Reception.append(s + ' ');
-					}*/
-					if(size > 0){
-	                    String debstr;
-	                    debstr = "Rec " + size + " bytes(Serial):   ";
-	                    for (int i = 0; i < size; i++) {
-	                        String s;
-	                        if(buffer[i] < 0){
-	                            s = Integer.toHexString(256 + buffer[i]);//String.valueOf(((char)buffer[i]));
-	                        }
-	                        else {
-	                            s = Integer.toHexString(buffer[i]);//String.valueOf(((char)buffer[i]));
-	                        }
-
-	                        if(s.length() < 2){
-	                            s = "0x0" + s + ',';
-	                        }else{
-	                            s = "0x" + s + ',';
-	                        }
-	                        debstr += s;
-	                    }
-	                    debstr += "\r\n";
-	                    System.out.println(debstr);
-	                    tv_Reception.append(debstr);
-	                }
-				}
-				
-			});
-		}
-		
-	}
-	
 	
 	public class SendThread extends Thread {  
 		DataQueue list = new DataQueue();  
@@ -655,6 +623,8 @@ public class PrintActivity extends SerialPortActivity{
 		super.onDestroy();
 		if(mUSBConnectUtil != null)
 			mUSBConnectUtil.destroyPrinter();
+		if(mSerialPortManager != null)
+			mSerialPortManager.destroy();
 		
 		mSendThread.stopRun();
 		mSendThread = null;

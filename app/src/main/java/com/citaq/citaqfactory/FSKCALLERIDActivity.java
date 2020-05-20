@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,9 +20,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.citaq.util.FSKUtil;
+import com.citaq.util.SerialPortManager;
+import com.printer.util.CallbackSerial;
 
 
-public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickListener{
+public class FSKCALLERIDActivity extends Activity implements OnClickListener{
 	public final int PACKET_TIMEOUT = 1;
 	protected InputStream mInputStream = null;
 	protected ReadThreadCaller mReadThreadCaller = null;
@@ -42,6 +45,8 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 	boolean auto = false;
 
 	FSKUtil mFSKUtil ;
+
+	SerialPortManager mSerialPortManager = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +86,17 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 				}
 			}
 		});
-		
 
-		if( initSerial()){	
+		initSerial();
+		if( mSerialPortManager.getInitState()){
 			tvStatus.setText(R.string.listening);
 			startread();
+			mSerialPortManager.setCallback(new CallbackSerial() {
+				@Override
+				public void onDataReceived(byte[] buffer, int size) {
+
+				}
+			});
 		}else{
 			info.setText(R.string.failed);
 			tvStatus.setText(R.string.failed);
@@ -95,26 +106,17 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 		 
 	}
 	
-	private boolean initSerial(){
-		try {
-			mSerialPort = mApplication.getCtmDisplaySerialPort();
-			mOutputStream = mSerialPort.getOutputStream();
-			mInputStream = mSerialPort.getInputStream();
-			return true;
-		} catch (SecurityException e) {
-			DisplayError(R.string.error_security);
-		} catch (IOException e) {
-			DisplayError(R.string.error_unknown);
-		} catch (InvalidParameterException e) {
-			DisplayError(R.string.error_configuration);
-		}	
-		return false;
+	private void initSerial(){
+		mSerialPortManager = new SerialPortManager(this,SerialPortManager.CTMDISPLAYSERIALPORT_TTYS3);
 	}
 	
 	@Override
 	protected void onDestroy() {
 		stopreadcaller();
 		System.out.println("onDestroy.");
+
+		if(mSerialPortManager != null)
+			mSerialPortManager.destroy();
 		super.onDestroy();
 	}
 
@@ -142,24 +144,16 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			if(mOutputStream == null) return;
+			if(mSerialPortManager == null) return;
 			
 			switch (msg.what) {
 			case 1001:
-				try {
-					mOutputStream.write(cmd);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				mSerialPortManager.write(cmd);
+
 				break;
 			case 1002:
-				try {
-					mOutputStream.write(cmd);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				mSerialPortManager.write(cmd);
+
 				handler.sendEmptyMessageDelayed(1002,1000 * 30);
 				break;
 			case 1003:
@@ -464,16 +458,6 @@ public class FSKCALLERIDActivity extends SerialPortActivity implements OnClickLi
     	
   //开启读取线程
 	private void startread(){
-		if(mInputStream == null){
-			try {
-				mInputStream = mSerialPort.getInputStream();
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 		isStop = false;
 //		foundFSK = false;
 		for(int i=0; i<64; i++){
