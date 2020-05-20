@@ -39,6 +39,7 @@ public class BluetoothActivity extends Activity {
         setContentView(R.layout.activity_bluetooth);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        default_bluetoothstate = getBlueToothState();
 
         tb_bluetooth = findViewById(R.id.tb_bluetooth);
         tv_show = findViewById(R.id.tv_show);
@@ -105,7 +106,7 @@ public class BluetoothActivity extends Activity {
         mFoundReceiver = new FoundReceiver();
         registerReceiver(mFoundReceiver, mIntentFilter);
 
-        default_bluetoothstate = getBlueToothState();
+//        default_bluetoothstate = getBlueToothState();
 //        if(default_bluetoothstate){
             tb_bluetooth.setChecked(true);
             startBlueToothDiscovery();
