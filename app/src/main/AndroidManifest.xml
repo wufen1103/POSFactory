@@ -62,7 +62,8 @@
             
         </activity>
         <activity
-            android:name=".MainActivity3">
+            android:name=".MainActivity3"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale|screenLayout|mcc|mnc">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -110,7 +111,8 @@
         </activity>
         <activity android:name=".AgeingActivity"  >
         </activity>
-        <activity android:name=".VideoAcivity"  >
+        <activity android:name=".VideoAcivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale|screenLayout|mcc|mnc">
         </activity>
          <activity android:name=".FSKCALLERIDActivity"  >
         </activity>
