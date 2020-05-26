@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -256,19 +257,31 @@ public class SysInfoActivity extends Activity {
 		
 		return serial;
 	}
-	
+
+	@SuppressLint("MissingPermission")
 	private String getICCID(){
-		 TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-	     @SuppressLint("MissingPermission")
-		 String iccid =tm.getSimSerialNumber();  //取出ICCID
-	     return iccid;
+		try {
+			 TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+			 String iccid =tm.getSimSerialNumber();  //取出ICCID
+			 return iccid;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return null;
 	}
-	
+
 	@SuppressLint("MissingPermission")
 	public String getIMEI() {
+		try {
+	    	return ((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+		} catch (Exception e) {
 
-	    return ((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+			e.printStackTrace();
 
+		}
+		return null;
 	}
 	
 	private String getProductName() {

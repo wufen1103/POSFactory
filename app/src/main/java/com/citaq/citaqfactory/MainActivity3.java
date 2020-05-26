@@ -62,14 +62,23 @@ public class MainActivity3 extends Activity {
 
 				permission = ((ViewHolderMetro)view.getTag()).permission;
 
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permission != null && !"".equals(permission) ){
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && permission != null && !"".equals(permission) ){
 					String[] strarr = permission.split("\\|");
 					if (strarr.length>0){
 						PermissionUtil.checkAndRequestPermissions(MainActivity3.this, strarr);
 						return;
 					}
 				}
-				mContext.startActivity(mIntent);
+				//android 6.0  android.permission.READ_PHONE_STATE 需要申请权限，其他不用
+				if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M && permission != null && "android.permission.READ_PHONE_STATE".equals(permission) ){
+					String[] strarr = permission.split("\\|");
+					if (strarr.length>0){
+						PermissionUtil.checkAndRequestPermissions(MainActivity3.this, strarr);
+						return;
+					}
+				}else {
+					mContext.startActivity(mIntent);
+				}
 			}
 
 		});
