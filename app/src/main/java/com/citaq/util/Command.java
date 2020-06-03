@@ -998,4 +998,41 @@ public class Command {
 		}
 		return dataArray;
 	}
+
+	//QR
+	/*
+	 * 函数名：getQRCmd
+	 * 参   数：String QR_DEMO_DATA
+	 * 作   用：实现字符串转换为QR打印数据
+	 */
+	public static byte[] getQRCmd (String QR_DEMO_DATA) {
+		byte[] QR_DEMO_START = new byte[]{0x1D,0x28,0x6B,0x03,0x00,0x31,0x45,0x33,0x1D,0x28,0x6B};//设置纠错等级
+		byte[] QR_DEMO_PARA = new byte[]{0x31,0x50,0x30};
+		byte[] QR_DEMO_PRINT = new byte[]{0x1D,0x28,0x6B,0x03,0x00,0x31,0x51,0x30};
+
+		int  length =QR_DEMO_START.length + 2 + QR_DEMO_PARA.length + QR_DEMO_DATA.length() +QR_DEMO_PRINT.length + 1;
+		byte[] arrayOfByte = new byte[length];
+
+		int iNum = 0;
+		System.arraycopy(QR_DEMO_START, 0, arrayOfByte, iNum, QR_DEMO_START.length);
+
+		iNum += QR_DEMO_START.length;
+
+		int len = 3 + QR_DEMO_DATA.length();
+		arrayOfByte[iNum] = (byte) (len & 0xFF);//取低八位
+		arrayOfByte[iNum+1] = (byte) ((len>>8) & 0xFF);//取高八位
+
+		iNum += 2;
+
+		System.arraycopy(QR_DEMO_PARA, 0, arrayOfByte, iNum, QR_DEMO_PARA.length);
+		iNum = iNum + QR_DEMO_PARA.length;
+		System.arraycopy(QR_DEMO_DATA.getBytes(), 0, arrayOfByte, iNum, QR_DEMO_DATA.getBytes().length);
+		iNum = iNum + QR_DEMO_DATA.length();
+
+		System.arraycopy(QR_DEMO_PRINT, 0, arrayOfByte, iNum, QR_DEMO_PRINT.length);
+		arrayOfByte[arrayOfByte.length-1] = 0x0A;
+		return arrayOfByte;
+	}
+
+
 }

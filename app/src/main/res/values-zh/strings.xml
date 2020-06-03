@@ -23,6 +23,7 @@
     <string name="btnstr_getstatus">获得打印机状态</string>
     <string name="btnstr_printtest">打印自检页</string>
     <string name="btnstr_printdemo">打印小票</string>
+    <string name="btnstr_printqr">打印 QR</string>
     <string name="btnstr_opencash">打开钱箱</string>
     <string name="btnstr_opencash_gpio">打开钱箱(GPIO)</string>
     <string name="btnstr_cutpaper">打印机切纸</string>

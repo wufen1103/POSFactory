@@ -51,6 +51,7 @@ public class PrintActivity extends Activity {
 	private Button btn_GetprintStatus;
 	private Button btn_Printtest;
 	private Button btn_Printdemo;
+	private Button btn_PrintQR;
 	private Button btn_OpenPicture;
 	private Button btn_PrintPicture;
 	
@@ -209,6 +210,9 @@ public class PrintActivity extends Activity {
 		
 		btn_Printdemo = (Button) findViewById(R.id.btn_printdemo);
 		btn_Printdemo.setOnClickListener(SendPrintListener);
+
+		btn_PrintQR = (Button) findViewById(R.id.btn_printQR);
+		btn_PrintQR.setOnClickListener(SendPrintListener);
 		
 		btn_OpenPicture = (Button) findViewById(R.id.btn_openPicture);
 		btn_OpenPicture.setOnClickListener(SendPrintListener);
@@ -365,7 +369,9 @@ public class PrintActivity extends Activity {
 					printerWrite(Command.getPrintDemo());
 				}
 				break;
-			
+				case R.id.btn_printQR:
+					printerWrite(Command.getQRCmd("Thank you for using CITAQ printer!"));
+					break;
 			case R.id.btn_openPicture:
 				mBitmap = null;
 				
