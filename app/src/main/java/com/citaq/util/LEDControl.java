@@ -1,5 +1,7 @@
 package com.citaq.util;
 
+import android.os.Build;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,6 +85,9 @@ public class LEDControl extends Thread {
     ///////////////RK3368///////////////////////////
     private static String RedLightFileName_3368 = "/sys/class/gpio/gpio124/value";
 	private static String BlueLightFileName_3368 = "/sys/class/gpio/gpio106/value";
+	///////////////RK3368///////////////////////////
+	private static String RedLightFileName_3368_android8_1 = "/sys/class/gpio/gpio1124/value";
+	private static String BlueLightFileName_3368_android8_1 = "/sys/class/gpio/gpio1106/value";
 	
 
 	public static int TurnRedLedOnoff(String onff, String fileName)
@@ -202,6 +207,21 @@ public class LEDControl extends Thread {
 			if(isOn !=isRedLightOn()){
 				getPosCtrl().trunOnoffRedlight(isOn);
 			}
+		}else if(MainBoardUtil.isRK3368() && Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1){
+			if(isOn == true)
+			{
+				if(isLightOn(RedLightFileName_3368_android8_1).contains("0"))
+				{
+					TurnRedLedOnoff("1",RedLightFileName_3368_android8_1);
+				}
+			}
+			else
+			{
+				if(isLightOn(RedLightFileName_3368_android8_1).contains("1"))
+				{
+					TurnRedLedOnoff("0",RedLightFileName_3368_android8_1);
+				}
+			}
 		}else if(MainBoardUtil.isRK3368()){
 			if(isOn == true)
 			{
@@ -240,6 +260,21 @@ public class LEDControl extends Thread {
 		}else if(MainBoardUtil.isMSM8625Q()){
 			if(isOn !=isBlueLightOn()){
 				getPosCtrl().trunOnoffYellowlight(isOn);
+			}
+		}else if(MainBoardUtil.isRK3368() && Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1){
+			if(isOn == true)
+			{
+				if(isLightOn(BlueLightFileName_3368_android8_1).contains("0"))
+				{
+					TurnBlueLedOnoff("1",BlueLightFileName_3368_android8_1);
+				}
+			}
+			else
+			{
+				if(isLightOn(BlueLightFileName_3368_android8_1).contains("1"))
+				{
+					TurnBlueLedOnoff("0",BlueLightFileName_3368_android8_1);
+				}
 			}
 		}else if(MainBoardUtil.isRK3368()){
 			if(isOn == true)

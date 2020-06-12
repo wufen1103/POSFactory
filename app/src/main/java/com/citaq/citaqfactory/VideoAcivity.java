@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.citaq.util.SoundManager;
+
 
 public class VideoAcivity extends Activity {
 
@@ -69,6 +71,7 @@ public class VideoAcivity extends Activity {
         setContentView(R.layout.activity_video);
 
 //        hideNavigationBar();
+//        android.os.Debug.waitForDebugger();
 
         context = this;
         Intent intent = getIntent();
@@ -189,6 +192,8 @@ public class VideoAcivity extends Activity {
                         count = count - 1;
                         tv_count.setText(count + " s");
                         mhandler.sendEmptyMessageDelayed(0, 1000);
+                       /* if(min_old * 60 - count == 14)  //运行了14s 响一下 count = 0.8*60  -13 = 34
+                            SoundManager.playSound(0, 1);*/
 
                         break;
                     case 1:

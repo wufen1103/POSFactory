@@ -46,6 +46,7 @@ public class MainBoardUtil {
                 //
                 ex.printStackTrace();
         }
+//		return "RK3368";
         return hardware;
     }
 	
@@ -82,6 +83,13 @@ public class MainBoardUtil {
 	
 	public static boolean isRK3288() {
 		if(getCpuHardware().contains(MainBoardUtil.RK3288)){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isRK3368_8_1() {
+		if(getCpuHardware().equals("")){
 			return true;
 		}
 		return false;
