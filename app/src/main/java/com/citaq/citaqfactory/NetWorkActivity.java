@@ -3,6 +3,7 @@ package com.citaq.citaqfactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
@@ -236,7 +237,13 @@ public class NetWorkActivity extends Activity {
 		tv_network_mac = (TextView) findViewById(R.id.tv_network_mac);
 
 		tv_network_mac.setText("eth0 mac: " + NetworkUtil.getEthMacAddress() + "\nwlan0 mac: " + NetworkUtil.getWifiMacAddress());
-		
+		//for test
+		/*try {
+			NetworkUtil.macAddress() ;
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}*/
+
 		adapter_time= ArrayAdapter.createFromResource(this, R.array.ping_time, android.R.layout.simple_spinner_item);
 		adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_time_count.setAdapter(adapter_time);

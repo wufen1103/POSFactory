@@ -31,6 +31,12 @@
 	    android:textColor="@android:color/black"
 	    android:textSize="@dimen/tx_size_20">
 	</EditText>
+	<!--<EditText
+		android:id="@+id/TVTTYS2Reception"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/tx_size_18"
+		/>-->
 	
 	
 

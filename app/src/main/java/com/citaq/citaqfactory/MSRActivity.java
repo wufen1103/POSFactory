@@ -38,8 +38,8 @@ public class MSRActivity extends Activity {
 
 		}else {
 
-			tv_received.setInputType(InputType.TYPE_NULL);
-			initSerial();
+			/*tv_received.setInputType(InputType.TYPE_NULL);
+			initSerial();*/
 		}
 
 	}
