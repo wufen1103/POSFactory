@@ -116,7 +116,9 @@
         </activity>
          <activity android:name=".FSKCALLERIDActivity"  >
         </activity>
-        
+        <activity android:name=".PresentationTestActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
         <!--  The value must be an integer, such as "100".
          Higher numbers have a higher priority. The default value is 0. The value must be greater than -1000 and less than 1000. 
          /设置为1000是指线程优先级最高，同时适用于广播-->

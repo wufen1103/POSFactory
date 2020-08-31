@@ -13,7 +13,7 @@ android {
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
         versionCode 1
-        versionName "3.0.0_Build_4efe"
+        versionName "3.0.0_Build_0b8f"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,8 +41,8 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            def date = new Date().format("yyyyMMdd" , TimeZone.getTimeZone("GMT+08"))
-            outputFileName = rootProject.getName() +"-"+defaultConfig.versionName + "-${variant.name}-${date}.apk"
+            def date = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
+            outputFileName = rootProject.getName() + "-" + defaultConfig.versionName + "-${variant.name}-${date}.apk"
         }
     }
 }

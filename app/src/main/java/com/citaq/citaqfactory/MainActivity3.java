@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,8 +36,8 @@ public class MainActivity3 extends Activity {
 	Intent mIntent;
 	String permission;
 
-	private int[] metroIgnoreList1 ={1001}; //3288 LED Test
-	private int[] metroIgnoreList2 ={1010,1012,1013}; //3368 Serial test , Other Test , Printer Firmware Upgrade ,
+	private int[] metroIgnoreList1 ={1010}; //3288 LED Test
+	private int[] metroIgnoreList2 ={1100,1120,1130}; //3368 Serial test , Other Test , Printer Firmware Upgrade ,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -344,6 +344,8 @@
     <string name="str_leave_dfu">Leave DFU mode</string>
     <string name="str_selfprint">Self Print</string>
 
+    <string name="str_clickme">"Click me"</string>
+
     <string-array name="ping_time">
         <item>10</item>
         <item>12 </item>

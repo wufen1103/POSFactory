@@ -125,7 +125,7 @@ public class MainActivity2 extends Activity {
 		});
 		
 		
-/*		Display[]  displays;//屏幕数组
+		Display[]  displays;//屏幕数组
 
 		DisplayManager mDisplayManager = (DisplayManager)mContext.getSystemService(Context.DISPLAY_SERVICE);
 
@@ -133,11 +133,14 @@ public class MainActivity2 extends Activity {
 	    
 	    DifferentDislay  mPresentation =new DifferentDislay (getApplicationContext(),displays[1]);//displays[1]是副屏
 
-	    mPresentation.getWindow().setType(
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0+
+			mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+		}else {
+			mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		}
+	   // mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 
-	    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-
-	    mPresentation.show();*/
+	    mPresentation.show();
 	    
 	   
 	    
@@ -204,6 +207,14 @@ public class MainActivity2 extends Activity {
 			 super.onCreate(savedInstanceState);
 
 			 setContentView(R.layout.activity_print);
+
+			 Button btn_Printdemo = (Button) findViewById(R.id.btn_printdemo);
+			 btn_Printdemo.setOnClickListener(new View.OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 Toast.makeText(mContext, "打印小票按钮被点击！！", Toast.LENGTH_SHORT).show();
+				 }
+			 });
 		 }
 	 }
 
