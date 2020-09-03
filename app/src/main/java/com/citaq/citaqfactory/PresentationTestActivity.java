@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -73,9 +74,9 @@ public class PresentationTestActivity extends FullActivity
         this.setContentView(touchView);
         initView(); //
 
-
         dubleShow();
     }
+
 
     private void initView(){
         btnClear=(ImageView)this.findViewById(R.id.button_clear);
@@ -129,7 +130,6 @@ public class PresentationTestActivity extends FullActivity
         super.onPause();
     }
 
-
     @Override
     public void onClick(View v) {
         SoundManager.playSound(0, 1);
@@ -155,15 +155,11 @@ public class PresentationTestActivity extends FullActivity
 
     }
 
-
-
-
     @Override
     public boolean onDown(MotionEvent arg0) {
         // TODO Auto-generated method stub
         return false;
     }
-
 
     private GestureDetector detector = new GestureDetector(this);
     // 限制最小移动像素
@@ -192,18 +188,11 @@ public class PresentationTestActivity extends FullActivity
         return false;
     }
 
-
-
-
-
     @Override
     public void onLongPress(MotionEvent arg0) {
         // TODO Auto-generated method stub
 
     }
-
-
-
 
     @Override
     public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
@@ -212,26 +201,17 @@ public class PresentationTestActivity extends FullActivity
         return false;
     }
 
-
-
-
     @Override
     public void onShowPress(MotionEvent arg0) {
         // TODO Auto-generated method stub
 
     }
 
-
-
-
     @Override
     public boolean onSingleTapUp(MotionEvent arg0) {
         // TODO Auto-generated method stub
         return false;
     }
-
-
-
 
     @Override
     public boolean onTouch(View arg0, MotionEvent event) {

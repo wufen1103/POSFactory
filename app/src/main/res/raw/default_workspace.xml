@@ -141,7 +141,7 @@
         <position>130</position>
         <color>1</color>
         <show>true</show>
-        <permission></permission>
+        <permission>android.permission.SYSTEM_OVERLAY_WINDOW</permission>
     </item>
 
     <item>

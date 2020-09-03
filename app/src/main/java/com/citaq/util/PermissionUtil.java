@@ -26,7 +26,7 @@ public class PermissionUtil {
         List<String> noPermission = new ArrayList<>();
         // 检查该权限是否已经获取
         int i = ContextCompat.checkSelfPermission(context, permission);
-        // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
+        // 权限是否已经 授权 GRANTED---授权  DENIED---拒绝
         if (i == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
@@ -58,7 +58,7 @@ public class PermissionUtil {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void requestPermission(Activity context, String... permissions) {
         if (permissions.length > 0) {
-            context.requestPermissions(permissions, REQUEST_CODE);
+            context.requestPermissions(permissions, REQUEST_CODE);   //2
         }
     }
 
@@ -67,7 +67,7 @@ public class PermissionUtil {
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void checkAndRequestPermissions(Activity context, String... permissions) {
-        requestPermission(context, permissions);
+        requestPermission(context, permissions);    //1
     }
 
 }

@@ -2,8 +2,10 @@ package com.citaq.citaqfactory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -37,7 +39,8 @@ public class MainActivity3 extends Activity {
 	String permission;
 
 	private int[] metroIgnoreList1 ={1010}; //3288 LED Test
-	private int[] metroIgnoreList2 ={1100,1120,1130}; //3368 Serial test , Other Test , Printer Firmware Upgrade ,
+	private int[] metroIgnoreList2 ={1100,1120,1130,1140}; //3368 Serial test, Other Test, Diff Display and Touch, Printer Firmware Upgrade
+	private static int OVERLAY_PERMISSION_REQ_CODE = 1234;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,22 @@ public class MainActivity3 extends Activity {
 
 		});
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		/*if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+			mContext.startActivity(mIntent);
+		}*/
+
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+			if (Settings.canDrawOverlays(mContext)) {
+				//mContext.startActivity(mIntent);
+			} else {
+				Toast.makeText(mContext, "Permission Denied!", Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
 
 	/**
 	 * 针对不同的主板设置那些MetroItem不显示
@@ -145,7 +164,19 @@ public class MainActivity3 extends Activity {
 				}
 			}
 			if (hasPermissionDenin) {
-				Toast.makeText(mContext, "Permissions ERROR!", Toast.LENGTH_LONG).show();
+				for (String permission : permissions) {
+					// 检查权限是否包含OVERLAY_PERMISSION_REQ_CODE
+					if (permission.equals("android.permission.SYSTEM_OVERLAY_WINDOW") ){
+						if(Settings.canDrawOverlays(mContext)){
+							mContext.startActivity(mIntent);
+						}else {
+							Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + mContext.getPackageName()));
+							startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+						}
+					}else{
+						Toast.makeText(mContext, "Permissions ERROR!", Toast.LENGTH_LONG).show();
+					}
+				}
 			}else {
 				mContext.startActivity(mIntent);
 			}
