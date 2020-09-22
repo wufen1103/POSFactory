@@ -393,11 +393,11 @@ public class VideoAcivity extends Activity {
     public void onReboot_fail() {
         boolean isOk = false;
         Toast.makeText(VideoAcivity.this, "Reboot.", Toast.LENGTH_SHORT).show();
-        /*
-         * Intent reboot = new Intent(Intent.ACTION_REBOOT);
-         * reboot.putExtra("nowait", 1); reboot.putExtra("interval", 1);
-         * reboot.putExtra("window", 0); sendBroadcast(reboot);
-         */
+     /*   Intent reboot = new Intent(Intent.ACTION_REBOOT);
+        reboot.putExtra("nowait", 1);
+        reboot.putExtra("interval", 1);
+        reboot.putExtra("window", 0);
+        sendBroadcast(reboot);*/
 
         try {
             Runtime.getRuntime().exec("su");

@@ -35,9 +35,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
+import android.os.storage.StorageManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -420,7 +422,8 @@ public class SysInfoActivity extends Activity {
      *  
      * @return 
      */  
-    private String getSDTotalSize() {  
+    private String getSDTotalSize() {
+//		getPrimaryStoragePath();
     	 String android =getSystemVersion();
     	 if (Environment.getExternalStorageState().equals(
                  Environment.MEDIA_MOUNTED)) {
@@ -443,7 +446,20 @@ public class SysInfoActivity extends Activity {
     	 }
 		 return "No SD.";
 		  
-    }  
+    }
+
+	public void getPrimaryStoragePath() {
+		try {
+			StorageManager sm = (StorageManager) getSystemService(Context.STORAGE_SERVICE);
+			Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths", null);
+			String[] paths = (String[]) getVolumePathsMethod.invoke(sm, null);
+			// first element in paths[] is primary storage path
+			Log.d("TAG", "getPrimaryStoragePath: getStoragePath(this,true)==" + paths[0]);//内置sd路径
+			Log.d("TAG", "getPrimaryStoragePath: getStoragePath(this,true)=="+paths[1]);//外置sd路径
+		} catch (Exception e) {
+			Log.e("TAG", "getPrimaryStoragePath() failed", e);
+		}
+	}
     
     public  String getSystemVersion() {
         return android.os.Build.VERSION.RELEASE;

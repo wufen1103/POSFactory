@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -37,9 +39,11 @@ public class MainActivity3 extends Activity {
 	Context mContext;
 	Intent mIntent;
 	String permission;
-
+	int screenNum = 0;
 	private int[] metroIgnoreList1 ={1010}; //3288 LED Test
 	private int[] metroIgnoreList2 ={1100,1120,1130,1140}; //3368 Serial test, Other Test, Diff Display and Touch, Printer Firmware Upgrade
+	private int metroIgnore = 1130; //屏幕<2
+
 	private static int OVERLAY_PERMISSION_REQ_CODE = 1234;
 
 	@Override
@@ -49,6 +53,13 @@ public class MainActivity3 extends Activity {
 		mContext = this;
 
 		setContentView(R.layout.activity_main_gride);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			DisplayManager mDisplayManager = (DisplayManager) mContext.getSystemService(Context.DISPLAY_SERVICE);
+			Display[] displays = mDisplayManager.getDisplays();
+			screenNum = displays.length; //屏幕数
+		}
+
 
 		loadMetro();
 	}
@@ -117,21 +128,27 @@ public class MainActivity3 extends Activity {
 			MetroItem mMetroItem = iterator.next();
 			if (!mMetroItem.isShow()) {
 				iterator.remove();
-			}
-			if((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())){
-				for(int i: metroIgnoreList1){
-					if(mMetroItem.getItemId() == i){
-						iterator.remove();
+			}else {
+				if ((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())) {
+					for (int i : metroIgnoreList1) {
+						if (mMetroItem.getItemId() == i) {
+							iterator.remove();
+						}
 					}
 
-				}
-
-			}else if (MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()){
-				for(int i: metroIgnoreList2){
-					if(mMetroItem.getItemId() == i){
-						iterator.remove();
+					if (screenNum < 2) {
+						if (mMetroItem.getItemId() == metroIgnore) {
+							iterator.remove();
+						}
 					}
 
+				} else if (MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()) {
+					for (int i : metroIgnoreList2) {
+						if (mMetroItem.getItemId() == i) {
+							iterator.remove();
+						}
+
+					}
 				}
 			}
 

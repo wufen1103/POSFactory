@@ -27,6 +27,7 @@ import com.citaq.util.BitmapUtil;
 import com.citaq.util.Command;
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.SerialPortManager;
+import com.printer.util.BytesUtil;
 import com.printer.util.CallbackSerial;
 import com.printer.util.CallbackUSB;
 import com.printer.util.DataQueue;
@@ -273,7 +274,7 @@ public class PrintActivity extends Activity {
 	
 	//	getStoragePath(mContext,"USB");
 		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
-			et_cmd.setText("1D 47 08 01");
+			et_cmd.setText("1DH 47H 08H 01H");
 		}
 	}
 	
@@ -422,7 +423,10 @@ public class PrintActivity extends Activity {
 				String cmd = et_cmd.getText().toString();
 				if(cmd.trim().length()>0){
 //					cmd= cmd +"\n";
-					byte[] data=Command.transToPrintText(cmd);
+					//{ 0x1D, 0x47, (byte) 0x08, (byte) 0x01 };
+					//byte[] data= BytesUtil.getBytesFromHexString("1D 47 08 01".replaceAll(" ", ""););  //no H
+					//et_cmd.setText("1D 47 08 01");
+					byte[] data=Command.transToPrintText(cmd);  //has H
 					printerWrite(data);
 				}
 				break;
