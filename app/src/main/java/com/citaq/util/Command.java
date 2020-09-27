@@ -31,7 +31,7 @@ public class Command {
 			(byte) 74, (byte) 254 };
 	public static byte[][] printDensity =  new byte[][] {{(byte) 0xFA,(byte) 0xFF}, {(byte) 0xFB,(byte) 0xFF},
 		{(byte) 0xFC,(byte) 0xFF}, {(byte) 0xFD,(byte) 0xFF},{(byte) 0xFE,(byte) 0xFF}, {(byte) 0xFF,(byte) 0xFF},
-		{0,0}, {1,0},{2,0}, {3,0},{4,0}, {5,0},{6,0}};
+		{0,0}, {1,0},{2,0}, {3,0},{4,0}, {5,0},{6,0}};  //70% 75% 80% 85% 90% 95% 100% 105%...130%
 
 	// 扩展字符集
 	public static byte[] getCodepage(int cpIndex) {
@@ -76,16 +76,17 @@ public class Command {
 	// 打印浓度//////////////
 	public static byte[] getPrintDensity(int printDensityIndex) {
 
-		byte[] printText = new byte[8];
+		byte[] printText = new byte[9];
 
 		printText[0] = 0x1D;
 		printText[1] = 0x28;
 		printText[2] = 0x45;
 		printText[3] = 0x04;
-		printText[4] = 0x05;
+		printText[4] = 0x00;
 		printText[5] = 0x05;
-		printText[6] = printDensity[printDensityIndex][0];
-		printText[7] = printDensity[printDensityIndex][1];
+		printText[6] = 0x05;
+		printText[7] = printDensity[printDensityIndex][0];
+		printText[8] = printDensity[printDensityIndex][1];
 		return printText;
 	}
 
