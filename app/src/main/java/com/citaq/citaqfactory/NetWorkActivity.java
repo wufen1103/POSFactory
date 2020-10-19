@@ -1,23 +1,32 @@
 package com.citaq.citaqfactory;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.citaq.util.FileDialogListItem;
 import com.citaq.util.NetworkUtil;
 import com.citaq.util.PingLooperThread;
 import com.citaq.util.PingLooperThread.Callbak;
+import com.citaq.util.SDcardUtil;
+import com.citaq.util.SmbUtil;
 import com.citaq.util.WifiAdmin;
+import com.citaq.view.ProgressListFileDialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
@@ -133,6 +142,9 @@ public static final int RSSI_LEVELS = 5;*/
 public class NetWorkActivity extends Activity {
 	protected static final String TAG = "NetWorkActivity";
 
+	protected static final String REMOTEURL_SMB = "smb://wufen:citaq123@192.168.123.1/TEST/JE/"; //"smb://wufen:citaq123@192.168.123.1/Software/JE/"; //
+	protected static final String LOCALDIR_SDCARD = "/mnt/external_sd/";
+
 	protected static final int wifi_state = 1001;
 	protected static final int ping_state = 1002;
 
@@ -155,7 +167,7 @@ public class NetWorkActivity extends Activity {
 	TextView tv_success_percentage;
 	TextView tv_network_mac;
 	Button bt_start;
-	Button bt_baidu, bt_wifi;
+	Button bt_baidu, bt_wifi, bt_server;
 	EditText et_network_addr;
 	
 	Spinner spinner_time_count;
@@ -221,6 +233,7 @@ public class NetWorkActivity extends Activity {
 		bt_start = (Button) findViewById(R.id.begin);
 		bt_baidu = (Button) findViewById(R.id.baidu);
 		bt_wifi = (Button) findViewById(R.id.wifi);
+		bt_server= (Button) findViewById(R.id.server);
 
 		et_network_addr = (EditText) findViewById(R.id.web);
 		et_network_addr.setSelection(et_network_addr.getText().length());
@@ -456,7 +469,28 @@ public class NetWorkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				openBrowser();
-				
+			}
+		});
+
+		bt_server.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", "1200000");
+				System.setProperty("jcifs.smb.client.dfs.disabled", "true"); ///禁用dfs,提高读取速度
+				System.setProperty("jcifs.smb.client.soTimeout", "1000");//jcifs.smb.client.soTimeout 不能太大了，否则切换不了用户，太小了，又登不进去。这个配置是关键
+//				System.setProperty("jcifs.smb.client.soTimeout", "1000000");
+				System.setProperty("jcifs.smb.client.responseTimeout", "15000");//System.setProperty("jcifs.smb.client.responseTimeout", "30000");
+
+				if(new SDcardUtil().isHasSD()){
+					showListDialog();  //初始化mProgressListFileDialog
+					downloadFileSmb();
+				}else{
+					if(mProgressListFileDialog != null) {
+						mProgressListFileDialog.notifyDataChanged(LOCALDIR_SDCARD, null);
+					}
+					Toast.makeText(mContext, "No MicroSD.",Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		});
 		
@@ -826,4 +860,49 @@ public class NetWorkActivity extends Activity {
 		}
 	}
 
+	private void downloadFileSmb(){
+		SmbUtil mSmbUtil = new SmbUtil(new SmbUtil.CallbackSMB() {
+			@Override
+			public void onDownLoadResult(List<String> download_remoteFileName) {
+				if(download_remoteFileName.size() != 0){
+					Toast.makeText(mContext, "Download Success.",Toast.LENGTH_SHORT).show();
+
+					if(mProgressListFileDialog != null) {
+						mProgressListFileDialog.notifyDataChanged(LOCALDIR_SDCARD, download_remoteFileName);
+					}
+					for(int i = 0; i<download_remoteFileName.size(); i++){
+						System.out.println(TAG + " SMB:" + "download_remoteFileName = " + download_remoteFileName.get(i));
+					}
+					System.out.println(TAG + "SMB:Download Success.");
+				}else{
+//					Toast.makeText(mContext, "Download NULL.",Toast.LENGTH_SHORT).show();
+					System.out.println(TAG + "SMB:Download NULL.");
+				}
+			}
+
+			@Override
+			public void onShowProgress(boolean isshow) {
+				if(mProgressListFileDialog != null) {
+					mProgressListFileDialog.showProgress(isshow);
+				}
+			}
+		});
+
+		mSmbUtil.smbDownload(REMOTEURL_SMB,LOCALDIR_SDCARD);
+	}
+
+
+
+	ProgressListFileDialog mProgressListFileDialog;
+	private void showListDialog() {
+		mProgressListFileDialog = new ProgressListFileDialog(mContext, LOCALDIR_SDCARD,  new ProgressListFileDialog.ProgressListDialogListener() {
+			@Override
+			public void onListItemLongClick(int position, String path) {
+				Toast.makeText(mContext, path + "  " + position,Toast.LENGTH_SHORT).show();
+
+			}
+		});
+		mProgressListFileDialog.setTitle(R.string.str_open_File);
+		mProgressListFileDialog.show();
+	}
 }

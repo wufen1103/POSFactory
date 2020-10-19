@@ -38,6 +38,5 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">#dddddd</item>
     </style>
-    
-  
+
 </resources>

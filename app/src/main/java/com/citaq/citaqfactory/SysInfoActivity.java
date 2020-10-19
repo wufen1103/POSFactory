@@ -54,6 +54,7 @@ import androidx.annotation.RequiresApi;
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.NetworkUtil;
 import com.citaq.util.RAMandROMInfo;
+import com.citaq.util.SDcardUtil;
 import com.citaq.util.ZXingUtil;
 
 public class SysInfoActivity extends Activity {
@@ -69,9 +70,6 @@ public class SysInfoActivity extends Activity {
 	String sdcard ="/mnt/external_sd";  // sdcard ="/storage/23E5-4C27";  //8.1.0 /mnt/media_rw/0403-0201
 	
 	private Handler mHandler;
-	
-	boolean hasSD = false;
-	
 
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
@@ -181,7 +179,7 @@ public class SysInfoActivity extends Activity {
 	    }*/
 	    
 	    
-	    String sys_sd = getSDTotalSize();
+	    String sys_sd = new SDcardUtil().getSDTotalSize(ctx);
 	    tv_sd.setText(sys_sd); 
 	    
 	    String sys_version_name = getVersion();
@@ -416,43 +414,12 @@ public class SysInfoActivity extends Activity {
 			return 1;
 		}
 	}
-	
-	 /** 
-     * 获得SD卡总大小 
-     *  
-     * @return 
-     */  
-    private String getSDTotalSize() {
-//		getPrimaryStoragePath();
-    	 String android =getSystemVersion();
-    	 if (Environment.getExternalStorageState().equals(
-                 Environment.MEDIA_MOUNTED)) {
-		        File path = new File(sdcard);  
-		        
-		        if(path.exists()){
-		          try{
-			        StatFs stat = new StatFs(path.getPath());  
-			        long blockSize = stat.getBlockSize();  
-			        long totalBlocks = stat.getBlockCount();  
-			        if(totalBlocks ==0){
-			        	return "No SD.";
-			        }
-			        hasSD = true;
-			        return Formatter.formatFileSize(ctx, blockSize * totalBlocks);
-		          }catch(Exception e) {
-		        	  return "No SD.";
-		  		  }
-		        }
-    	 }
-		 return "No SD.";
-		  
-    }
 
 	public void getPrimaryStoragePath() {
 		try {
 			StorageManager sm = (StorageManager) getSystemService(Context.STORAGE_SERVICE);
-			Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths", null);
-			String[] paths = (String[]) getVolumePathsMethod.invoke(sm, null);
+			Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths", new Class[ 0 ]);
+			String[] paths = (String[]) getVolumePathsMethod.invoke(sm, new Object[]{});
 			// first element in paths[] is primary storage path
 			Log.d("TAG", "getPrimaryStoragePath: getStoragePath(this,true)==" + paths[0]);//内置sd路径
 			Log.d("TAG", "getPrimaryStoragePath: getStoragePath(this,true)=="+paths[1]);//外置sd路径
@@ -680,10 +647,10 @@ public class SysInfoActivity extends Activity {
 			Intent intent ;
 			switch(mCurrentBt){
 			case R.id.sys_sd_content:
-				if(hasSD){
+				if(new SDcardUtil().isHasSD()){
 					showDialog();
 				}else{
-					Toast.makeText(ctx, "No SD.",Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, "No MicroSD.",Toast.LENGTH_SHORT).show();
 				}
 				break;
 //			case R.id.sys_settings_wifi:

@@ -242,6 +242,16 @@
 					android:layout_marginRight="@dimen/margin_20"
 					android:layout_marginLeft="@dimen/margin_20"
 				   />
+				<Button
+					android:id="@+id/server"
+					android:layout_width="@dimen/png_hw"
+					android:layout_height="@dimen/png_hw"
+					android:background="@drawable/btn_download_selector"
+					android:textSize="@dimen/tx_size_45"
+					android:layout_marginTop="@dimen/margin_10"
+					android:layout_marginRight="@dimen/margin_20"
+					android:layout_marginLeft="@dimen/margin_20"
+					/>
 			</LinearLayout>
 		</LinearLayout>
     </LinearLayout>

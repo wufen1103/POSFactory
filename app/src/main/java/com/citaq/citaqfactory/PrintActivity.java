@@ -374,7 +374,7 @@ public class PrintActivity extends Activity {
 					printerWrite(Command.getQRCmd("Thank you for using CITAQ printer!"));
 					break;
 			case R.id.btn_openPicture:
-				mBitmap = null;
+//				mBitmap = null;
 				
 				showDialog();
 				break;

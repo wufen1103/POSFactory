@@ -226,6 +226,10 @@
     <string name="str_verify">核实</string>
     <string name="str_leave_dfu">离开 DFU 模式</string>
     <string name="str_selfprint">打印自检页</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="str_factoryreset">"清除所有数据(恢复出厂设置)!"</string>
+    <string name="str_delete">"确认删除"</string>
 </resources>
 
 

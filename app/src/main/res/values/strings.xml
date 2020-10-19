@@ -343,7 +343,10 @@
     <string name="str_verify">Verify</string>
     <string name="str_leave_dfu">Leave DFU mode</string>
     <string name="str_selfprint">Self Print</string>
-
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="str_factoryreset">"Erase all data(factory reset)!"</string>
+    <string name="str_delete">"delete  " </string>
     <string name="str_clickme">"Click me"</string>
 
     <string-array name="ping_time">
