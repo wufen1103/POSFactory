@@ -159,6 +159,7 @@ public class SmbUtil {
 
         @Override
         public List<String> doInBackground(String... params) {
+            System.out.println("smb:doInBackground run..");
             List<String> download_remoteFileName = new ArrayList<String>();
             try {
                 SmbFile smbFile2 = new SmbFile(params[0]);

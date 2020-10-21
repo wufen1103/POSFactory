@@ -22,7 +22,18 @@ public class SDcardUtil {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File path = new File(sdcard);
             if(path.exists()){
-                   return true;
+                try{
+                    StatFs stat = new StatFs(path.getPath());
+                    long blockSize = stat.getBlockSize();
+                    long totalBlocks = stat.getBlockCount();
+                    if(totalBlocks ==0){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }catch(Exception e) {
+                    return false;
+                }
             }
         }
         return false;

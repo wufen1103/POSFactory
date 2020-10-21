@@ -142,7 +142,7 @@ public static final int RSSI_LEVELS = 5;*/
 public class NetWorkActivity extends Activity {
 	protected static final String TAG = "NetWorkActivity";
 
-	protected static final String REMOTEURL_SMB = "smb://wufen:citaq123@192.168.123.1/TEST/JE/"; //"smb://wufen:citaq123@192.168.123.1/Software/JE/"; //
+	protected static final String REMOTEURL_SMB = "smb://JE:abcd123@192.168.123.1/TEST/JE/"; //"smb://wufen:citaq123@192.168.123.1/Software/JE/"; //
 	protected static final String LOCALDIR_SDCARD = "/mnt/external_sd/";
 
 	protected static final int wifi_state = 1001;
@@ -477,7 +477,7 @@ public class NetWorkActivity extends Activity {
 			public void onClick(View v) {
 //				jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", "1200000");
 				System.setProperty("jcifs.smb.client.dfs.disabled", "true"); ///禁用dfs,提高读取速度
-				System.setProperty("jcifs.smb.client.soTimeout", "1000");//jcifs.smb.client.soTimeout 不能太大了，否则切换不了用户，太小了，又登不进去。这个配置是关键
+				System.setProperty("jcifs.smb.client.soTimeout", "500");//100//jcifs.smb.client.soTimeout 不能太大了，否则切换不了用户，太小了，又登不进去。这个配置是关键
 //				System.setProperty("jcifs.smb.client.soTimeout", "1000000");
 				System.setProperty("jcifs.smb.client.responseTimeout", "15000");//System.setProperty("jcifs.smb.client.responseTimeout", "30000");
 
