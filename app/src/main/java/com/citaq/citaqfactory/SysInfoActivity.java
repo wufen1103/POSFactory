@@ -25,6 +25,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
@@ -56,6 +57,7 @@ import com.citaq.util.NetworkUtil;
 import com.citaq.util.RAMandROMInfo;
 import com.citaq.util.SDcardUtil;
 import com.citaq.util.ZXingUtil;
+import com.citaq.view.ProgressListFileDialog;
 
 public class SysInfoActivity extends Activity {
 	Context ctx;
@@ -648,7 +650,7 @@ public class SysInfoActivity extends Activity {
 			switch(mCurrentBt){
 			case R.id.sys_sd_content:
 				if(new SDcardUtil().isHasSD()){
-					showDialog();
+					showListDialog();
 				}else{
 					Toast.makeText(ctx, "No MicroSD.",Toast.LENGTH_SHORT).show();
 				}
@@ -708,13 +710,13 @@ public class SysInfoActivity extends Activity {
 	 */
 	private void showConfirmDialog() {
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle("Clear")
-				.setMessage("Erase all data(factory reset)").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.str_Clear)
+				.setMessage(R.string.str_factoryreset).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						doMasterClear();
 					}
-				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						dialogInterface.dismiss();
@@ -733,63 +735,16 @@ public class SysInfoActivity extends Activity {
 		sendBroadcast(intent);
 	}
 
-	Dialog dialog = null;
-	protected void showDialog() {
-		 if(OpenFileDialog.isDialogCreate &&
-				 OpenFileDialog.FileSelectView.getCurrentPath().equals(OpenFileDialog.sRoot)){
-			 
-			 dismissDialog();
-			 
-		 }
-		
-		if(dialog==null){
-			Map<String, Integer> images = new HashMap<String, Integer>();
-			// 下面几句设置各文件类型的图标， 需要你先把图标添加到资源文件夹
-			images.put(OpenFileDialog.sRoot, R.drawable.filedialog_root);	// 根目录图标
-			images.put(OpenFileDialog.sParent, R.drawable.filedialog_folder_up);	//返回上一层的图标
-			images.put(OpenFileDialog.sFolder, R.drawable.filedialog_folder);	//文件夹图标
-			images.put("bmp", R.drawable.filedialog_bmpfile);	//bmp文件图标
-			images.put("png", R.drawable.filedialog_pngfile);	//png文件图标
-			images.put("jpeg", R.drawable.filedialog_jpegfile);	//jpeg文件图标
-			images.put("jpg", R.drawable.filedialog_jpgfile);	//jpg文件图标
-			images.put("apk", R.drawable.filedialog_apk);	//apk文件图标
-			images.put(OpenFileDialog.sEmpty, R.drawable.filedialog_root);
-			dialog = OpenFileDialog.createDialog(this, getResources().getString(R.string.str_open_File), new CallbackBundle() {
-				@Override
-				public void callback(Bundle bundle) {
-					String filepath = bundle.getString("path");
-
-//					mBitmap = BitmapFactory.decodeFile(Picturefilepath);//打开图片文件
-//					//显示要处理的图片
-//					imageForPrint.setImageBitmap(mBitmap);
-//			        //setTitle(filepath); // 把文件路径显示在标题上
-					dialog.dismiss();
-					
-					if(filepath.endsWith(".apk")){
-						File apkFile = new File(filepath);
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						
-						intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-						
-						ctx.startActivity(intent);
-					}
-				}
-			}, 
-			"all", images, sdcard);
-			dialog.show();
-		}else{
-			if(!dialog.isShowing())
-				dialog.show();
-		}
-	}
-	
-	protected void dismissDialog() {
-		if(dialog !=null && dialog.isShowing()){
-			dialog.dismiss();
-		}
-		dialog = null;
-	
+	ProgressListFileDialog mProgressListFileDialog;
+	private void showListDialog() {
+		mProgressListFileDialog = new ProgressListFileDialog(ctx, sdcard,  new ProgressListFileDialog.ProgressListDialogListener() {
+			@Override
+			public void onListItemLongClick(int position, String path) {
+//				Toast.makeText(mContext, path + "  " + position,Toast.LENGTH_SHORT).show();
+			}
+		});
+		mProgressListFileDialog.setTitle(R.string.str_open_File);
+		mProgressListFileDialog.show();
 	}
 
 }

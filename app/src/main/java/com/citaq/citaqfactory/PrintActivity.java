@@ -27,6 +27,7 @@ import com.citaq.util.BitmapUtil;
 import com.citaq.util.Command;
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.SerialPortManager;
+import com.citaq.view.ProgressListFileDialog;
 import com.printer.util.BytesUtil;
 import com.printer.util.CallbackSerial;
 import com.printer.util.CallbackUSB;
@@ -375,8 +376,8 @@ public class PrintActivity extends Activity {
 					break;
 			case R.id.btn_openPicture:
 //				mBitmap = null;
-				
-				showDialog();
+
+				showListDialog();
 				break;
 			case R.id.btn_printPicture:
 				if(mBitmap != null)
@@ -570,54 +571,30 @@ public class PrintActivity extends Activity {
 		return buffer;
 	}
 */
-	Dialog dialog = null;
-	protected void showDialog() {
-		 if(OpenFileDialog.isDialogCreate &&
-				 OpenFileDialog.FileSelectView.getCurrentPath().equals(OpenFileDialog.sRoot)){
-			 
-			 dismissDialog();
-			 
-		 }
-		
-		if(dialog==null){
-			Map<String, Integer> images = new HashMap<String, Integer>();
-			// 下面几句设置各文件类型的图标， 需要你先把图标添加到资源文件夹
-			images.put(OpenFileDialog.sRoot, R.drawable.filedialog_root);	// 根目录图标
-			images.put(OpenFileDialog.sParent, R.drawable.filedialog_folder_up);	//返回上一层的图标
-			images.put(OpenFileDialog.sFolder, R.drawable.filedialog_folder);	//文件夹图标
-			images.put("bmp", R.drawable.filedialog_bmpfile);	//bmp文件图标
-			images.put("png", R.drawable.filedialog_pngfile);	//png文件图标
-			images.put("jpeg", R.drawable.filedialog_jpegfile);	//jpeg文件图标
-			images.put("jpg", R.drawable.filedialog_jpgfile);	//jpg文件图标
-			images.put(OpenFileDialog.sEmpty, R.drawable.filedialog_root);
-			dialog = OpenFileDialog.createDialog(this, getResources().getString(R.string.str_open_File), new CallbackBundle() {
-				@Override
-				public void callback(Bundle bundle) {
-					String Picturefilepath = bundle.getString("path");
-					mBitmap = BitmapFactory.decodeFile(Picturefilepath);//打开图片文件
-					//显示要处理的图片
-					imageForPrint.setImageBitmap(mBitmap);
-			        //setTitle(filepath); // 把文件路径显示在标题上
-					dialog.dismiss();
+	ProgressListFileDialog mProgressListFileDialog;
+	private void showListDialog() {
+		mProgressListFileDialog = new ProgressListFileDialog(mContext, "/",  new ProgressListFileDialog.ProgressListDialogListener() {
+			@Override
+			public void onListItemLongClick(int position, String path) {
+//				Toast.makeText(mContext, path + "  " + position,Toast.LENGTH_SHORT).show();
+				int dix = path.lastIndexOf('.');
+				if(dix<0){
+					Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
+				}else{
+					String sf = path.substring(dix+1);
+					if (sf.equals("jpg") || sf.equals("png") || sf.equals("jpeg") || sf.equals("bmp")) {
+						mBitmap = BitmapFactory.decodeFile(path);//打开图片文件
+						//显示要处理的图片
+						imageForPrint.setImageBitmap(mBitmap);
+						mProgressListFileDialog.dismiss();
+					}else{
+						Toast.makeText(mContext, "It's not a picture", Toast.LENGTH_SHORT).show();
+					}
 				}
-			}, 
-			".bmp;.png;.jpg;.jpeg;",
-			images);
-			dialog.show();
-		}else{
-			if(!dialog.isShowing())
-				dialog.show();
-		}
-	}
-	
-	protected void dismissDialog() {
-		if(dialog !=null && dialog.isShowing()){
-			dialog.dismiss();
-			
-			
-		}
-		dialog = null;
-	
+			}
+		});
+		mProgressListFileDialog.setTitle("FileDialog");
+		mProgressListFileDialog.show();
 	}
 
 	@Override
