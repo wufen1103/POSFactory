@@ -56,6 +56,7 @@ public class PrintActivity extends Activity {
 	private Button btn_PrintQR;
 	private Button btn_OpenPicture;
 	private Button btn_PrintPicture;
+	private Button btn_disableChinese;
 	
 	private EditText et_cmd;
 	private Button btn_cmd;
@@ -215,6 +216,9 @@ public class PrintActivity extends Activity {
 
 		btn_PrintQR = (Button) findViewById(R.id.btn_printQR);
 		btn_PrintQR.setOnClickListener(SendPrintListener);
+
+		btn_disableChinese = (Button) findViewById(R.id.btn_disableChinese);
+		btn_disableChinese.setOnClickListener(SendPrintListener);
 		
 		btn_OpenPicture = (Button) findViewById(R.id.btn_openPicture);
 		btn_OpenPicture.setOnClickListener(SendPrintListener);

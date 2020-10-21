@@ -97,7 +97,13 @@
 	                android:layout_weight="1"
 	                android:text="@string/btnstr_cutpaper" 
 	                android:textSize="@dimen/tx_size_18"/>
-	            
+                <Button
+                    android:id="@+id/btn_disableChinese"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/btnstr_disableChinese"
+                    android:textSize="@dimen/tx_size_18"/>
 	        </LinearLayout>
 
             <Button
