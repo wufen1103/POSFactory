@@ -997,6 +997,34 @@ public class Command {
 				}
 			}
 		}
+
+		//// 去掉末尾空白
+
+		--indexByte;
+
+		while(dataArray[indexByte] == 0){
+			if(indexByte > 8){
+				--indexByte;
+			}
+			else{
+				break;
+			}
+		}
+
+		if(indexByte > 8){
+			indexByte += (widArray - 9);
+			height = indexByte /widArray;
+			dataArray[6] = (byte)height;
+			dataArray[7] = (byte)(height/256);
+			int totalBytes = (height * widArray) + 8;
+			byte[] dataTemp = new byte[totalBytes];
+			System.arraycopy(dataArray, 0, dataTemp, 0, totalBytes);
+
+			return dataTemp;
+		}
+
+
+		////
 		return dataArray;
 	}
 
