@@ -1,13 +1,22 @@
 package com.citaq.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.lang.reflect.Method;
+import java.util.regex.Pattern;
 
 
 public class MainBoardUtil {
-	
 	static String MainBoardUtilType = null;
+	static String MainBoardPlatform = null;
+	static String MainBoardKernelVersion = null;
+	static String MainBoardProductName = null;
+	static String MainBoardSerial = null;
 
 	private static final String SMDKV210 = "SMDKV210";
 	private static final String RK3188 = "RK30BOARD";
@@ -18,7 +27,6 @@ public class MainBoardUtil {
 	private static final String AllwinnerA63 = "SUN50IW3";
 	
     public static String getCpuHardware() {
-    	
     	if(MainBoardUtilType != null){
     		return MainBoardUtilType;
     	}
@@ -26,12 +34,9 @@ public class MainBoardUtil {
         String hardware = "";
         String str = "";
         try {
-                Process pp = Runtime.getRuntime().exec(
-                                "cat /proc/cpuinfo");
+                Process pp = Runtime.getRuntime().exec("cat /proc/cpuinfo");
                 InputStreamReader ir = new InputStreamReader(pp.getInputStream());
                 LineNumberReader input = new LineNumberReader(ir);
-
-                
                 while((str = input.readLine()) != null){
                 	if (str.startsWith("Hardware")){
                 		int i = str.indexOf(":");
@@ -52,9 +57,7 @@ public class MainBoardUtil {
 	
 	public static String getModel(){
 		String rs = "unknow board";
-		
 		String hw = getCpuHardware();
-		
 		if(hw.contains(SMDKV210)){
 			rs = "smdkv210";
 		}else if(hw.contains(RK3188)){
@@ -62,12 +65,10 @@ public class MainBoardUtil {
 		}else if(hw.contains(MSM8625Q)){
 			rs = "c500";
 		}
-		
 		return rs;
 	}
 	
 	public static boolean isRK3368() {
-		
 		if(getCpuHardware().contains(MainBoardUtil.RK3368)){
 			return true;
 		}
@@ -114,6 +115,136 @@ public class MainBoardUtil {
 			return true;
 		}
 		return false;
+	}
+
+	public static String getBuildDisplayID() {
+		String serial = null;
+
+		try {
+			Class<?> c = Class.forName("android.os.SystemProperties");
+			Method get = c.getMethod("get", String.class);
+			serial = (String) get.invoke(c, "ro.build.display.id");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return serial;
+	}
+
+	public static String getPlatform() {
+		if(MainBoardPlatform != null){
+			return MainBoardPlatform;
+		}
+		try {
+			Class<?> c = Class.forName("android.os.SystemProperties");
+			Method get = c.getMethod("get", String.class);
+			MainBoardPlatform = (String) get.invoke(c, "ro.board.platform");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return MainBoardPlatform;
+	}
+
+
+	public static int getCPUNumCoresInt() {
+		// Private Class to display only CPU devices in the directory listing
+		class CpuFilter implements FileFilter {
+			@Override
+			public boolean accept(File pathname) {
+				// Check if filename is "cpu", followed by a single digit number
+				if (Pattern.matches("cpu[0-9]", pathname.getName())) {
+					return true;
+				}
+				return false;
+			}
+		}
+
+		try {
+			// Get directory containing CPU info
+			File dir = new File("/sys/devices/system/cpu/");
+			// Filter to only list the devices we care about
+			File[] files = dir.listFiles(new CpuFilter());
+			// Return the number of cores (virtual CPU devices)
+			return files.length;
+		} catch (Exception e) {
+			// Default to return 1 core
+			return 1;
+		}
+	}
+
+	public static String getSystemVersion() {
+		return android.os.Build.VERSION.RELEASE;
+	}
+
+	public static String getLinuxCore_Ver() {
+		if(MainBoardKernelVersion != null){
+			return MainBoardKernelVersion;
+		}
+		Process process = null;
+
+		try {
+			process = Runtime.getRuntime().exec("cat /proc/version");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// get the output line
+		InputStream outs = process.getInputStream();
+		InputStreamReader isrout = new InputStreamReader(outs);
+		BufferedReader brout = new BufferedReader(isrout, 8 * 1024);
+
+		String result = "";
+		String line;
+		// get the whole standard output string
+		try {
+			while ((line = brout.readLine()) != null) {
+				result += line;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			if (result != "") {
+				String Keyword = "version ";
+				int index = result.indexOf(Keyword);
+				line = result.substring(index + Keyword.length());
+				index = line.indexOf(" ");
+				MainBoardKernelVersion = line.substring(0, index);
+			}
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
+		return MainBoardKernelVersion;
+	}
+
+	public static String getProductName() {
+		if(MainBoardKernelVersion != null){
+			return MainBoardKernelVersion;
+		}
+		try {
+			Class<?> c = Class.forName("android.os.SystemProperties");
+			Method get = c.getMethod("get", String.class);
+			MainBoardProductName = (String) get.invoke(c, "ro.product.model");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return MainBoardProductName;
+	}
+
+	public static String getSerial() {
+		if(MainBoardSerial != null){
+			return MainBoardSerial;
+		}
+		try {
+			Class<?> c = Class.forName("android.os.SystemProperties");
+			Method get = c.getMethod("get", String.class);
+			MainBoardSerial = (String) get.invoke(c, "ro.serialno");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return MainBoardSerial;
 	}
 
 }

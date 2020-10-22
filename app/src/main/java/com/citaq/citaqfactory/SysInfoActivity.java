@@ -1,21 +1,8 @@
 package com.citaq.citaqfactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,21 +12,16 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
-import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -49,15 +31,14 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
-
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.NetworkUtil;
 import com.citaq.util.RAMandROMInfo;
 import com.citaq.util.SDcardUtil;
 import com.citaq.util.ZXingUtil;
 import com.citaq.view.ProgressListFileDialog;
+import java.lang.reflect.Method;
 
 public class SysInfoActivity extends Activity {
 	Context ctx;
@@ -66,7 +47,6 @@ public class SysInfoActivity extends Activity {
 		tv_battery_info_voltage, tv_battery_info_status, tv_sys_net_meg, tv_sys_uptime, tv_display, tv_version_name;
 	String info="";
 	ImageView iv_mac;
-	
 	Button sys_sd_content, sys_settings_wifi, sys_settings_app, sys_settings_datetime, sys_settings_reset, sys_settings;
 	
 	String sdcard ="/mnt/external_sd";  // sdcard ="/storage/23E5-4C27";  //8.1.0 /mnt/media_rw/0403-0201
@@ -105,10 +85,6 @@ public class SysInfoActivity extends Activity {
 		tv_platform = (TextView) findViewById(R.id.tv_platform);
 		tv_android_ver = (TextView) findViewById(R.id.tv_android_ver);
 		tv_sd = (TextView) findViewById(R.id.tv_sd);
-		//升级判断
-//		private static String getProductName() { 
-//	    	return SystemProperties.get("ro.product.model");        
-//	    }
 		
 		tv_battery_info_voltage = (TextView) findViewById(R.id.battery_info_voltage);
 		tv_battery_info_status = (TextView) findViewById(R.id.battery_info_status);
@@ -129,9 +105,8 @@ public class SysInfoActivity extends Activity {
 			Bitmap mBitmap = ZXingUtil.createQRImage2( mac, 250, 250,null);
 			iv_mac.setImageBitmap(mBitmap);
 		}
-		
 
-	    String serial = getSerial();
+	    String serial = MainBoardUtil.getSerial();
 	    if(serial!=null && !"".equals(serial)){
 	    	tv_serialNo.setText(serial);
 	    }
@@ -143,7 +118,7 @@ public class SysInfoActivity extends Activity {
 	    	
 	    }
 	    
-	    String sys_buildID = getBuildDisplayID();
+	    String sys_buildID = MainBoardUtil.getBuildDisplayID();
 	    if(sys_buildID!=null){
 	    	tv_buildNum.setText(sys_buildID);
 	    }
@@ -153,26 +128,21 @@ public class SysInfoActivity extends Activity {
 	    	tv_IMEI.setText(sys_IMEI);
 	    }
 	    
-	    String sys_productName = getProductName();
+	    String sys_productName = MainBoardUtil.getProductName();
 	    if(sys_productName!=null){
 	    	tv_productName.setText(sys_productName);
 	    }
 	    
-	    String sys_platform = getPlatform();
+	    String sys_platform = MainBoardUtil.getPlatform();
 	    if(sys_platform!=null){
 	    	RAMandROMInfo mRAMandROMInfo = new RAMandROMInfo(ctx);
 	 	    String RAMInfo = mRAMandROMInfo.showRAMInfo2();
-	 	    
 	 	    String ROMinfo =mRAMandROMInfo.showROMInfo2();
 	 	    
 	 	    tv_platform.setText(sys_platform+"(" + getCPUNumCores() +")  RAM+ROM("+RAMInfo+ "+" + ROMinfo + ")"      );
-	 	    
-	 	  
 	    }
 	    
-	    
-	    
-	    String sys_android_ver = getSystemVersion();
+	    String sys_android_ver = MainBoardUtil.getSystemVersion();
 	    tv_android_ver.setText(sys_android_ver);
 	    
 	    
@@ -238,27 +208,6 @@ public class SysInfoActivity extends Activity {
 		return time;
 		    
 	}
-	
-	
-	private String getSerial() {
-		String serial = null;
-
-		try {
-
-			Class<?> c = Class.forName("android.os.SystemProperties");
-
-			Method get = c.getMethod("get", String.class);
-
-			serial = (String) get.invoke(c, "ro.serialno");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		
-		return serial;
-	}
 
 	@SuppressLint("MissingPermission")
 	private String getICCID(){
@@ -286,137 +235,6 @@ public class SysInfoActivity extends Activity {
 		return null;
 	}
 	
-	private String getProductName() {
-		String productName = null;
-
-		try {
-
-			Class<?> c = Class.forName("android.os.SystemProperties");
-
-			Method get = c.getMethod("get", String.class);
-
-			productName = (String) get.invoke(c, "ro.product.model");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		
-		return productName;
-	}
-	
-	private String getLinuxCore_Ver() {
-		Process process = null;
-		String kernelVersion = "";
-		try {
-			process = Runtime.getRuntime().exec("cat /proc/version");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// get the output line
-		InputStream outs = process.getInputStream();
-		InputStreamReader isrout = new InputStreamReader(outs);
-		BufferedReader brout = new BufferedReader(isrout, 8 * 1024);
-
-		String result = "";
-		String line;
-		// get the whole standard output string
-		try {
-			while ((line = brout.readLine()) != null) {
-				result += line;
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			if (result != "") {
-				String Keyword = "version ";
-				int index = result.indexOf(Keyword);
-				line = result.substring(index + Keyword.length());
-				index = line.indexOf(" ");
-				kernelVersion = line.substring(0, index);
-			}
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-		}
-		return kernelVersion;
-	}
-	
-	private String getBuildDisplayID() {
-		String serial = null;
-
-		try {
-
-			Class<?> c = Class.forName("android.os.SystemProperties");
-
-			Method get = c.getMethod("get", String.class);
-
-			serial = (String) get.invoke(c, "ro.build.display.id");
-
-			RAMandROMInfo ra = new RAMandROMInfo(ctx);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		
-		return serial;
-	}
-	
-
-	private String getPlatform() {
-		String platform = null;
-
-		try {
-
-			Class<?> c = Class.forName("android.os.SystemProperties");
-
-			Method get = c.getMethod("get", String.class);
-
-			platform = (String) get.invoke(c, "ro.board.platform");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		
-		return platform;
-	}
-	
-
-	private int getCPUNumCoresInt() {
-		// Private Class to display only CPU devices in the directory listing
-		class CpuFilter implements FileFilter {
-			@Override
-			public boolean accept(File pathname) {
-				// Check if filename is "cpu", followed by a single digit number
-				if (Pattern.matches("cpu[0-9]", pathname.getName())) {
-					return true;
-				}
-				return false;
-			}
-		}
-
-		try {
-			// Get directory containing CPU info
-			File dir = new File("/sys/devices/system/cpu/");
-			// Filter to only list the devices we care about
-			File[] files = dir.listFiles(new CpuFilter());
-			// Return the number of cores (virtual CPU devices)
-			return files.length;
-		} catch (Exception e) {
-			// Default to return 1 core
-			return 1;
-		}
-	}
-
 	public void getPrimaryStoragePath() {
 		try {
 			StorageManager sm = (StorageManager) getSystemService(Context.STORAGE_SERVICE);
@@ -429,10 +247,6 @@ public class SysInfoActivity extends Activity {
 			Log.e("TAG", "getPrimaryStoragePath() failed", e);
 		}
 	}
-    
-    public  String getSystemVersion() {
-        return android.os.Build.VERSION.RELEASE;
-    }
 
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private  String getDisplayInformation() {
@@ -463,7 +277,7 @@ public class SysInfoActivity extends Activity {
 	}
 	
 	private String getCPUNumCores(){
-		int core = getCPUNumCoresInt();
+		int core = MainBoardUtil.getCPUNumCoresInt();
 		String coreNum = "";
 		  if(core == 8){
 		    	coreNum="Octa-core[8]";
@@ -501,8 +315,7 @@ public class SysInfoActivity extends Activity {
     @Override  
     protected void onPause() {  
     super.onPause();  
-      
-    unregisterReceiver(mBroadcastReceiver);  
+    	unregisterReceiver(mBroadcastReceiver);
     } 
 	
 	 protected void onResume() {
@@ -622,25 +435,17 @@ public class SysInfoActivity extends Activity {
 	    
 	public String getVersion() {
 		String version = null;
-
 		try {
-
 			PackageManager manager = this.getPackageManager();
-
 			PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
-
 			version = info.versionName;
-
 			return version;
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		return version;
 	}
-	
-	
+
 	OnClickListener clickListener = new OnClickListener()
 	{
 		public void onClick(View v)
@@ -694,7 +499,6 @@ public class SysInfoActivity extends Activity {
 						showConfirmDialog();
 					}
 				}
-				    
 				break;
 			case R.id.sys_settings:
 				intent = new Intent(Settings.ACTION_SETTINGS);
@@ -709,7 +513,6 @@ public class SysInfoActivity extends Activity {
 	 *  dialog
 	 */
 	private void showConfirmDialog() {
-
 		AlertDialog.Builder builder = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.str_Clear)
 				.setMessage(R.string.str_factoryreset).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
 					@Override
