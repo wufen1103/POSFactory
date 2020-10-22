@@ -1,32 +1,9 @@
 package com.citaq.citaqfactory;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.NetworkInterface;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.citaq.util.FileDialogListItem;
-import com.citaq.util.NetworkUtil;
-import com.citaq.util.PingLooperThread;
-import com.citaq.util.PingLooperThread.Callbak;
-import com.citaq.util.SDcardUtil;
-import com.citaq.util.SmbUtil;
-import com.citaq.util.WifiAdmin;
-import com.citaq.view.ProgressListFileDialog;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
@@ -47,16 +24,33 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.citaq.util.MainBoardUtil;
+import com.citaq.util.NetworkUtil;
+import com.citaq.util.PingLooperThread;
+import com.citaq.util.PingLooperThread.Callbak;
+import com.citaq.util.SDcardUtil;
+import com.citaq.util.SmbUtil;
+import com.citaq.util.WifiAdmin;
+import com.citaq.view.ProgressListFileDialog;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /*源代码路径/media/resource/android/sourcecode/jellybean/frameworks/base/wifi/java/android/net/wifi/wifimanager.java
 		源码中这样描述的*/
@@ -234,6 +228,9 @@ public class NetWorkActivity extends Activity {
 		bt_baidu = (Button) findViewById(R.id.baidu);
 		bt_wifi = (Button) findViewById(R.id.wifi);
 		bt_server= (Button) findViewById(R.id.server);
+		if(!MainBoardUtil.getBuildDisplayID().contains("JE.H10")) {
+			bt_server.setVisibility(View.GONE);
+		}
 
 		et_network_addr = (EditText) findViewById(R.id.web);
 		et_network_addr.setSelection(et_network_addr.getText().length());
@@ -477,9 +474,10 @@ public class NetWorkActivity extends Activity {
 			public void onClick(View v) {
 //				jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", "1200000");
 				System.setProperty("jcifs.smb.client.dfs.disabled", "true"); ///禁用dfs,提高读取速度
-				System.setProperty("jcifs.smb.client.soTimeout", "500");//100//jcifs.smb.client.soTimeout 不能太大了，否则切换不了用户，太小了，又登不进去。这个配置是关键
+				System.setProperty("jcifs.smb.client.soTimeout", "500");//100 //default: 35000 //jcifs.smb.client.soTimeout 不能太大了，否则切换不了用户，太小了，又登不进去。这个配置是关键
 //				System.setProperty("jcifs.smb.client.soTimeout", "1000000");
-				System.setProperty("jcifs.smb.client.responseTimeout", "15000");//System.setProperty("jcifs.smb.client.responseTimeout", "30000");
+//				System.setProperty("jcifs.smb.client.responseTimeout", "15000")
+				System.setProperty("jcifs.smb.client.responseTimeout", "5000");// default: 30000//System.setProperty("jcifs.smb.client.responseTimeout", "30000");
 
 				if(new SDcardUtil().isHasSD()){
 					showListDialog();  //初始化mProgressListFileDialog

@@ -1,9 +1,8 @@
 package com.citaq.util;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import java.io.BufferedInputStream;
@@ -15,8 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import jcifs.smb.SmbFile;
@@ -29,11 +30,15 @@ public class SmbUtil {
     private static final int PROGRESS_MAX = 0X1;   //download file 大小
     private static final int UPDATE = 0X2;         //实时
 
+    private static final String SYSTEM_PREINSTALL =  "system/preinstall/";
+
     //publishProgress的更新标记
 
     Context mContext;
     ProgressBar mProgressBar = null;
     CallbackSMB  mCallbackSMB;
+
+    int BUFFER = 1024; //1024 * 8; //8k
 
     public SmbUtil() {
     }
@@ -78,6 +83,7 @@ public class SmbUtil {
         InputStream in = null;
         OutputStream out = null;
         File localFile = null;
+
         try {
             System.out.println("SmbUtil: dowload start.");
             long time1=System.currentTimeMillis();
@@ -86,14 +92,14 @@ public class SmbUtil {
             localFile = new File(localDir+File.separator+fileName);
             in = new BufferedInputStream(new SmbFileInputStream(smbFile));
             out = new BufferedOutputStream(new FileOutputStream(localFile));
-            byte []buffer = new byte[1024];
+            byte []buffer = new byte[BUFFER];
             while((in.read(buffer)) != -1){
                 out.write(buffer);
-                buffer = new byte[1024];
+                buffer = new byte[BUFFER];
             }
 
             long time2=System.currentTimeMillis();
-            System.out.println("SmbUtil:"+ remoteUrl +"dowload time =" + (time2 - time1));
+            System.out.println("SmbUtil:"+ remoteUrl +" download time =" + (time2 - time1));
             result = true;
         }catch (Exception e) { //jcifs.smb.SmbException //jcifs.util.transport.TransportException
             //下载一部分后断网，删掉已经下载的文件
@@ -161,9 +167,14 @@ public class SmbUtil {
         public List<String> doInBackground(String... params) {
             System.out.println("smb:doInBackground run..");
             List<String> download_remoteFileName = new ArrayList<String>();
+
             try {
+//                long time1=System.currentTimeMillis();
                 SmbFile smbFile2 = new SmbFile(params[0]);
+//                long time2=System.currentTimeMillis();
                 SmbFile[] a = smbFile2.listFiles();
+//                long time3=System.currentTimeMillis();
+//                System.out.println("SmbUtil:" + "SmbFile time =" + (time2 - time1) + ",listFiles() time =" + (time3 - time2)); //[20ms]
                 for (SmbFile f : a) {
                     System.out.println(f.getName());
                     //smbGet(params[0]+File.separator+f.getName(),params[1]);
@@ -183,7 +194,7 @@ public class SmbUtil {
                         if(isDownloadOK){
                             if(f.getName().endsWith(".zip")){
                                 try {
-                                    List<String> allfile = unZip(params[1]+File.separator+f.getName(), params[1]);
+                                    List<String> allfile = unZip2(params[1]+File.separator+f.getName(), params[1]);
                                     File zipFile = new File(params[1]+File.separator+f.getName());
                                     for(int i = 0; i<allfile.size(); i++){
                                         download_remoteFileName.add(allfile.get(i));
@@ -194,20 +205,34 @@ public class SmbUtil {
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
-//                    Logcat.e("解压文件失败：" + file.getPath());
                                 }
-
                             }else{
                                 download_remoteFileName.add(f.getName());
                             }
                         }
                     }
-
                 }
+                ////////////////////////////////如果预安装有MobiControl，拷贝到microSD(microSD没有MobiControl)//////////////////////
+                File preinstallFile = new File(SYSTEM_PREINSTALL);
+                File[] preinstallFiles = preinstallFile.listFiles();
+                for (File preinstalF : preinstallFiles) {
+                    if (preinstalF.getName().toUpperCase().contains("MOBICONTROL")){
+                        File[] mMobiControl = new File(preinstalF.getPath()).listFiles();
+                        for (File ff : mMobiControl) {
+                            String localpreinstalFile =   params[1]+ff.getName();
+                            if(!fileIsExists(localpreinstalFile)) {   //microSD没有该文件下载
+                                boolean isOK = copyFile(ff.getPath(), localpreinstalFile);
+                                if (isOK) {
+                                    download_remoteFileName.add(ff.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }catch (Exception e) {
                 e.printStackTrace();
             }
-
             return download_remoteFileName;
         }
         @Override
@@ -286,6 +311,120 @@ public class SmbUtil {
 
         return fileName;
     }
+
+
+    public List<String> unZip2(String unZipfileName, String storageDirectory) {
+        System.out.println("SmbUtil: unZip start.");
+        long time1=System.currentTimeMillis();
+        List<String> fileName = new ArrayList<String>();
+        boolean result = false;
+        String filePath = storageDirectory;
+        ZipFile zipFile = null;
+        BufferedInputStream bis = null;
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        try {
+            zipFile = new ZipFile(unZipfileName);
+            Enumeration<? extends ZipEntry> emu = zipFile.entries();
+            while (emu.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) emu.nextElement();
+                if (entry.isDirectory()) {
+                    new File(filePath + entry.getName()).mkdirs();
+                    continue;
+                }
+                bis = new BufferedInputStream(zipFile.getInputStream(entry));
+                File file = new File(filePath + entry.getName());
+                fileName.add(entry.getName());
+                File parent = file.getParentFile();
+                if (parent != null && (!parent.exists())) {
+                    parent.mkdirs();
+                }
+                fos = new FileOutputStream(file);
+                bos = new BufferedOutputStream(fos, BUFFER);
+                int count;
+                byte data[] = new byte[BUFFER];
+                while ((count = bis.read(data, 0, BUFFER)) != -1) {
+                    bos.write(data, 0, count);
+                }
+                bos.flush();
+            }
+            result = true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        finally {
+            try {
+                if (null != bos) {
+                    bos.close();
+                }
+                if (null != bis) {
+                    bis.close();
+                }
+                if (null != zipFile) {
+                    zipFile.close();
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                result = false;
+            }
+        }
+        long time2=System.currentTimeMillis();
+        System.out.println("SmbUtil:"+ "unZip time =" + (time2 - time1));
+
+        return fileName;
+    }
+
+    /**
+     * 复制单个文件
+     *
+     * @param oldPath$Name String 原文件路径+文件名 如：data/user/0/com.test/files/abc.txt
+     * @param newPath$Name String 复制后路径+文件名 如：data/user/0/com.test/cache/abc.txt
+     * @return <code>true</code> if and only if the file was copied;
+     *         <code>false</code> otherwise
+     */
+    public boolean copyFile(String oldPath$Name, String newPath$Name) {
+        try {
+            File oldFile = new File(oldPath$Name);
+            if (!oldFile.exists()) {
+                Log.e("--SmbUtil--", "copyFile:  oldFile not exist.");
+                return false;
+            } else if (!oldFile.isFile()) {
+                Log.e("--SmbUtil--", "copyFile:  oldFile not file.");
+                return false;
+            } else if (!oldFile.canRead()) {
+                Log.e("--SmbUtil--", "copyFile:  oldFile cannot read.");
+                return false;
+            }
+
+            /* 如果不需要打log，可以使用下面的语句
+            if (!oldFile.exists() || !oldFile.isFile() || !oldFile.canRead()) {
+                return false;
+            }
+            */
+            long time1=System.currentTimeMillis();
+            FileInputStream fileInputStream = new FileInputStream(oldPath$Name);
+            FileOutputStream fileOutputStream = new FileOutputStream(newPath$Name);
+            byte[] buffer = new byte[1024];
+            int byteRead;
+            while (-1 != (byteRead = fileInputStream.read(buffer))) {
+                fileOutputStream.write(buffer, 0, byteRead);
+            }
+            fileInputStream.close();
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            long time2=System.currentTimeMillis();
+            System.out.println("SmbUtil:"+ "copyFile time =" + (time2 - time1));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     public interface CallbackSMB {
         abstract void onDownLoadResult(List<String> download_remoteFileName);
