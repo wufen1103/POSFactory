@@ -842,7 +842,7 @@ public class NetWorkActivity extends Activity {
 	private void openBrowser(){
 		Intent intent = new Intent();        
 		intent.setAction("android.intent.action.VIEW");    
-		Uri content_url = Uri.parse("http://www.baidu.com");   
+		Uri content_url = Uri.parse("http://whatismyscreenresolution.net/");
 		intent.setData(content_url);           
 		intent.setClassName("com.android.browser","com.android.browser.BrowserActivity"); 
 		if(getPackageManager().resolveActivity(intent, 0) == null) {

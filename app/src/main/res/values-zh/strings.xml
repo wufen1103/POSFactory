@@ -39,7 +39,7 @@
     <string name="btnstr_enablebuzzer">打开蜂鸣器</string>
     <string name="btnstr_disablebuzzer">关闭蜂鸣器</string>
     <string name="btnstr_execute">执行</string>
-    <string name="str_cmd">命令</string>
+    <string name="str_cmd">命令(eg:1DH 47H 08H 01H)</string>
     <string name="baidu">www.baidu.com</string>
     <string name="titel_select_usborserial">顾显类型：</string>
     <string name="titel_print_usborserial">打印机类型：</string>
@@ -226,6 +226,7 @@
     <string name="str_verify">核实</string>
     <string name="str_leave_dfu">离开 DFU 模式</string>
     <string name="str_selfprint">打印自检页</string>
+    <string name="str_initialize">初始化</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="str_factoryreset">"清除所有数据(恢复出厂设置)!"</string>

@@ -41,7 +41,7 @@ public class PrinterUpgradeActivity extends Activity implements
     private static final String TAG = "PrinterUpgradeActivity";
     private Usb usb;
     private Dfu dfu;
-    Button selfPrint;
+    Button selfPrint,btnInit;
 
     private TextView status;
     private TextView firmwareFileName;
@@ -54,6 +54,8 @@ public class PrinterUpgradeActivity extends Activity implements
     Context mContext;
     private static byte[] enterDfuCommand = new byte[]{0x1D, 0x75, 0x55, (byte) 0xAA};
     private static byte[] printSelf = new byte[] { 0x1D, 0x28, 0x41, 0x02, 0x00, 0x00, 0x002};  //F15
+    private static byte[] printInit = new byte[] { 0x1D, 0x47, 0x08, 0x01};  //1DH 47H 08H 01H
+    private static byte[] printVersion = new byte[] { 0x1D, 0x49, 0x41};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +199,15 @@ public class PrinterUpgradeActivity extends Activity implements
             public void onClick(View v) {
                 //Outputs.enterDfuMode();
                 usb.sentData(printSelf);
+            }
+        });
+
+        btnInit = (Button) findViewById(R.id.btnInit);
+        btnInit.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Outputs.enterDfuMode();
+                usb.sentData(printInit);
             }
         });
 

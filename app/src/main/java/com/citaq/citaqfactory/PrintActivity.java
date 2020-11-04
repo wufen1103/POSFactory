@@ -219,6 +219,9 @@ public class PrintActivity extends Activity {
 
 		btn_disableChinese = (Button) findViewById(R.id.btn_disableChinese);
 		btn_disableChinese.setOnClickListener(SendPrintListener);
+		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
+			btn_disableChinese.setVisibility(View.GONE);
+		}
 		
 		btn_OpenPicture = (Button) findViewById(R.id.btn_openPicture);
 		btn_OpenPicture.setOnClickListener(SendPrintListener);
@@ -278,9 +281,9 @@ public class PrintActivity extends Activity {
 				
 	
 	//	getStoragePath(mContext,"USB");
-		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
-			et_cmd.setText("1DH 47H 08H 01H");
-		}
+//		if(MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63()){
+//			et_cmd.setText("1DH 47H 08H 01H");
+//		}
 	}
 	
 	/**

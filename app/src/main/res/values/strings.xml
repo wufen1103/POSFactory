@@ -39,7 +39,7 @@
     <string name="btnstr_enablebuzzer">Enable Buzzer</string>
     <string name="btnstr_disablebuzzer">Disable Buzzer</string>
     <string name="btnstr_execute">Execute</string>
-    <string name="str_cmd">Command</string>
+    <string name="str_cmd">Command(eg:1DH 47H 08H 01H)</string>
     <string name="baidu">www.baidu.com</string>
     <string name="titel_select_usborserial">Serial or USB</string>
     <string name="titel_print_usborserial">Serial or USB</string>
@@ -343,6 +343,7 @@
     <string name="str_verify">Verify</string>
     <string name="str_leave_dfu">Leave DFU mode</string>
     <string name="str_selfprint">Self Print</string>
+    <string name="str_initialize">Initialize</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="str_factoryreset">"Erase all data(factory reset)!"</string>
