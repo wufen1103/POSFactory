@@ -26,6 +26,7 @@ import android.provider.Settings;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +37,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
@@ -222,6 +224,7 @@ public class PresentationTestActivity extends FullActivity
     private class DifferentDislay extends Presentation {
         Context mOuterContext;
         RelativeLayout mRelativeLayout;
+        TextView tv_show;
         private int i = 0;
         public DifferentDislay(Context outerContext, Display display) {
 
@@ -239,10 +242,15 @@ public class PresentationTestActivity extends FullActivity
 
             setContentView(R.layout.different_presentation);
             mRelativeLayout = findViewById(R.id.mRelativeLayout);
+            tv_show = (TextView) findViewById(R.id.tv_show);
             Button bt_test = (Button) findViewById(R.id.bt_test);
+            Button bt_upperLeft = (Button) findViewById(R.id.bt_upperLeft);
+            Button lowerRight = (Button) findViewById(R.id.lowerRight);
+
             bt_test.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    tv_show.setText("");
                     Toast.makeText(mOuterContext, "Hello！！", Toast.LENGTH_SHORT).show();
 /*                    AlertDialog.Builder builder = new AlertDialog.Builder(mOuterContext).setIcon(R.drawable.ic_launcher).setTitle("Clear")
                             .setMessage("Erase all data(factory reset)").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -265,7 +273,21 @@ public class PresentationTestActivity extends FullActivity
                 }
             });
 
+            bt_upperLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tv_show.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                    tv_show.setText("I am Upper left corner.");
+                }
+            });
 
+            lowerRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tv_show.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+                    tv_show.setText("I am Lower right corner.");
+                }
+            });
         }
 
         private int[] colors={

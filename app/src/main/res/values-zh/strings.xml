@@ -231,6 +231,10 @@
     <string name="cancel">取消</string>
     <string name="str_factoryreset">"清除所有数据(恢复出厂设置)!"</string>
     <string name="str_delete">"确认删除"</string>
+
+    <string name="str_clickme">"点我"</string>
+    <string name="str_upperLeft">"左上角"</string>
+    <string name="str_lowerRight">"右下角"</string>
 </resources>
 
 

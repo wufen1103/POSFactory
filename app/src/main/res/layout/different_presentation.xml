@@ -5,13 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:gravity="center"
     android:padding="@dimen/margin_10" >
+    <TextView
+        android:id="@+id/tv_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="@dimen/tx_size_32"/>
 
     <Button
         android:id="@+id/bt_test"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_clickme"
-        android:textSize="@dimen/tx_size_32"/>
+        android:textSize="@dimen/tx_size_18"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/bt_upperLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_upperLeft"
+        android:textSize="@dimen/tx_size_18"/>
+
+    <Button
+        android:id="@+id/lowerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_lowerRight"
+        android:textSize="@dimen/tx_size_18"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

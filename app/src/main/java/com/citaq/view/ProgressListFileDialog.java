@@ -96,8 +96,9 @@ public class ProgressListFileDialog extends Dialog {
         listview_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                choose_item = items.get(position);
-                showNormalDialog();
+                //for test
+//                choose_item = items.get(position);
+//                showNormalDialog();
                 return true;
             }
         });
