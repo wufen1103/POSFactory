@@ -97,7 +97,7 @@
         <position>90</position>
         <color>1</color>
         <show>true</show>
-        <permission>android.permission.ACCESS_FINE_LOCATION</permission>
+        <permission>android.permission.ACCESS_FINE_LOCATION|android.permission.BLUETOOTH_ADMIN</permission>
     </item>
     <item>
         <itemId>1100</itemId>

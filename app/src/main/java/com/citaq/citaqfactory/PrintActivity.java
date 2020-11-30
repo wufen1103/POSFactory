@@ -102,20 +102,19 @@ public class PrintActivity extends Activity {
 		
 		String model = MainBoardUtil.getCpuHardware();
 		
-		if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368() || MainBoardUtil.isRK30BOARD() || MainBoardUtil.isRK3368_8_1()){
+		if(MainBoardUtil.isSerialPrinterBoard()){
 			initSerial();
 		}else{
 			
 		}
-
 
 		initView();
 		
 		mSendThread = new SendThread();
 		mSendThread.start();
 
-		if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368() || MainBoardUtil.isRK30BOARD() || MainBoardUtil.isRK3368_8_1()){
-			
+		if (MainBoardUtil.isSerialPrinterBoard()) {
+
 		}else{
 			print_usb.setChecked(true);
 			print_serial.setEnabled(false);

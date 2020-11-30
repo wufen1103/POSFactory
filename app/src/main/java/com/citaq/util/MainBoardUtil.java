@@ -67,6 +67,15 @@ public class MainBoardUtil {
 		}
 		return rs;
 	}
+
+	public static boolean isSerialPrinterBoard() {
+		if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368() || MainBoardUtil.isRK30BOARD()
+				|| MainBoardUtil.isRK3368_8_1()|| MainBoardUtil.isMSM8625Q()){
+
+			return true;
+		}
+		return false;
+	}
 	
 	public static boolean isRK3368() {
 		if(getCpuHardware().contains(MainBoardUtil.RK3368)){

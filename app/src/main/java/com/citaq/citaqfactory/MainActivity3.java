@@ -142,7 +142,7 @@ public class MainActivity3 extends Activity {
 						}
 					}
 
-				} else if (MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368()) {
+				} else if (MainBoardUtil.isSerialPrinterBoard()) {
 					for (int i : metroIgnoreList2) {
 						if (mMetroItem.getItemId() == i) {
 							iterator.remove();
