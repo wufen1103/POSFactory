@@ -2,7 +2,6 @@ package com.citaq.citaqfactory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
@@ -14,6 +13,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -39,6 +39,7 @@ public class MainActivity3 extends Activity {
 	Context mContext;
 	Intent mIntent;
 	String permission;
+	Button bt_mutitest;
 	int screenNum = 0;
 	private int[] metroIgnoreList1 ={1010}; //3288 LED Test
 	private int[] metroIgnoreList2 ={1100,1120,1130,1140}; //3368 Serial test, Other Test, Diff Display and Touch, Printer Firmware Upgrade
@@ -60,8 +61,9 @@ public class MainActivity3 extends Activity {
 			screenNum = displays.length; //屏幕数
 		}
 
-
 		loadMetro();
+
+		initMultiTest();
 	}
 
 	private void loadMetro(){
@@ -98,6 +100,20 @@ public class MainActivity3 extends Activity {
 
 		});
 	}
+
+
+	private void initMultiTest(){
+		bt_mutitest = (Button)findViewById(R.id.bt_mutitest);
+		bt_mutitest.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent webviewIntent = new Intent(mContext, WebViewActivity.class);
+				webviewIntent.putExtra("WIFI", true);
+				mContext.startActivity(webviewIntent);
+			}
+		});
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		/*if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
@@ -163,9 +179,8 @@ public class MainActivity3 extends Activity {
 
 		SharePreferencesHelper mSharePreferencesHelper = new SharePreferencesHelper(this,CitaqBuildConfig.SHAREPREFERENCESNAME);
 		mSharePreferencesHelper.clear();
-		
+
 		super.onDestroy();
-		
 	}
 
 

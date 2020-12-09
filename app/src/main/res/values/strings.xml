@@ -351,6 +351,8 @@
     <string name="str_clickme">"Click me"</string>
     <string name="str_upperLeft">"Upper left corner"</string>
     <string name="str_lowerRight">"Lower right corner"</string>
+    <string name="str_mutitest">"Multi"</string>
+    <string name="str_refresh">Refresh</string>
 
     <string-array name="ping_time">
         <item>10</item>

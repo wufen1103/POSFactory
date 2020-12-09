@@ -465,7 +465,7 @@ public class NetWorkActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				openBrowser();
+				openBrowser2();
 			}
 		});
 
@@ -841,8 +841,9 @@ public class NetWorkActivity extends Activity {
 	
 	private void openBrowser(){
 		Intent intent = new Intent();        
-		intent.setAction("android.intent.action.VIEW");    
-		Uri content_url = Uri.parse("http://whatismyscreenresolution.net/");
+		intent.setAction("android.intent.action.VIEW");
+		Uri content_url = Uri.parse("http://www.baidu.com");
+//		Uri content_url = Uri.parse("http://whatismyscreenresolution.net/");
 		intent.setData(content_url);           
 		intent.setClassName("com.android.browser","com.android.browser.BrowserActivity"); 
 		if(getPackageManager().resolveActivity(intent, 0) == null) {
@@ -856,6 +857,10 @@ public class NetWorkActivity extends Activity {
 		}else{
 			startActivity(intent);
 		}
+	}
+	private void openBrowser2() {
+		Intent webviewIntent = new Intent(mContext, WebViewActivity.class);
+		startActivity(webviewIntent);
 	}
 
 	private void downloadFileSmb(){

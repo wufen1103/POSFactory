@@ -116,6 +116,8 @@
         <activity android:name=".VideoAcivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale|screenLayout|mcc|mnc">
         </activity>
+        <activity android:name=".WebViewActivity"  >
+        </activity>
          <activity android:name=".FSKCALLERIDActivity"  >
         </activity>
         <activity android:name=".PresentationTestActivity"
