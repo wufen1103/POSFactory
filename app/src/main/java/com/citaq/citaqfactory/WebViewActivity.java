@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.citaq.util.Command;
+import com.citaq.util.MainBoardUtil;
 import com.citaq.util.NetworkUtil;
 import com.citaq.util.WifiAdmin;
 
@@ -43,10 +44,11 @@ public class WebViewActivity extends Activity {
 
 	WifiAdmin wifiAdmin;
 //	String[] defaultWifiInfo ={ "Xiaomi_JS", "88990420", "3"};
-//	String[] defaultWifiInfo ={ "wifitest", "CitaqServerAp", "3"};
-	String[] defaultWifiInfo ={ "JustEat_Guest", "xa4aqusW", "3"};
+	String[] defaultWifiInfo ={ "wifitest", "CitaqServerAp", "3"};
+//	String[] defaultWifiInfo ={ "JustEat_Guest", "xa4aqusW", "3"};
 	boolean isWifiToOn = false;
 	boolean allowToOnWiFi = false;
+	boolean isJE = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +105,10 @@ public class WebViewActivity extends Activity {
 	}
 
 	private void initWiFi(){
+		if(!MainBoardUtil.getBuildDisplayID().contains("JE.H10")) {
+			isJE = true;
+		}
 		wifiAdmin = new WifiAdmin(mContext);
-
 		if(NetworkUtil.isNetworkAvailable(mContext)){
 
 		}else{
@@ -113,9 +117,11 @@ public class WebViewActivity extends Activity {
 //					WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 //					wifi.setWifiEnabled(true);
 			new Thread(){
-				public void run(){
+				public void run() {
 					wifiAdmin.openWifi();
-					wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(defaultWifiInfo[0], defaultWifiInfo[1], Integer.valueOf(defaultWifiInfo[2])));
+					if (!isJE) {
+						wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(defaultWifiInfo[0], defaultWifiInfo[1], Integer.valueOf(defaultWifiInfo[2])));
+					}
 				}
 
 			}.start();
