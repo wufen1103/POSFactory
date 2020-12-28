@@ -173,7 +173,7 @@ public class USBConnectUtil {
                 if (mUsbDevice != null) {
                     Log.v(TAG, "Device closed");
                     callback("Device closed\n", false);
-                    mUsbDeviceConnection = null;
+//                    mUsbDeviceConnection = null;   //可能拔掉的是别的设备
 
                 }
             } else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) { //android.hardware.usb.action.USB_DEVICE_ATTACHED
@@ -407,12 +407,17 @@ public class USBConnectUtil {
      */
     public boolean sendMessageToPrint(byte[] data) {
         if (epBulkOut != null) {
-            if (mUsbDeviceConnection.bulkTransfer(epBulkOut, data, data.length, 0) >= 0) {
-                //0 或者正数表示成功
-                callback("Data send OK！\n", false);
-                return true;
-            } else {
+            try {
+                if (mUsbDeviceConnection.bulkTransfer(epBulkOut, data, data.length, 0) >= 0) {
+                    //0 或者正数表示成功
+                    callback("Data send OK！\n", false);
+                    return true;
+                } else {
+                    callback("bulkOut error！", false);
+                }
+            }catch (Exception e) {
                 callback("bulkOut error！", false);
+                openUSBPrinter();
             }
         } else {
             callback("Data can not sent!\n", false);

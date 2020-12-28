@@ -34,6 +34,11 @@ import com.printer.util.CallbackUSB;
 import com.printer.util.DataQueue;
 import com.printer.util.USBConnectUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -354,7 +359,23 @@ public class PrintActivity extends Activity {
 			case R.id.btn_opencash:
 				
 				printerWrite(Command.openCash);
-				
+/*				byte[] buff;
+				try{
+					FileInputStream stream = new FileInputStream(new File("/sdcard/HexDump.bin"));
+					ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+					byte[] b = new byte[1000];
+					int n;
+					while ((n = stream.read(b)) != -1)
+						out.write(b, 0, n);
+					stream.close();
+					out.close();
+					buff =  out.toByteArray();
+					serialWrite(buff);
+				} catch (IOException e){
+					e.printStackTrace();
+				}*/
+
+
 				break;
 			case R.id.btn_cutPaper:
 				printerWrite(Command.cutPaper);
@@ -465,6 +486,18 @@ public class PrintActivity extends Activity {
 		mSendThread.addData(printText,true,1024);*/
 		
 		return returnValue;
+	}
+
+	private  boolean serialWriteTest(byte[] cmd) {
+		FileOutputStream mFileOutputStream = null;
+		try {
+			mFileOutputStream = new FileOutputStream("/dev/ttyS1");
+
+			mFileOutputStream.write(cmd);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
 	private  boolean serialWrite(byte[] cmd){

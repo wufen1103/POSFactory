@@ -105,7 +105,7 @@ public class WebViewActivity extends Activity {
 	}
 
 	private void initWiFi(){
-		if(!MainBoardUtil.getBuildDisplayID().contains("JE.H10")) {
+		if(MainBoardUtil.getBuildDisplayID().contains("JE.H10")) {
 			isJE = true;
 		}
 		wifiAdmin = new WifiAdmin(mContext);
