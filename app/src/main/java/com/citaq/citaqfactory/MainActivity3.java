@@ -93,6 +93,12 @@ public class MainActivity3 extends Activity {
 						PermissionUtil.checkAndRequestPermissions(MainActivity3.this, strarr);
 						return;
 					}
+				}if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M && permission != null && permission.contains("android.permission.RECORD_AUDIO")){
+					String[] strarr = permission.split("\\|");
+					if (strarr.length>0){
+						PermissionUtil.checkAndRequestPermissions(MainActivity3.this, strarr);
+						return;
+					}
 				}else {
 					mContext.startActivity(mIntent);
 				}
