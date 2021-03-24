@@ -41,8 +41,8 @@ public class MainActivity3 extends Activity {
 	String permission;
 	Button bt_mutitest;
 	int screenNum = 0;
-	private int[] metroIgnoreList1 ={1010}; //3288 LED Test
-	private int[] metroIgnoreList2 ={1100,1120,1130,1140}; //3368 Serial test, Other Test, Diff Display and Touch, Printer Firmware Upgrade
+	private int[] metroIgnoreList1 = {1010}; //3288 LED Test
+	private int[] metroIgnoreList2 = {1100,1120,1130,1140}; //3368 Serial test, Other Test, Diff Display and Touch, Printer Firmware Upgrade
 	private int metroIgnore = 1130; //屏幕<2
 
 	private static int OVERLAY_PERMISSION_REQ_CODE = 1234;
@@ -151,7 +151,7 @@ public class MainActivity3 extends Activity {
 			if (!mMetroItem.isShow()) {
 				iterator.remove();
 			}else {
-				if ((MainBoardUtil.isRK3288() || MainBoardUtil.isAllwinnerA63())) {
+				if ((!MainBoardUtil.isSerialPrinterBoard())) {
 					for (int i : metroIgnoreList1) {
 						if (mMetroItem.getItemId() == i) {
 							iterator.remove();

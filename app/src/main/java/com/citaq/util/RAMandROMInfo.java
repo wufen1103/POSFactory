@@ -21,8 +21,8 @@ public class RAMandROMInfo {
 	
 	Context context;
 	
-	String mmcblk ="mmcblk0"; 
-	String zram0 ="zram0"; 
+	String mmcblk ="mmcblk0";
+	String zram0 ="zram0";
 	
 	public RAMandROMInfo(Context ctx) {
 		context = ctx;
@@ -32,8 +32,8 @@ public class RAMandROMInfo {
 //		 
 //		 showSDInfo();
 		
-		if(MainBoardUtil.isRK3288()){
-			mmcblk ="mmcblk2"; 
+		if(MainBoardUtil.isRK3288()||MainBoardUtil.isRK3288_CTE()){
+			mmcblk ="mmcblk2";
 		}
 	}
 	

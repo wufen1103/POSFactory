@@ -88,6 +88,9 @@ public class LEDControl extends Thread {
 	///////////////RK3368///////////////////////////
 	private static String RedLightFileName_3368_android8_1 = "/sys/class/gpio/gpio1124/value";
 	private static String BlueLightFileName_3368_android8_1 = "/sys/class/gpio/gpio1106/value";
+	///////////////CTE RK3288///////////////////////////
+	private static String RedLightFileName_cte3288 = "/sys/class/gpio/gpio69/value";
+	private static String BlueLightFileName_cte3288 = "/sys/class/gpio/gpio68/value";
 	
 
 	public static int TurnRedLedOnoff(String onff, String fileName)
@@ -237,6 +240,21 @@ public class LEDControl extends Thread {
 					TurnRedLedOnoff("0",RedLightFileName_3368);
 				}
 			}
+		}else if(MainBoardUtil.isRK3288_CTE()){
+			if(isOn == true)
+			{
+				if(isLightOn(RedLightFileName_cte3288).contains("0"))
+				{
+					TurnRedLedOnoff("1",RedLightFileName_cte3288);
+				}
+			}
+			else
+			{
+				if(isLightOn(RedLightFileName_cte3288).contains("1"))
+				{
+					TurnRedLedOnoff("0",RedLightFileName_cte3288);
+				}
+			}
 		}
 	}
 	
@@ -289,6 +307,21 @@ public class LEDControl extends Thread {
 				if(isLightOn(BlueLightFileName_3368).contains("1"))
 				{
 					TurnBlueLedOnoff("0",BlueLightFileName_3368);
+				}
+			}
+		}else if(MainBoardUtil.isRK3288_CTE()){
+			if(isOn == true)
+			{
+				if(isLightOn(BlueLightFileName_cte3288).contains("0"))
+				{
+					TurnBlueLedOnoff("1",BlueLightFileName_cte3288);
+				}
+			}
+			else
+			{
+				if(isLightOn(BlueLightFileName_cte3288).contains("1"))
+				{
+					TurnBlueLedOnoff("0",BlueLightFileName_cte3288);
 				}
 			}
 		}

@@ -23,7 +23,8 @@ public class MainBoardUtil {
 	private static final String RK30BOARD = "SUN50IW1P1";
 	private static final String MSM8625Q = "QRD MSM8625Q SKUD";
 	private static final String RK3368 = "RK3368";
-	private static final String RK3288 = "GENERIC DT BASED SYSTEM";
+	private static final String RK3288 = "GENERIC DT BASED SYSTEM"; //CTD RK3288
+	private static final String RK3288_CTE = "CTE RK3288"; //CTE RK3288
 	private static final String AllwinnerA63 = "SUN50IW3";
 	
     public static String getCpuHardware() {
@@ -70,7 +71,7 @@ public class MainBoardUtil {
 
 	public static boolean isSerialPrinterBoard() {
 		if(MainBoardUtil.isRK3188() || MainBoardUtil.isRK3368() || MainBoardUtil.isRK30BOARD()
-				|| MainBoardUtil.isRK3368_8_1()|| MainBoardUtil.isMSM8625Q()){
+				|| MainBoardUtil.isRK3368_8_1()|| MainBoardUtil.isMSM8625Q() || MainBoardUtil.isRK3288_CTE()){
 
 			return true;
 		}
@@ -93,6 +94,13 @@ public class MainBoardUtil {
 	
 	public static boolean isRK3288() {
 		if(getCpuHardware().contains(MainBoardUtil.RK3288)){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isRK3288_CTE() {
+		if(getCpuHardware().contains(MainBoardUtil.RK3288_CTE)){
 			return true;
 		}
 		return false;
