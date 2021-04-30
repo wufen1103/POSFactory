@@ -39,8 +39,8 @@ public class MusicPlayerActivity extends Activity {
 	
 	private MediaPlayer mMediaPlayer = null;
 	Context mContext;
-	/*Button bt_volume_decrease;
-	Button bt_volume_increase;*/
+	Button bt_volume_decrease;
+	Button bt_volume_increase;
 	
 	Button bt_volume_mute;
 	Button bt_volume_medium;
@@ -115,8 +115,8 @@ public class MusicPlayerActivity extends Activity {
 	
 	
 	private void initView(){
-		/*bt_volume_decrease = (Button) findViewById(R.id.volume_decrease);
-		bt_volume_increase = (Button) findViewById(R.id.volume_increase);*/
+		bt_volume_decrease = (Button) findViewById(R.id.volume_decrease);
+		bt_volume_increase = (Button) findViewById(R.id.volume_increase);
 		
 		bt_volume_mute = (Button) findViewById(R.id.volume_mute);
 		bt_volume_medium = (Button) findViewById(R.id.volume_medium);
@@ -139,7 +139,8 @@ public class MusicPlayerActivity extends Activity {
 					
 					@Override
 					public void onClick(View arg0) {
-						setVolume(0);
+						currentVolume = 0;
+						setVolume(currentVolume);
 					}
 				});
 		
@@ -147,7 +148,8 @@ public class MusicPlayerActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				setVolume(maxVolume/2);
+				currentVolume = maxVolume/2;
+				setVolume(currentVolume);
 			}
 		});
 		
@@ -155,11 +157,12 @@ public class MusicPlayerActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				setVolume(maxVolume);
+				currentVolume = maxVolume;
+				setVolume(currentVolume);
 			}
 		});
 				
-/*		bt_volume_decrease.setOnClickListener(new OnClickListener() {
+		bt_volume_decrease.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -178,7 +181,7 @@ public class MusicPlayerActivity extends Activity {
 				setVolume(currentVolume);
 				
 			}
-		});*/
+		});
 
 
 		bt_play_pause.setOnCheckedChangeListener(new OnCheckedChangeListener() {

@@ -37,19 +37,6 @@
                 android:background="@drawable/btn_play_selector"
                 android:button="@null"
                 android:checked="false" />
-
-         <!--    <Button
-                android:id="@+id/volume_decrease"
-                android:layout_width="@dimen/volume_hw"
-                android:layout_height="@dimen/volume_hw"
-                android:layout_margin="@dimen/margin_50"
-                android:background="@drawable/btn_volume_decrease_selector" />
-
-            <Button
-                android:id="@+id/volume_increase"
-                android:layout_width="@dimen/volume_hw"
-                android:layout_height="@dimen/volume_hw"
-                android:background="@drawable/btn_volume_increase_selector" /> -->
             
              <Button
                 android:id="@+id/volume_mute"
@@ -74,6 +61,26 @@
                 android:layout_margin="@dimen/margin_20"
                 android:text="@string/volume_hight"
                 android:textSize="@dimen/tx_size_24"  />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/volume_decrease"
+                android:layout_width="@dimen/volume_hw"
+                android:layout_height="@dimen/volume_hw"
+                android:layout_margin="@dimen/margin_50"
+                android:background="@drawable/btn_volume_decrease_selector" />
+
+            <Button
+                android:id="@+id/volume_increase"
+                android:layout_width="@dimen/volume_hw"
+                android:layout_height="@dimen/volume_hw"
+                android:background="@drawable/btn_volume_increase_selector" />
         </LinearLayout>
 
         <LinearLayout
