@@ -740,7 +740,8 @@ public class NetWorkActivity extends Activity {
 			//3288 909S-120 4G:type =13 3G=15
 			if (mNetworkType == TelephonyManager.NETWORK_TYPE_UMTS
 					|| mNetworkType == TelephonyManager.NETWORK_TYPE_HSDPA
-					|| mNetworkType == TelephonyManager.NETWORK_TYPE_HSPAP)  //3288 TD-SCDMA ？？
+					|| mNetworkType == TelephonyManager.NETWORK_TYPE_HSPAP)   //3288 TD-SCDMA ？？
+					//|| mNetworkType == TelephonyManager.NETWORK_TYPE_UNKNOWN)
 			{
 				strengthdmb =String.valueOf(-113+(2*asu));
 				// 联通3G
@@ -832,7 +833,12 @@ public class NetWorkActivity extends Activity {
 						.append(",").append(mResources.getString(R.string.network_signal_strength))
 						.append(":").append(strengthdmb).append("dBm")
 						.append("  ").append(strength).append("asu");
-//				tv_signal_strength_3G.setText(sb);
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+					int levle = signalStrength.getLevel();
+					sb.append(" ,").append(mResources.getString(R.string.network_signal_level)).append(":")
+							.append(levle);
+				}
+				tv_signal_strength_3G.setText(sb);
 			}
 
 		}

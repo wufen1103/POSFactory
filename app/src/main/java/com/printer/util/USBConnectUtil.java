@@ -95,8 +95,11 @@ public class USBConnectUtil {
     }
 
     private void destroy() {
-
-        mContext.unregisterReceiver(mUsbDeviceReceiver);
+        try {
+            mContext.unregisterReceiver(mUsbDeviceReceiver);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
 
         if (mUSBReadThread != null) {
             mUSBReadThread.cancel();

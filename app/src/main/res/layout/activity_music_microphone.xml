@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:layout_margin="@dimen/margin_8"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
@@ -27,6 +27,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -67,13 +68,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_margin="@dimen/margin_20"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/volume_decrease"
                 android:layout_width="@dimen/volume_hw"
                 android:layout_height="@dimen/volume_hw"
-                android:layout_margin="@dimen/margin_50"
+                android:layout_marginRight="@dimen/margin_50"
                 android:background="@drawable/btn_volume_decrease_selector" />
 
             <Button
@@ -164,7 +166,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 第一部分 -->
+    <!-- 第二部分 -->
 
     <LinearLayout
         android:layout_width="match_parent"

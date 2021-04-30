@@ -498,7 +498,7 @@ public class SysInfoActivity extends Activity {
 					intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
 					startActivity(intent);
 				} else {
-					if(MainBoardUtil.isRK3288()){
+					if(MainBoardUtil.isRK3288() || MainBoardUtil.isRK3288_CTD() || MainBoardUtil.isRK3288_CTE()){
 						showConfirmDialog();
 					}else{
 						intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);

@@ -32,7 +32,7 @@ public class RAMandROMInfo {
 //		 
 //		 showSDInfo();
 		
-		if(MainBoardUtil.isRK3288()||MainBoardUtil.isRK3288_CTE()){
+		if(MainBoardUtil.isRK3288()||MainBoardUtil.isRK3288_CTE()||MainBoardUtil.isRK3288_CTD()){
 			mmcblk ="mmcblk2";
 		}
 	}
