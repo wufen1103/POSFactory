@@ -42,6 +42,7 @@
     
     
     <RelativeLayout
+        android:id="@+id/rl_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:gravity="center"
@@ -77,6 +78,7 @@
     
     
     <RelativeLayout
+        android:id="@+id/rl_fresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:gravity="center"

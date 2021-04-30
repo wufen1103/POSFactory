@@ -91,6 +91,8 @@ public class LEDControl extends Thread {
 	///////////////CTE RK3288///////////////////////////
 	private static String RedLightFileName_cte3288 = "/sys/class/gpio/gpio69/value";
 	private static String BlueLightFileName_cte3288 = "/sys/class/gpio/gpio68/value";
+	///////////////CTD RK3288///////////////////////////
+	private static String RedLightFileName_ctd3288 = "/sys/class/gpio/gpio18/value";
 	
 
 	public static int TurnRedLedOnoff(String onff, String fileName)
@@ -255,6 +257,22 @@ public class LEDControl extends Thread {
 					TurnRedLedOnoff("0",RedLightFileName_cte3288);
 				}
 			}
+		}else if(MainBoardUtil.isRK3288_CTD()){
+			if(isOn == true)
+			{
+				if(isLightOn(RedLightFileName_ctd3288).contains("0"))
+				{
+					TurnRedLedOnoff("1",RedLightFileName_ctd3288);
+				}
+			}
+			else
+			{
+				if(isLightOn(RedLightFileName_ctd3288).contains("1"))
+				{
+					TurnRedLedOnoff("0",RedLightFileName_ctd3288);
+				}
+			}
+
 		}
 	}
 	

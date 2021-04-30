@@ -307,6 +307,7 @@
     <string name="str_parameter_note"> PS: The first parameter  &#60;=0 will not restart. </string>
     <string name="start_testing">Start testing</string>
     <string name="stop_testing">Stop testing</string>
+    <string name="into_stress">Into StressTest</string>
     <string name="ageing_network_ok">Success Times：</string>
     <string name="ageing_success_rate">Success rate: </string>
     <string name="ageing_network_fail">Fail Times：</string>

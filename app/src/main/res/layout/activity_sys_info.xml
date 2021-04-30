@@ -384,6 +384,11 @@
 					android:layout_marginTop="@dimen/margin_15"
 					android:text="@string/sys_settings_reset"
 					android:textSize="@dimen/tx_size_20" />
+				<Button
+					android:id="@+id/bt_stress"
+					android:layout_marginTop="@dimen/margin_15"
+					android:text="@string/into_stress"
+					android:textSize="@dimen/tx_size_20" />
 			</GridLayout>
 
 			<Button

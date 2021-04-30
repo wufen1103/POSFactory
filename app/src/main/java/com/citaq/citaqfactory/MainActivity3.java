@@ -64,6 +64,14 @@ public class MainActivity3 extends Activity {
 		loadMetro();
 
 		initMultiTest();
+	/*	//for test
+		Intent localIntent = new Intent();
+		localIntent.setAction("android.navigationbar.state");
+		localIntent.putExtra("state", "on");
+		sendBroadcast(localIntent);
+		localIntent.setAction("android.statusbar.state");
+		localIntent.putExtra("state", "off");
+		sendBroadcast(localIntent);*/
 	}
 
 	private void loadMetro(){
@@ -151,7 +159,7 @@ public class MainActivity3 extends Activity {
 			if (!mMetroItem.isShow()) {
 				iterator.remove();
 			}else {
-				if ((!MainBoardUtil.isSerialPrinterBoard())) {
+				if ((!MainBoardUtil.isSerialPrinterBoard() && !MainBoardUtil.isRK3288_CTD())) {
 					for (int i : metroIgnoreList1) {
 						if (mMetroItem.getItemId() == i) {
 							iterator.remove();

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,7 +48,8 @@ public class SysInfoActivity extends Activity {
 		tv_battery_info_voltage, tv_battery_info_status, tv_sys_net_meg, tv_sys_uptime, tv_display, tv_version_name;
 	String info="";
 	ImageView iv_mac;
-	Button sys_sd_content, sys_settings_wifi, sys_settings_app, sys_settings_datetime, sys_settings_reset, sys_settings;
+	Button sys_sd_content, sys_settings_wifi, sys_settings_app, sys_settings_datetime,
+			sys_settings_reset, sys_settings, bt_stress;
 	
 	String sdcard ="/mnt/external_sd";  // sdcard ="/storage/23E5-4C27";  //8.1.0 /mnt/media_rw/0403-0201
 	
@@ -68,6 +70,7 @@ public class SysInfoActivity extends Activity {
 		sys_settings_datetime = (Button) findViewById(R.id.sys_settings_datetime);
 		sys_settings_reset = (Button) findViewById(R.id.sys_settings_reset);
 		sys_settings = (Button) findViewById(R.id.sys_settings);
+		bt_stress = (Button) findViewById(R.id.bt_stress);
 		
 		sys_sd_content.setOnClickListener(clickListener);
 //		sys_settings_wifi.setOnClickListener(clickListener);
@@ -75,7 +78,7 @@ public class SysInfoActivity extends Activity {
 		sys_settings_datetime.setOnClickListener(clickListener);
 		sys_settings_reset.setOnClickListener(clickListener);
 		sys_settings.setOnClickListener(clickListener);
-		
+		bt_stress.setOnClickListener(clickListener);
 		
 		tv_serialNo = (TextView) findViewById(R.id.tv_serialNo);
 		tv_ICCID = (TextView) findViewById(R.id.tv_ICCID);
@@ -497,12 +500,27 @@ public class SysInfoActivity extends Activity {
 				} else {
 					if(MainBoardUtil.isRK3288()){
 						showConfirmDialog();
+					}else{
+						intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
+						startActivity(intent);
 					}
 				}
 				break;
 			case R.id.sys_settings:
 				intent = new Intent(Settings.ACTION_SETTINGS);
 				startActivity(intent);
+				break;
+			case R.id.bt_stress:
+				//5.1 //ComponentName componetName = new ComponentName("com.cghs.stresstest","com.cghs.stresstest.test.ArmFreqTest");
+				// cmp=com.cghs.stresstest/.StressTestActivity
+				ComponentName componetName = new ComponentName("com.cghs.stresstest","com.cghs.stresstest.StressTestActivity");
+				try {
+					intent = new Intent();
+					intent.setComponent(componetName);
+					startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				break;
 			}
 		}

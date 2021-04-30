@@ -24,6 +24,7 @@ public class MainBoardUtil {
 	private static final String MSM8625Q = "QRD MSM8625Q SKUD";
 	private static final String RK3368 = "RK3368";
 	private static final String RK3288 = "GENERIC DT BASED SYSTEM"; //CTD RK3288
+	private static final String RK3288_CTD = "CTD RK3288";
 	private static final String RK3288_CTE = "CTE RK3288"; //CTE RK3288
 	private static final String AllwinnerA63 = "SUN50IW3";
 	
@@ -94,6 +95,13 @@ public class MainBoardUtil {
 	
 	public static boolean isRK3288() {
 		if(getCpuHardware().contains(MainBoardUtil.RK3288)){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isRK3288_CTD() {
+		if(getCpuHardware().contains(MainBoardUtil.RK3288_CTD)){
 			return true;
 		}
 		return false;

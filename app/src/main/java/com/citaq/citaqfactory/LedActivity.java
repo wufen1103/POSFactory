@@ -2,12 +2,14 @@ package com.citaq.citaqfactory;
 
 
 import com.citaq.util.LEDControl;
+import com.citaq.util.MainBoardUtil;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 public class LedActivity extends Activity {
@@ -15,6 +17,7 @@ public class LedActivity extends Activity {
 	private ToggleButton bt_red;
 	private ToggleButton bt_blue;
 	private ToggleButton bt_fresh;
+	private RelativeLayout rlayout_blue, rlayout_fresh;
 	
 	private LEDControl freshThread = null;
 
@@ -88,6 +91,13 @@ public class LedActivity extends Activity {
 				}
 			}
 		});
+
+		if(MainBoardUtil.isRK3288_CTD()){
+			rlayout_blue = (RelativeLayout)findViewById(R.id.rl_blue);
+			rlayout_fresh = (RelativeLayout)findViewById(R.id.rl_fresh);
+			rlayout_blue.setVisibility(View.INVISIBLE);
+			rlayout_fresh.setVisibility(View.INVISIBLE);
+		}
 
 	}
 	
