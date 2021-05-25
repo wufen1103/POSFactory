@@ -98,7 +98,7 @@ public class TouchActivity extends FullActivity
 
 	@Override
 	public void onClick(View v) {
-		SoundManager.playSound(0, 1);
+		SoundManager.playSound(0, false,1);
 		switch(v.getId())
 		{
 			case R.id.button_clear:

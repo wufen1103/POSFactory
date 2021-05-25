@@ -592,7 +592,7 @@ public class AgeingActivity extends Activity {
 				}else{
 					countFailue++;
 					failueCount++;
-					if(cb_sound.isChecked())SoundManager.playSound(0, 1);;
+					if(cb_sound.isChecked())SoundManager.playSound(0, false,1);;
 					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 						if(failueCount>=10){
 							failueCount = 0;

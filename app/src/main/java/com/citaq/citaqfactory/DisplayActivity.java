@@ -31,7 +31,7 @@ public  class DisplayActivity extends FullActivity implements OnClickListener {
 	boolean exit = false;
 	@Override
 		public void onClick(View v) {
-			SoundManager.playSound(0, 1);
+			SoundManager.playSound(0, false,1);
 			
 			if(i>colors.length-1)
 			{

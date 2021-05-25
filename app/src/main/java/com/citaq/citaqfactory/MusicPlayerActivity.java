@@ -4,17 +4,14 @@ package com.citaq.citaqfactory;
 import java.io.File;
 import java.io.IOException;
 
-import com.citaq.util.LEDControl;
-import com.citaq.util.SoundPoolManager;
+import com.citaq.util.SoundManager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,13 +24,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class MusicPlayerActivity extends Activity {
 	
@@ -56,10 +49,6 @@ public class MusicPlayerActivity extends Activity {
 	
 	int  soundID_left =-1;
 	int  soundID_right =-1;
-	
-	int laser;
-	
-	SoundPoolManager mSoundPoolManager;
 	
 	//音量控制,初始化定义    
 	AudioManager mAudioManager;   
@@ -224,9 +213,6 @@ public class MusicPlayerActivity extends Activity {
 			}
 		});
 		
-		mSoundPoolManager = new SoundPoolManager(getApplicationContext());
-		laser = mSoundPoolManager.load(R.raw.laser);
-		
 		bt_left.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
@@ -236,13 +222,13 @@ public class MusicPlayerActivity extends Activity {
 						bt_play_pause.setChecked(false);
 					}
 					if(soundID_left == -1){
-						soundID_left = mSoundPoolManager.playLeft(laser);
+						soundID_left = SoundManager.playSoundLeft(1,true,1);
 					}else{
-						mSoundPoolManager.resume(soundID_left);
+						SoundManager.resume(soundID_left);
 					}
 				}else{
 					if(soundID_left!=-1){
-						mSoundPoolManager.pause(soundID_left);
+						SoundManager.pause(soundID_left);
 					}
 				}
 			}
@@ -259,13 +245,13 @@ public class MusicPlayerActivity extends Activity {
 						bt_play_pause.setChecked(false);
 					}
 					if(soundID_right == -1){
-						soundID_right = mSoundPoolManager.playRight(laser);
+						soundID_right = SoundManager.playSoundRight(1,true,1);
 					}else{
-						mSoundPoolManager.resume(soundID_right);
+						SoundManager.resume(soundID_right);
 					}
 				}else{
 					if(soundID_right!=-1){
-						mSoundPoolManager.pause(soundID_right);
+						SoundManager.pause(soundID_right);
 					}
 				}
 			
@@ -318,7 +304,6 @@ public class MusicPlayerActivity extends Activity {
 		if(mMediaPlayer != null ){
 			mMediaPlayer.release();
 		}
-		mSoundPoolManager.unloadAll();
 		super.onDestroy();
 	}
 	

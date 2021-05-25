@@ -26,6 +26,7 @@ import com.citaq.util.CitaqBuildConfig;
 import com.citaq.util.MainBoardUtil;
 import com.citaq.util.PermissionUtil;
 import com.citaq.util.SharePreferencesHelper;
+import com.citaq.util.SoundManager;
 import com.citaq.view.MetroItemAdapter;
 
 import java.io.InputStream;
@@ -72,6 +73,10 @@ public class MainActivity3 extends Activity {
 		localIntent.setAction("android.statusbar.state");
 		localIntent.putExtra("state", "off");
 		sendBroadcast(localIntent);*/
+
+		SoundManager.prepareInstance();
+		SoundManager.initSounds(this);
+		SoundManager.loadSounds();
 	}
 
 	private void loadMetro(){
@@ -193,6 +198,8 @@ public class MainActivity3 extends Activity {
 
 		SharePreferencesHelper mSharePreferencesHelper = new SharePreferencesHelper(this,CitaqBuildConfig.SHAREPREFERENCESNAME);
 		mSharePreferencesHelper.clear();
+
+		 SoundManager.cleanup();
 
 		super.onDestroy();
 	}

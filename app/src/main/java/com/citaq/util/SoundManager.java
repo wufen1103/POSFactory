@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.citaq.citaqfactory.R;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
@@ -50,8 +51,24 @@ public class SoundManager {
 		mContext = theContext;
 		mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE); 	  
 		float streamVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-	     mSoundPool = new SoundPool((int) streamVolume, AudioManager.STREAM_MUSIC, 0);
-	     mSoundPoolMap = new HashMap<Integer, Integer>(); 
+//	     mSoundPool = new SoundPool((int) streamVolume, AudioManager.STREAM_MUSIC, 0);
+
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+			AudioAttributes audioAttributes = null;
+			audioAttributes = new AudioAttributes.Builder()
+					.setUsage(AudioAttributes.USAGE_MEDIA)
+					.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+					.build();
+
+			mSoundPool = new SoundPool.Builder()
+					.setMaxStreams((int) streamVolume)
+					.setAudioAttributes(audioAttributes)
+					.build();
+		} else { // 5.0 以前
+			mSoundPool = new SoundPool((int) streamVolume, AudioManager.STREAM_MUSIC, 0);  // 创建SoundPool
+		}
+	     mSoundPoolMap = new HashMap<Integer, Integer>();
+
 	} 
  
 	/**
@@ -71,6 +88,7 @@ public class SoundManager {
 	public static void loadSounds()
 	{
 		mSoundPoolMap.put(0, mSoundPool.load(mContext,R.raw.click, 1));
+		mSoundPoolMap.put(1, mSoundPool.load(mContext,R.raw.laser, 1));
 	}
  
 	/**
@@ -79,11 +97,44 @@ public class SoundManager {
 	 * @param index - The Index of the Sound to be played
 	 * @param speed - The Speed to play not, not currently used but included for compatibility
 	 */
-	public static void playSound(int index,float speed)
+	public static int playSound(int index, boolean isLoop, float speed)
 	{
-		     float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
-		     //streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		     mSoundPool.play( mSoundPoolMap.get(index), streamVolume, streamVolume, 1, 0, speed);
+		int loop =0;
+		if(isLoop){
+			loop = -1;
+		}
+		int isOk= mSoundPool.play( mSoundPoolMap.get(index), 1.0f, 1.0f, 1, loop, speed); //non-zero streamID if successful, zero if failed
+		return isOk;
+	}
+
+	public static int playSoundLeft(int index, boolean isLoop, float speed)
+	{
+		int loop =0;
+ 		if(isLoop){
+			loop = -1;
+		}
+		int isOk= mSoundPool.play( mSoundPoolMap.get(index), 1.0f, 0, 1, loop, speed); //non-zero streamID if successful, zero if failed
+		return isOk;
+	}
+
+	public static int playSoundRight(int index, boolean isLoop, float speed)
+	{
+		int loop =0;
+		if(isLoop){
+			loop = -1;
+		}
+		int isOk= mSoundPool.play( mSoundPoolMap.get(index), 0, 1.0f, 1, loop, speed); //non-zero streamID if successful, zero if failed
+		return isOk;
+	}
+
+	public static void pause(int id)
+	{
+		mSoundPool.pause(id);
+	}
+
+	public static void resume(int id)
+	{
+		mSoundPool.resume(id);
 	}
  
 	/**

@@ -158,7 +158,7 @@
     <string name="str_parameter_note"> PS: 第一个参数 &#60;=0 不会重启. </string>
     <string name="start_testing">开始测试</string>
     <string name="stop_testing">停止测试</string>
-    <string name="into_stress">进入StressTest</string>
+    <string name="into_stress">Into StressTest</string>
     <string name="ageing_network_ok">成功次数：</string>
     <string name="ageing_network_fail">失败次数：</string>
     <string name="ageing_success_rate">成功率: </string>

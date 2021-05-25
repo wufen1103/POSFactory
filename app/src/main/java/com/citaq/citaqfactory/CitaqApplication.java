@@ -14,10 +14,9 @@ public class CitaqApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		SoundManager.prepareInstance();
+		/*SoundManager.prepareInstance();
 		SoundManager.initSounds(this);
-		SoundManager.loadSounds();
-
+		SoundManager.loadSounds();*/
 	}
 
 }
