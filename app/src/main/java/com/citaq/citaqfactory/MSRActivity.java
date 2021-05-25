@@ -45,7 +45,7 @@ public class MSRActivity extends Activity {
 	}
 
 	private void initSerial(){
-		if(MainBoardUtil.isRK3368()){
+		if(MainBoardUtil.isRK3368() || MainBoardUtil.isRK3288_CTE()){
 			mSerialPortManager = new SerialPortManager(this,SerialPortManager.CTMDISPLAYSERIALPORT_TTYS4);
 		}else{
 			mSerialPortManager = new SerialPortManager(this,SerialPortManager.MSRSERIALPORT_TTYS2);
