@@ -44,9 +44,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:testOnly= "false"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         <!--android:requestLegacyExternalStorage="true"
         Android10读取不到/sdcard/、/storage/emulated/0/文件的问题-->
+        <!-- android:usesCleartextTraffic="true"
+        net::ERR_CLEARTEXT_NOT_PERMITTED错误-->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

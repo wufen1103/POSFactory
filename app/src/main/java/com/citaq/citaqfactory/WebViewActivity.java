@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,8 +35,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class WebViewActivity extends Activity {
-	protected static final String TAG = "MSRActivity";
-	protected static final String url = "https://www.baidu.com";
+	protected static final String TAG = "WebViewActivity";
+	protected static final String url = "https://www.baidu.com";//"http://www.people.com.cn";//
 	Context mContext;
 	WebView mWebView;
 	Button bt_refresh;
@@ -87,6 +90,21 @@ public class WebViewActivity extends Activity {
 				handler.proceed();
 				super.onReceivedSslError(view, handler, error);
 				Log.d(TAG, "onReceivedSslError: "); //如果是证书问题，会打印出此条log到console
+			}
+
+			@Override
+			public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+				super.onReceivedError(view, request, error);
+			}
+
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+				if(url.startsWith("baiduboxlite")) {  //RK3288 baiduboxlite -> baiduboxapp 第一次访问百度err_unknown_url_scheme（要求下载app）
+					/*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					startActivity(intent);*/
+					return true;
+				}
+				return super.shouldOverrideUrlLoading(view, request);
 			}
 		});
 
